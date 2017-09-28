@@ -28,6 +28,11 @@ You can now choose to build via command line, or use Xcode. Who doesn't love Xco
 - Terminal: `vapor build && vapor run serve`
 - Xcode: `vapor xcode -y` and then `CMD+r`.
 
+You will need to add some API keys as environment variables for the project to run successfully. If you're using Xcode, you can do it from the scheme menu. If you're not using Xcode, define them as environment variables. Here are the required variables:
+
+- `STRIPE_API_KEY` can be any non-empty string.
+- `DB_HOSTNAME`, `DB_USER`, `DB_PASSWORD`, `DB_DATABASE` should point to the PostgreSQL database that you have created locally. Only creating the database should be enough, Vapor will take care of generating all the needed tables when compiled for the first time. 
+
 ## Architecture
 HomeKitty has a very simple architecture. The `Sources` folder contains two folders:
 
