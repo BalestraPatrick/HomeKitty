@@ -7,11 +7,10 @@
   </a>
   <a href="https://swift.org">
     <img src="http://img.shields.io/badge/Swift-3.2-brightgreen.svg" alt="Language">
-  </a>  <a href="https://raw.githubusercontent.com/BalestraPatrick/HomeKitty/master/LICENSE">
+  </a>  <a href="https://github.com/BalestraPatrick/HomeKitty/blob/master/LICENSE.md">
     <img src="https://img.shields.io/badge/license-MIT-blue.svg" alt="MIT License">
   </a>
 </p>
-
 
 # HomeKitty
 HomeKitty is a website built in [Vapor 2][1] that keeps track of all HomeKit accessories available in the market. Accessories are divided in 18 official categories to make it easier to find the perfect accessory for your needs. You can search any accessory by its name or manufacturer and directly open its official website to find more information.
@@ -24,7 +23,7 @@ Enough with the dependencies, clone the repo.
 ```bash
 $ git clone https://github.com/BalestraPatrick/HomeKitty
 ```
-You can now choose to build via command line, or use Xcode. Who doesn't love Xcode?
+You can now choose to build via command line, or use Xcode. Who doesn't love Xcode? 🛠
 
 - Terminal: `vapor build && vapor run serve`
 - Xcode: `vapor xcode -y` and then `CMD+r`.
@@ -34,6 +33,8 @@ HomeKitty has a very simple architecture. The `Sources` folder contains two fold
 
 - Run: contains `main.swift` and it's the starting point of the application.
 - App: contains all the controllers (route handlers), models and helper methods.
+
+There are some basic tests in the Tests folder. 
 
 ## Contributing
 We would love to have you onboard and help us shape the future of HomeKitty. We have a ton of new features and bug fixes ready for you in the [issues][4].
