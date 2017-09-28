@@ -25,7 +25,6 @@ public extension Config {
 
     private func setUpMiddlewares() throws {
         addConfigurable(middleware: LeafErrorMiddleware.init, name: "leaf-error")
-//        addConfigurable(middleware: Bugsnag.Middleware.init, name: "bugsnag")
     }
 
     private func setUpPreparations() throws {
