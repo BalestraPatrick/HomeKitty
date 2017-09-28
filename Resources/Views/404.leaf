@@ -1,0 +1,28 @@
+#extend("base")
+#export("head") {
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="All HomeKit accessories in a single place.">
+    <meta name="author" content="Patrick Balestra">
+    <meta name="application-name" content="HomeKitty"/>
+    <script src="/js/jquery.js"></script>
+    <title>HomeKitty - Page Not Found</title>
+}
+
+#export("body") {
+    #embed("navigation")
+
+    <div class="container">
+        <div class="row">
+            <div class="header-brand">
+                <div id="header-content-brand">
+                    <img id="image-brand" src="mstile-150x150.png">
+                    <h1 id="title-brand">⚠️ Page Not Found</h1>
+                    <p id="subtitle-brand">Go back to exploring <a href="/" style="color:white; text-decoration:underline;">accessories</a>.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+    #embed("footer")
+}

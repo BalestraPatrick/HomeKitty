@@ -1,0 +1,131 @@
+#extend("base")
+
+#export("head") {
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="All HomeKit accessories in a single place.">
+    <meta name="author" content="Patrick Balestra">
+    <meta name="application-name" content="HomeKitty"/>
+    <link rel="stylesheet" href="/css/explore.css">
+    <title>HomeKitty - Browse HomeKit Accessories</title>
+}
+
+#export("body") {
+    #embed("navigation")
+    <div class="container container-content">
+        <div class="row">
+            #if(success) {
+                <div class="centered">
+                    <h1>👏👏👏</h1>
+                    <p class="lead">Thanks for you contribution. We'll review it as soon as possible and publicly make it available.</p>
+                </div>
+            } ##else() {
+                <div class="col-md-6" id="contribute-column">
+                <h1>Submit an accessory</h1>
+                <p>The goal of HomeKitty is to be the central place of discovery for all HomeKit accessories. By contributing to our database, you can help many more people discover new, incredible possibilities.</p>
+                <p>Simply fill out the following form with the required details, and we will add it to the website as soon as we have double-checked all the information. 🎉</p>
+                <hr>
+                <form action="/contribute/submit" method="POST">
+                    <!-- Accessory -->
+                    <h4>Accessory</h4>
+                    <div class="form-group">
+                        <label for="name">Name</label>
+                        <p>Please provide the full name (ex: Philips Hue A13).</p>
+                        <input type="text" class="form-control" name="name" placeholder="Name" required maxlength="255">
+                    </div>
+                    <div class="form-group">
+                        <label for="image">Image</label>
+                        <p>Please provide the direct link to a JPG image of the product (with white background if possible, otherwise a PNG is fine).</p>
+                        <input type="text" class="form-control" name="image" placeholder="URL" required maxlength="255">
+                    </div>
+                    <div class="form-group">
+                        <label for="price">Price</label>
+                        <p>Please provide the price in $ (ex: $49.99).</p>
+                        <input type="text" class="form-control" name="price" placeholder="$49.99" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="link">Link</label>
+                        <p>Please provide the direct link (to the official manufacturer page).</p>
+                        <input type="text" class="form-control" name="link" placeholder="http://www2.meethue.com/en-us/productdetail/philips-hue-white-extension-bulb-a19" required maxlength="255">
+                    </div>
+
+                    <!-- Category -->
+                    <h4>Category</h4>
+                    <div class="form-group">
+                        <select name="category">
+                            #loop(categories, "category") {
+                            <option value="#(category.name)">#(category.name)</option>
+                            }
+                        </select>
+                    </div>
+
+                    <!-- Manufacturer -->
+                    <h4>Manufacturer</h4>
+                    <div class="form-group">
+                        <select id="manufacturer-selection" name="manufacturer" required>
+                            <option value="" disabled selected>Select a manufactuter</option>
+                            #loop(manufacturers, "manufacturer") {
+                                <option value="#(manufacturer.name)">#(manufacturer.name)</option>
+                            }
+                        </select>
+                        <div>
+                            <button type="button" class="btn btn-primary" id="add-new-button" onclick="showHide(); return false;">Add New Manufacturer</button>
+                        </div>
+                        <div id="add-manufacturer-form">
+                            <div class="form-group">
+                                <label for="manufacturer-name">Name</label>
+                                <p>Please provide the name (ex: Philips).</p>
+                                <input type="text" class="form-control" id="manufacturer-name-input" name="manufacturer-name" placeholder="Philips" maxlength="255">
+                            </div>
+                            <div class="form-group">
+                                <label for="website">Website</label>
+                                <p>Please provide the direct link to the website.</p>
+                                <input type="text" class="form-control" id="manufacturer-name-website" name="manufacturer-website" placeholder="URL" maxlength="255">
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Submit -->
+                    <hr>
+                    <div>
+                        <p style="float: left;">Ready to submit? 👍</p>
+                        <button type="submit" class="btn btn-primary" style="float: right;">Submit</button>
+                    </div>
+                </form>
+            </div>
+            }
+        </div>
+    </div>
+    <script>
+        function showHide() {
+            var addNewButton = document.getElementById('add-new-button');
+            var form = document.getElementById('add-manufacturer-form');
+            var optionList = document.getElementById('manufacturer-selection');
+            if (form.style.display !== 'none') {
+                form.style.display = 'none';
+                addNewButton.innerHTML = 'Add New Manufacturer';
+                optionList.required = true;
+                optionList.disabled = false;
+                document.getElementById('manufacturer-name-input').required = false;
+                document.getElementById('manufacturer-name-input').disabled = true;
+                document.getElementById('manufacturer-logo-input').required = false;
+                document.getElementById('manufacturer-logo-input').disabled = true;
+                document.getElementById('manufacturer-website-input').required = false;
+                document.getElementById('manufacturer-website-input').disabled = true;
+            } else {
+                form.style.display = 'block';
+                addNewButton.innerHTML = 'Choose Existing';
+                optionList.required = false;
+                optionList.disabled = true;
+                document.getElementById('manufacturer-name-input').required = true;
+                document.getElementById('manufacturer-name-input').disabled = false;
+                document.getElementById('manufacturer-logo-input').required = true;
+                document.getElementById('manufacturer-logo-input').disabled = false;
+                document.getElementById('manufacturer-website-input').required = true;
+                document.getElementById('manufacturer-website-input').disabled = false;
+            }
+        }
+    </script>
+    #embed("footer")
+}

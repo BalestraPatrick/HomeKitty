@@ -1,0 +1,10 @@
+INSERT INTO manufacturer (name, website_link, approved) VALUES ('Incipio', 'https://www.incipio.com', TRUE);
+INSERT INTO manufacturer (name, website_link, approved) VALUES ('iHome', 'https://ihomeaudiointl.com/', TRUE);
+INSERT INTO manufacturer (name, website_link, approved) VALUES ('iDevices', 'https://idevicesinc.com', TRUE);
+INSERT INTO manufacturer (name, website_link, approved) VALUES ('Elgato', 'https://www.elgato.com/', TRUE);
+INSERT INTO manufacturer (name, website_link, approved) VALUES ('C by GE', 'https://www.cbyge.com', TRUE);
+INSERT INTO manufacturer (name, website_link, approved) VALUES ('Nanoleaf', 'https://nanoleaf.me/en/', TRUE);
+INSERT INTO manufacturer (name, website_link, approved) VALUES ('Philips', 'https://www2.meethue.com/', TRUE);
+INSERT INTO manufacturer (name, website_link, approved) VALUES ('ConnectSense', 'https://www.connectsense.com', TRUE);
+INSERT INTO manufacturer (name, website_link, approved) VALUES ('Koogeek', 'https://www.koogeek.com', TRUE);
+INSERT INTO manufacturer (name, website_link, approved) VALUES ('PureGear', 'https://www.pure-gear.com', TRUE);

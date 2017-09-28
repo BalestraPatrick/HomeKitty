@@ -1,0 +1,22 @@
+DELETE FROM category *;
+DELETE FROM manufacturer *;
+DELETE FROM accessories *;
+
+INSERT INTO category (name, image) VALUES ('Lights', '/icons/lights.svg');
+INSERT INTO category (name, image) VALUES ('Switches', '/icons/switches.svg');
+INSERT INTO category (name, image) VALUES ('Outlets', '/icons/outlets.svg');
+INSERT INTO category (name, image) VALUES ('Thermostats', '/icons/thermostats.svg');
+INSERT INTO category (name, image) VALUES ('Windows', '/icons/windows.svg');
+INSERT INTO category (name, image) VALUES ('Fans', '/icons/fans.svg');
+INSERT INTO category (name, image) VALUES ('Air Conditioners', '/icons/airconditioners.svg');
+INSERT INTO category (name, image) VALUES ('Humidifiers', '/icons/humidifiers.svg');
+INSERT INTO category (name, image) VALUES ('Air Purifiers', '/icons/airpurifiers.svg');
+INSERT INTO category (name, image) VALUES ('Speakers', '/icons/speakers.svg');
+INSERT INTO category (name, image) VALUES ('Sensors', '/icons/sensors.svg');
+INSERT INTO category (name, image) VALUES ('Security', '/icons/security.svg');
+INSERT INTO category (name, image) VALUES ('Locks', '/icons/locks.svg');
+INSERT INTO category (name, image) VALUES ('Cameras', '/icons/cameras.svg');
+INSERT INTO category (name, image) VALUES ('Doorbells', '/icons/doorbells.svg');
+INSERT INTO category (name, image) VALUES ('Garage Doors', '/icons/garagedoors.svg');
+INSERT INTO category (name, image) VALUES ('Bridges', '/icons/bridges.svg');
+INSERT INTO category (name, image) VALUES ('Range Extenders', '/icons/rangeextenders.svg');

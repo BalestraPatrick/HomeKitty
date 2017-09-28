@@ -1,0 +1,241 @@
+* {
+	box-sizing: border-box;
+}
+
+body, html {
+	padding: 0;
+	margin: 0;
+	height: 100%;
+}
+
+body {
+	font-family: sans-serif;
+	color: #333;
+	position: relative;
+}
+
+.nav, .navbar-nav, .navbar-brand {
+    margin-top: 10px;
+}
+
+.navbar-brand {
+    color: white;
+}
+
+.header-brand {
+    background-image: url("../background-home.jpg");
+    background-repeat: no-repeat;
+    background-size: 100%;
+    margin-top: 70px;
+    padding-top: 50%;
+    text-align: center;
+    position: relative;
+}
+
+#header-content-brand {
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: 1;
+}
+
+#image-brand {
+    padding-top: 50px;
+    width: 100px;
+}
+
+@media screen and (max-width: 480px) {
+    #image-brand {
+        padding-top: 20px;
+        width: 100px;
+    }
+    #title-brand {
+        font-size: 20px;
+    }
+    #subtitle-brand {
+        font-size: 15px;
+    }
+}
+
+#title-brand {
+    color: white;
+}
+
+#subtitle-brand {
+    color: white;
+    font-size: 20px;
+    font-weight: 100;
+}
+
+#droplet {
+    width: 50px;
+    display: inline-block;
+    margin-right: 12px;
+    float: left;
+}
+
+.message {
+	position: absolute;
+	width: 256px;
+    height: 64px;
+	text-align: center;
+	top: 50%;
+	left: 50%;
+	margin-left: -128px;
+    margin-top: -32px;
+    line-height: 0;
+}
+
+header {
+    text-align: center;
+    margin-left: 50px;
+}
+
+#header-title {
+    display: flex;
+    align-items: center;
+}
+
+#header-title img {
+    flex-grow:0;
+    flex-shrink:0;
+}
+
+#header-title h1 {
+    margin-left: 10px;
+}
+
+#header-title {
+    padding: 10px;
+}
+
+#menu-buttons {
+    display: flex;
+    align-items: center;
+}
+
+#menu-buttons a {
+    padding: 10px;
+}
+
+.message h1 {
+    display: inline-block;
+    margin: 0;
+    padding: 0;
+    line-height: 64px;
+    float: left;
+    font-family: 'Quicksand';
+    font-weight: 500;
+    font-size: 36px;
+}
+
+.message img {
+    height: 100%;
+    display: inline-block;
+    float: left;
+}
+
+.flex-item {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    text-align: center;
+}
+.flex-item img {
+    flex-grow: 0;
+    flex-shrink: 0;
+}
+
+.btn-primary {
+    background-color: #FEC400;
+    border-color: #FEC400;
+}
+
+.btn-primary:hover {
+    background-color: #FF9D22;
+    border-color: #FF9D22;
+}
+
+.donation-container {
+    text-align: center;
+    display: flex;
+    justify-content: center;
+}
+
+#apple-pay-button {
+    display: none;
+    background-color: black;
+    background-image: -webkit-named-image(apple-pay-logo-white);
+    background-size: 100% 100%;
+    background-origin: content-box;
+    background-repeat: no-repeat;
+    height: 44px;
+    padding: 10px 0;
+    border-radius: 10px;
+    -webkit-appearance: -apple-pay-button;
+    margin: 5px;
+    width: 150px;
+    margin-right: 20px;
+}
+
+.centered {
+    text-align: center;
+}
+
+.dropdown {
+    margin: 0 auto;
+    display: inline-block;
+}
+
+#manufacturer-selection {
+    margin-bottom: 10px;
+}
+
+#add-manufacturer-form {
+    display: none;
+}
+
+#contribute-column {
+    float: none;
+    margin: 0 auto;
+}
+
+#search-container {
+    display: block;
+}
+
+#search-form {
+    display: flex;
+}
+
+#search-button {
+    margin-right: 35px;
+}
+
+#header-container {
+    margin-top: 10px;
+}
+
+#empty-state-container {
+    text-align: center;
+    padding-top: 50px;
+}
+
+#accessory-image {
+    height: 200px;
+    object-fit: contain;
+}
+
+#accessory-information-container {
+    position: absolute;
+    left: 50%;
+    bottom: 30px;
+}
+
+#accessory-information {
+    position: relative;
+    left: -50%;
+}

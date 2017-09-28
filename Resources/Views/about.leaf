@@ -1,0 +1,87 @@
+#extend("base")
+
+    #export("head") {
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="description" content="All HomeKit accessories in a single place.">
+        <meta name="author" content="Patrick Balestra">
+        <meta name="application-name" content="HomeKitty"/>
+        <script type="text/javascript" src="https://js.stripe.com/v2/"></script>
+        <script async defer src="https://buttons.github.io/buttons.js"></script>
+        <script async defer src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
+        <script src="/js/jquery.js"></script>
+        <title>HomeKitty - About</title>
+    }
+
+    #export("body") {
+
+    #embed("navigation")
+
+    <div class="container">
+        <div class="row">
+            <div class="header-brand">
+                <div id="header-content-brand">
+                    <img id="image-brand" src="mstile-150x150.png">
+                    <h1 id="title-brand">About</h1>
+                    <p id="subtitle-brand">All HomeKit accessories in a single place.</p>
+                </div>
+            </div>
+        </div>
+        <div>
+            <h2>🤔 What is it?</h2>
+            <p>HomeKitty is a a crowdsourced website that collects all accessories that support the <a href="http://apple.com/homekit" target="_blank">HomeKit</a> protocol. If you want to quickly compare and find new accessories for your home of the future, there is no need to Google around hundreds of websites. Simply select the category and choose an accessory to open its official website.</p>
+            <p>At the moment, only accessories that are available for purchase are going to be accepted. Soon, we will be able to start accepting accessories that have been announced but not yet released. Each accessory will then have a badge specifying its availability.</p>
+            <p>Interested in discussing HomeKit? Join the <a href="https://homekitty-slack.herokuapp.com" target="_blank">Slack group</a>.
+            <hr>
+            <h2>🏋🏻 How can I contribute?</h2>
+            <p>Did you find a cool new accessory that has been released officially? Submit it in the <a href="/contribute">Contribute</a> page and it will be reviewed and added as soon as possible to the public database of accessories.</p>
+            <hr>
+            <h2>🤓 Team</h2>
+            <p>My name is <a href="https://patrickbalestra.com" target="_blank">Patrick Balestra</a>, a 🇨🇭 software engineer currently living in Berlin. I created HomeKitty in my free time during the last few months.</p>
+            <p> Interested in following the development?</p>
+            <div class="centered">
+                <a href="https://twitter.com/HomeKittyWorld" class="twitter-follow-button" data-size="large" data-show-count="false">Follow @HomeKittyWorld</a><br>
+                <a href="https://twitter.com/BalestraPatrick" class="twitter-follow-button" data-size="large" data-show-count="false">Follow @BalestraPatrick</a>
+                <a href="https://github.com/BalestraPatrick" class="github-button" data-size="large" aria-label="Follow @BalestraPatrick on GitHub">Follow @BalestraPatrick</a>
+            </div>
+            <hr>
+            <h2>🍺 Support HomeKitty</h2>
+            <p>If you like this website, please consider donating any amount to help cover the costs, or maybe just gift us a coffee for the late nights spent working on this side-project ☕️.<br>
+            We even made it super easy to donate, just press the Apple Pay button below.</p>
+            Any donation helps in improving HomeKitty. Choose the amount that you prefer:
+            <div class="dropdown">
+                <button class="btn btn-primary dropdown-toggle" type="button" data-toggle="dropdown">
+                    <span id="donation-amount">$1</span><span class="caret"></span>
+                </button>
+                <ul class="dropdown-menu">
+                    <li><a>$1</a></li>
+                    <li><a>$3</a></li>
+                    <li><a>$5</a></li>
+                    <li><a>$10</a></li>
+                </ul>
+            </div>
+            <br><br>
+            <div class="donation-container">
+                <button id="apple-pay-button"></button>
+                <form action="https://www.paypal.com/cgi-bin/webscr" method="post" target="_top">
+                    <input type="hidden" name="cmd" value="_s-xclick">
+                    <input type="hidden" name="encrypted" value="-----BEGIN PKCS7-----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-----END PKCS7-----
+                            ">
+                    <input type="image" src="https://www.paypalobjects.com/en_US/i/btn/btn_donateCC_LG.gif" border="0" name="submit" alt="PayPal - The safer, easier way to pay online!">
+                    <img alt="" border="0" src="https://www.paypalobjects.com/en_US/i/scr/pixel.gif" width="1" height="1">
+                </form>
+            </div>
+            <hr>
+            <h2>👨‍💻 Tech</h2>
+            <p>HomeKitty uses <a href="https://github.com/vapor/vapor" target="_blank">Vapor 2</a> and is written completely in Swift. The <a href="https://github.com/vapor-community/stripe" target="_blank">Vapor Stripe Provider</a> is also integrated in the codebase.</p>
+        </div>
+    </div>
+    <script>
+        $(".dropdown-menu li:not(.disabled) a").click(function () {
+                                                      $(this).closest(".dropdown").find(".btn").html('<span id="donation-amount">' + $(this).text() + '</span> <span class="caret"></span>');
+                                                      });
+    </script>
+    <script type="text/javascript" src="/js/product.js"></script>
+    #embed("footer")
+}

@@ -1,0 +1,6 @@
+{
+    "//": "A cost is a measure of how many times to run the hash -- how slow it is.",
+    "//": "Hashes created with higher costs may be harder to brute force.",
+    "//": "A higher BCrypt cost is specified in the production environment config files.",
+    "cost": 4
+}

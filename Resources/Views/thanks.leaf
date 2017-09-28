@@ -1,0 +1,38 @@
+#extend("base")
+
+    #export("head") {
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="description" content="All HomeKit accessories in a single place.">
+        <meta name="author" content="Patrick Balestra">
+        <meta name="application-name" content="HomeKitty"/>
+        <script type="text/javascript" src="https://js.stripe.com/v2/"></script>
+        <script async defer src="https://buttons.github.io/buttons.js"></script>
+        <script async defer src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
+        <script src="/js/jquery.js"></script>
+        <title>HomeKitty - About</title>
+    }
+
+    #export("body") {
+
+    #embed("navigation")
+
+    <div class="container">
+        <div class="row">
+            <div class="header-brand">
+                <div id="header-content-brand">
+                    <img id="image-brand" src="/mstile-150x150.png">
+                    <h1 id="title-brand">About</h1>
+                    <p id="subtitle-brand">All HomeKit accessories in a single place.</p>
+                </div>
+            </div>
+        </div>
+        <div style="text-align: center;">
+            <h1>🎉🎉🎉</h1>
+            <h2>Thank you!</h2>
+            <p>We really appreciate your support.</p>
+        </div>
+    </div>
+    #embed("footer")
+}
