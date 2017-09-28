@@ -20,6 +20,7 @@ final class Accessory: Model {
     var price: String
     var productLink: String
     var approved: Bool
+    var date: Date
 
     var category: Parent<Accessory, Category> {
         return parent(id: categoryId)
@@ -29,7 +30,7 @@ final class Accessory: Model {
         return parent(id: manufacturerId)
     }
 
-    init(name: String, image: String, price: String, productLink: String, category: Identifier, manufacturer: Identifier, approved: Bool = false) {
+    init(name: String, image: String, price: String, productLink: String, category: Identifier, manufacturer: Identifier, approved: Bool = false, date: Date = Date()) {
         self.name = name
         self.categoryId = category
         self.manufacturerId = manufacturer
@@ -37,6 +38,7 @@ final class Accessory: Model {
         self.price = price
         self.productLink = productLink
         self.approved = approved
+        self.date = date
     }
 
     init(row: Row) throws {
@@ -48,6 +50,7 @@ final class Accessory: Model {
         approved = try row.get("approved")
         manufacturerId = try row.get("manufacturer_id")
         categoryId = try row.get("category_id")
+        date = try row.get("date")
     }
 
     func makeRow() throws -> Row {
@@ -60,6 +63,7 @@ final class Accessory: Model {
         try row.set("product_link", productLink)
         try row.set("manufacturer_id", manufacturerId)
         try row.set("approved", approved)
+        try row.set("date", date)
         return row
     }
 }
@@ -76,6 +80,7 @@ extension Accessory: NodeRepresentable {
             "manufacturer_link": manufacturer.get()?.directLink,
             "manufacturer_website": manufacturer.get()?.websiteLink,
             "category_id": categoryId.string!,
+            "date": date,
         ])
     }
 }
@@ -92,6 +97,7 @@ extension Accessory: ResponseRepresentable {
         try json.set("product_link", productLink)
         try json.set("manufacturer_id", manufacturerId)
         try json.set("approved", approved)
+        try json.set("date", date)
         return try json.makeResponse()
     }
 }
@@ -108,6 +114,7 @@ extension Accessory: Preparation {
             builder.string("price")
             builder.string("product_link")
             builder.bool("approved")
+            builder.date("date")
         }
     }
 
