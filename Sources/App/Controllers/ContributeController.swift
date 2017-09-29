@@ -17,7 +17,7 @@ final class ContributeController {
     }
 
     func explore(request: Request) throws -> ResponseRepresentable {
-        let manufacturers = try Manufacturer.makeQuery().filter("approved", true).all().sorted(by: {  $0.name.localizedCompare($1.name) == .orderedAscending })
+        let manufacturers = try Manufacturer.makeQuery().filter("approved", true).all().sorted(by: { $0.name.localizedCompare($1.name) == .orderedAscending })
         let categories = try Category.all().sorted(by: {  $0.name.localizedCompare($1.name) == .orderedAscending })
         let node = try Node(node: [
             "categories": categories.makeNode(in: nil),
