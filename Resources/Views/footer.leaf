@@ -4,7 +4,7 @@
     <footer>
         <div class="row">
             <div class="col-lg-12">
-<p><a href="https://twitter.com/homekittyworld" target="_blank">Twitter</a> − <a href="https://homekitty-slack.herokuapp.com" target="_blank">Slack</a> - <a href="mailto:me@patrickbalestra.com?subject=HomeKitty%20Issue%20Report" target="_blank">Report Issue</a></p>
+<p><a href="https://twitter.com/homekittyworld" target="_blank">Twitter</a> − <a href="https://homekitty-slack.herokuapp.com" target="_blank">Slack</a> − <a href="mailto:me@patrickbalestra.com?subject=HomeKitty%20Issue%20Report" target="_blank">Report Issue</a></p>
                 <p>Copyright &copy; HomeKitty <script>document.write(new Date().getFullYear())</script></p>
             </div>
         </div>
