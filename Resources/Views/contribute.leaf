@@ -49,6 +49,12 @@
                         <p>Please provide the direct link (to the official manufacturer page).</p>
                         <input type="text" class="form-control" name="link" placeholder="http://www2.meethue.com/en-us/productdetail/philips-hue-white-extension-bulb-a19" required maxlength="255">
                     </div>
+                    <div class="form-group">
+                        <label for="link">Availability</label>
+                        <p>Please select the checkbox only if the accessory is already available on the market with HomeKit compatibility.<br>
+                        If the accessory is coming soon and/or HomeKit compatibility has been announced for the future, don't select the checkbox.</p>
+                        <input type="checkbox" name="released"> Available on the market
+                    </div>
 
                     <!-- Category -->
                     <h4>Category</h4>
