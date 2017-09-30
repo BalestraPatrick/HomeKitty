@@ -20,6 +20,7 @@ final class Accessory: Model {
     var price: String
     var productLink: String
     var approved: Bool
+    var released: Bool
     var date: Date
 
     var category: Parent<Accessory, Category> {
@@ -30,7 +31,7 @@ final class Accessory: Model {
         return parent(id: manufacturerId)
     }
 
-    init(name: String, image: String, price: String, productLink: String, category: Identifier, manufacturer: Identifier, approved: Bool = false, date: Date = Date()) {
+    init(name: String, image: String, price: String, productLink: String, category: Identifier, manufacturer: Identifier, released: Bool = true, approved: Bool = false, date: Date = Date()) {
         self.name = name
         self.categoryId = category
         self.manufacturerId = manufacturer
@@ -38,31 +39,34 @@ final class Accessory: Model {
         self.price = price
         self.productLink = productLink
         self.approved = approved
+        self.released = released
         self.date = date
     }
 
     init(row: Row) throws {
         id = try row.get("id")
         name = try row.get("name")
+        categoryId = try row.get("category_id")
+        manufacturerId = try row.get("manufacturer_id")
         image = try row.get("image")
         price = try row.get("price")
         productLink = try row.get("product_link")
         approved = try row.get("approved")
-        manufacturerId = try row.get("manufacturer_id")
-        categoryId = try row.get("category_id")
+        released = try row.get("released")
         date = try row.get("date")
     }
 
     func makeRow() throws -> Row {
         var row = Row()
         try row.set("id", id)
-        try row.set("category_id", categoryId)
         try row.set("name", name)
+        try row.set("category_id", categoryId)
+        try row.set("manufacturer_id", manufacturerId)
         try row.set("image", image)
         try row.set("price", price)
         try row.set("product_link", productLink)
-        try row.set("manufacturer_id", manufacturerId)
         try row.set("approved", approved)
+        try row.set("released", released)
         try row.set("date", date)
         return row
     }
@@ -73,13 +77,14 @@ extension Accessory: NodeRepresentable {
     func makeNode(in context: Context?) throws -> Node {
         return try Node(node: [
             "name": name,
-            "image": image,
-            "price": price,
-            "product_link": productLink,
+            "category_id": categoryId.string!,
             "manufacturer": manufacturer.get()?.name,
             "manufacturer_link": manufacturer.get()?.directLink,
             "manufacturer_website": manufacturer.get()?.websiteLink,
-            "category_id": categoryId.string!,
+            "image": image,
+            "price": price,
+            "product_link": productLink,
+            "released": released,
             "date": date,
         ])
     }
@@ -90,12 +95,13 @@ extension Accessory: ResponseRepresentable {
     func makeResponse() throws -> Response {
         var json = JSON()
         try json.set("id", id)
-        try json.set("category_id", categoryId)
         try json.set("name", name)
+        try json.set("category_id", categoryId)
+        try json.set("manufacturer_id", manufacturerId)
         try json.set("image", image)
         try json.set("price", price)
         try json.set("product_link", productLink)
-        try json.set("manufacturer_id", manufacturerId)
+        try json.set("released", released)
         try json.set("approved", approved)
         try json.set("date", date)
         return try json.makeResponse()
@@ -114,6 +120,7 @@ extension Accessory: Preparation {
             builder.string("price")
             builder.string("product_link")
             builder.bool("approved")
+            builder.bool("released")
             builder.date("date")
         }
     }
