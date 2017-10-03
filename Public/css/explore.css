@@ -56,3 +56,52 @@ footer {
 .list-group .selected {
     background-color: #f5f5f5;
 }
+
+.popover {
+    width: 250px;
+}
+
+/* Accessory Box */
+
+.accessory-image {
+    object-fit: contain;
+}
+
+.accessory-information-container {
+    position: relative;
+    width: 100%;
+    align-self: flex-end;
+}
+
+.accessory-name {
+    text-overflow: ellipsis;
+    height: 70px;
+    overflow: hidden !important;
+}
+
+.accessory-price {
+    height: 14px;
+}
+
+.accessory-information {
+    display: flex;
+    flex-direction: row;
+    height: 25px;
+    justify-content: space-between;
+    vertical-align: middle;
+}
+
+.accessory-manufacturer-container {
+    position: relative;
+    top: 20%
+}
+
+.accessory-manufacturer {
+    float: left;
+    margin-right: 10px;
+}
+
+.coming-soon-icon {
+    float: right;
+    margin-bottom: 0px;
+}
