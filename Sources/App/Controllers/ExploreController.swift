@@ -61,7 +61,7 @@ final class ExploreController {
             let nameResult = accessory.name.lowercased().contains(search)
             return manufacturerResult || nameResult
         }
-        let pageTitle = "Search for \"\(search)\""
+        let pageTitle = "Results for \"\(search)\""
         let pageIcon = ""
 
         let nodes = try Node(node: [
