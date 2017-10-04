@@ -71,13 +71,16 @@
             </div>
             <hr>
             <h2>👨‍💻 Tech</h2>
-            <p>HomeKitty uses <a href="https://github.com/vapor/vapor" target="_blank">Vapor 2</a> and is written completely in Swift. The <a href="https://github.com/vapor-community/stripe" target="_blank">Vapor Stripe Provider</a> is also integrated in the codebase.</p>
+            <p>HomeKitty is completely open-source on <a href="https://github.com/balestraPatrick/HomeKitty" target="_blank">GitHub</a>. If you want to add a feature or fix a problem, you're welcome to do so.<br>
+            It is built on top of <a href="https://github.com/vapor/vapor" target="_blank">Vapor 2</a> and is written completely in Swift.</p>
+            <p><a href="https://github.com/vapor-community/stripe" target="_blank">Vapor Stripe Provider</a> is used to process donations via Apple Pay.
+            <a href="https://github.com/brokenhandsio/leaf-error-middleware" target="_blank">Leaf Error Middleware</a> is used to customize error pages.</p>
         </div>
     </div>
     <script>
         $(".dropdown-menu li:not(.disabled) a").click(function () {
-                                                      $(this).closest(".dropdown").find(".btn").html('<span id="donation-amount">' + $(this).text() + '</span> <span class="caret"></span>');
-                                                      });
+          $(this).closest(".dropdown").find(".btn").html('<span id="donation-amount">' + $(this).text() + '</span> <span class="caret"></span>');
+        });
     </script>
     <script type="text/javascript" src="/js/product.js"></script>
     #embed("footer")
