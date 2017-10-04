@@ -75,6 +75,16 @@
             It is built on top of <a href="https://github.com/vapor/vapor" target="_blank">Vapor 2</a> and is written completely in Swift.</p>
             <p><a href="https://github.com/vapor-community/stripe" target="_blank">Vapor Stripe Provider</a> is used to process donations via Apple Pay.
             <a href="https://github.com/brokenhandsio/leaf-error-middleware" target="_blank">Leaf Error Middleware</a> is used to customize error pages.</p>
+
+            <hr>
+            <h2>📰 On the News</h2>
+            <p>HomeKitty has been featured by the following news websites and many more:</p>
+            <div style="display: flex; flex-direction: row; justify-content: space-around; padding-top: 20px;">
+                <a href="https://9to5mac.com/2017/09/07/homekitty-is-a-crowdsourced-homekit-accessories-list/" target="_blank"><img src="/images/9to5mac.png" style="width: 200px;"></a>
+                <a href="https://www.macstories.net/news/homekitty-a-crowdsourced-homekit-database-written-in-swift" target="_blank"><img src="/images/macstories.png" style="width: 200px;"></a>
+                <a href="https://appadvice.com/post/homekitty/753445" target="_blank"><img src="/images/appadvice.png" style="width: 200px;"></a>
+                <a href="https://www.producthunt.com/posts/homekitty" target="_blank"><img src="/images/ph.png" style="width: 200px;"></a>
+            </div>
         </div>
     </div>
     <script>
