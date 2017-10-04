@@ -49,10 +49,12 @@ In case you need help or simply have a technical question, join us in the #devel
 ## Database
 All accessories are stored in a PostgreSQL database. If you are interested in contributing with new accessories which are release everyday, let me know and we can try to find a solution and open them up to the community to improve the database.
 
-During development, it's possible to seed the database with some example data for debugging purposes. In order for the script to connect to the database, you have to specify `DB_USER` and `DB_DATABASE`, so they point to the PostgreSQL database. Afterwards, you can execute the `seed.sh` in the Scripts folder:
+During development, it's possible to seed the database with some example data for debugging purposes. In order for the script to connect to the database, you have to specify `DB_USER` and `DB_DATABASE`, so they point to the PostgreSQL database. The database at this point should have no table. 
+
+Run the HomeKitty project so that the database is prepared all the tables and their schemas are set up. After that's completed, you can run the seed script to populate it with some accessories.
 
 ```bash
-$ ./Scripts/seed.sh
+$ cd Scripts && ./seed.sh
 ```
 
 ## Author
