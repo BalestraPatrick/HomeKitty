@@ -13,9 +13,9 @@ final class ExploreController {
         self.droplet = droplet
         droplet.get("explore", handler: self.explore)
         let explore = droplet.grouped("explore")
-        explore.get("explore", handler: self.explore)
+        explore.get(handler: self.explore)
         let search = explore.grouped("search")
-        search.get("explore", handler: self.search)
+        search.get(handler: self.search)
     }
 
     func explore(request: Request) throws -> ResponseRepresentable {
