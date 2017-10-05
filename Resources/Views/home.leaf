@@ -1,0 +1,87 @@
+#extend("base")
+
+#export("head") {
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="/css/explore.css">
+    <title>HomeKitty - Browse HomeKit Accessories</title>
+}
+
+
+#export("body") {
+    #embed("navigation")
+    <div class="container container-content">
+        <div class="row">
+            <!-- Side Menu -->
+            <div class="col-md-3">
+                <p class="lead">Search</p>
+                <div class="input-group" style="display: block;">
+                    <form action="/explore/search" style="display: flex;">
+                    <input type="text" class="form-control" placeholder="Search" name="term">
+                    <span class="input-group-btn" style="margin-right: 35px;">
+                        <button type="submit" class="btn btn-default" type="button"><span class="glyphicon glyphicon-search"></span></button>
+                    </span>
+                    </form>
+                </div>
+                <br>
+                <p class="lead">Categories</p>
+                <div class="list-group">
+                    #loop(categories, "category") {
+                    <a href="/explore?category=#(category.name)" class="list-group-item #if(category.selected) { selected }"><img src="#(category.image)" width="30px"> #(category.name)<span class="badge">#(category.accessoriesCount)</span></a>
+                    }
+                </div>
+            </div>
+
+            <!-- Content -->
+            <div class="col-md-9">
+                <div class="flex-item" style="margin-top: 10px;">
+                    <p class="lead">Featured Accessory</p>
+                    <a href="#(featuredProductLink)" target="_blank">
+                    <img src="#raw(featuredImage)" width="100%">
+                    </a>
+                </div>
+                <div class="flex-item" style="margin-top: 10px;">
+                    <p class="lead">Latest Accessories</p>
+                </div>
+                <div class="row">
+                    #if(noAccessories) {
+                    <div style="text-align:center; padding-top:50px;">
+                        <h1>🔍</h1>
+                        <h4 class="lead">No accessory found here.</h4>
+                        <h5 class="lead">Why not <a href="/contribute">contribute</a> with one yourself?<h5>
+                    </div>
+                    }
+                    #loop(accessories, "accessory") {
+                    <div class="col-sm-4 col-lg-4 col-md-4">
+                        <div class="thumbnail" style="display: flex;justify-content: space-between; flex-grow: 1; flex-direction: column;">
+                            <a href="#(accessory.product_link)" target="_blank">
+                                <img src="#(accessory.image)" alt="#(accessory.name)" style="height:200px" class="accessory-image">
+                            </a>
+                            <a href="#(accessory.product_link)" target="_blank" class="accessory-name"><h4>#(accessory.name)</h4></a>
+                            <div class="accessory-information-container">
+                                <div>
+                                    <h4 class="accessory-price">#(accessory.price)</h4>
+                                    <div class="accessory-information">
+                                        <div class="accessory-manufacturer-container">
+                                            <p class="accessory-manufacturer">By <a href="/#(accessory.manufacturer_link)">#(accessory.manufacturer)</a></p>
+                                        </div>
+                                        #if(accessory.released) { }
+                                        ##else() {
+                                        <a data-toggle="popover" data-content="Accessory or HomeKit support will be released soon." data-placement="top" data-trigger="hover">
+                                            <img src="/images/coming-soon.png" class="coming-soon-icon" style="height: 25px; width: 25px;">
+                                        </a>
+                                        }
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+    #embed("footer")
+    <script type="text/javascript" src="/js/explore.js"></script>
+}
