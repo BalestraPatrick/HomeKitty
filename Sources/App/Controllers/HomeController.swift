@@ -22,22 +22,27 @@ final class HomeController {
         
         let accessories: [Accessory]
         let featuredAccessory: Accessory
-        let featuredImage: String
+        let featuredAccessoryImage: String
         
+        // Limit of fetched items for accessories query
         let visibleAccessoriesLimit = 20
 
         // Get limited amout of accessoires sorted by date
         accessories = try Accessory.makeQuery().filter("approved", true).limit(visibleAccessoriesLimit).all().sorted(by: { $0.date.compare($1.date) == .orderedDescending })
 
         // Get featured accessory from item id
-        featuredAccessory = try Accessory.makeQuery().filter("id", 26).first()!
+        let featuredAccessoryDbId = 26
+        // Path to the banner image of the featured image
+        featuredAccessoryImage = "/images/featured-item.png"
+        
+        // Fetch featured accessory
+        featuredAccessory = try Accessory.makeQuery().filter("id", featuredAccessoryDbId).first()!
 
-        featuredImage = "/images/featured-item.png"
         
         let nodes = try Node(node: [
             "categories": categories.makeNode(in: nil),
             "accessories": accessories.makeNode(in: nil),
-            "featuredImage": featuredImage.makeNode(in: nil),
+            "featuredImage": featuredAccessoryImage.makeNode(in: nil),
             "featuredProductLink": featuredAccessory.productLink.makeNode(in: nil),
             "noAccessories": accessories.count == 0
             ])
