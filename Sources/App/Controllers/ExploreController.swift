@@ -11,11 +11,11 @@ final class ExploreController {
 
     func addRoutes(droplet: Droplet) {
         self.droplet = droplet
-        droplet.get(handler: self.explore)
+        droplet.get("explore", handler: self.explore)
         let explore = droplet.grouped("explore")
-        explore.get(handler: self.explore)
+        explore.get("explore", handler: self.explore)
         let search = explore.grouped("search")
-        search.get(handler: self.search)
+        search.get("explore", handler: self.search)
     }
 
     func explore(request: Request) throws -> ResponseRepresentable {
