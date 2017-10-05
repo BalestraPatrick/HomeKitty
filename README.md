@@ -31,7 +31,7 @@ You can now choose to build via command line, or use Xcode. Who doesn't love Xco
 You will need to add some API keys as environment variables for the project to run successfully. If you're using Xcode, you can do it from the scheme menu. If you're not using Xcode, define them as environment variables. Here are the required variables:
 
 - `STRIPE_API_KEY` can be any non-empty string.
-- `DB_HOSTNAME`, `DB_USER`, `DB_PASSWORD`, `DB_DATABASE` should point to the PostgreSQL database that you have created locally. Only creating the database should be enough, Vapor will take care of generating all the needed tables when compiled for the first time. 
+- `DB_HOSTNAME`, `DB_USER`, `DB_PASSWORD`, `DB_DATABASE` should point to the PostgreSQL database that you have created locally. Only creating the database should be enough, Vapor will take care of generating all the needed tables when compiled for the first time.
 
 ## Architecture
 HomeKitty has a very simple architecture. The `Sources` folder contains two folders:
@@ -39,7 +39,7 @@ HomeKitty has a very simple architecture. The `Sources` folder contains two fold
 - Run: contains `main.swift` and it's the starting point of the application.
 - App: contains all the controllers (route handlers), models and helper methods.
 
-There are some basic tests in the Tests folder. 
+There are some basic tests in the Tests folder.
 
 ## Contributing
 We would love to have you onboard and help us shape the future of HomeKitty. We have a ton of new features and bug fixes ready for you in the [issues][4].
@@ -49,7 +49,7 @@ In case you need help or simply have a technical question, join us in the #devel
 ## Database
 All accessories are stored in a PostgreSQL database. If you are interested in contributing with new accessories which are release everyday, let me know and we can try to find a solution and open them up to the community to improve the database.
 
-During development, it's possible to seed the database with some example data for debugging purposes. In order for the script to connect to the database, you have to specify `DB_USER` and `DB_DATABASE`, so they point to the PostgreSQL database. The database at this point should have no table. 
+During development, it's possible to seed the database with some example data for debugging purposes. In order for the script to connect to the database, you have to specify `DB_USER` and `DB_DATABASE`, so they point to the PostgreSQL database. The database at this point should have no table.
 
 Run the HomeKitty project so that the database is prepared all the tables and their schemas are set up. After that's completed, you can run the seed script to populate it with some accessories.
 
@@ -65,7 +65,7 @@ Twitter: [@BalestraPatrick][8].
 
 ## License
 
-`HomeKitty` is available under the MIT license. See the [LICENSE][9] file for more info. 
+`HomeKitty` is available under the MIT license. See the [LICENSE][9] file for more info.
 Please don't re-publish the project as it is under your name. Feel free to use it a starting point for any of your other side projects though.
 
 
@@ -77,4 +77,4 @@ Please don't re-publish the project as it is under your name. Feel free to use i
 [6]:	http://www.patrickbalestra.com
 [7]:	mailto:me@patrickbalestra.com
 [8]:	http://twitter.com/BalestraPatrick
-[9]:	LICENSE
+[9]:	LICENSE.md
