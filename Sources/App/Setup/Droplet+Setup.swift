@@ -12,6 +12,10 @@ public extension Droplet {
 
     /// Configure all routes
     private func setUpRoutes() throws {
+        // /home
+        let homeController = HomeController()
+        homeController.addRoutes(droplet: self)
+        
         // /explore
         let exploreController = ExploreController()
         exploreController.addRoutes(droplet: self)
