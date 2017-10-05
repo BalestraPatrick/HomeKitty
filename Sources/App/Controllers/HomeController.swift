@@ -17,10 +17,8 @@ final class HomeController {
     }
     
     func home(request: Request) throws -> ResponseRepresentable {
-        let queryCategory = request.query?["category"]?.string ?? ""
-        
-        // Get all categories and find out if one of them is selected.
-        let categories = try Category.all().select(selected: queryCategory)
+        // Get all categories to display in sidebar
+        let categories = try Category.all()
         
         let accessories: [Accessory]
         let featuredAccessory: Accessory
@@ -28,9 +26,10 @@ final class HomeController {
         
         let visibleAccessoriesLimit = 20
 
-        // Get all accessories because no category was selected.
+        // Get limited amout of accessoires sorted by date
         accessories = try Accessory.makeQuery().filter("approved", true).limit(visibleAccessoriesLimit).all().sorted(by: { $0.date.compare($1.date) == .orderedDescending })
 
+        // Get featured accessory from item id
         featuredAccessory = try Accessory.makeQuery().filter("id", 26).first()!
 
         featuredImage = "/images/featured-item.png"
