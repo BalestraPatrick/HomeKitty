@@ -25,8 +25,8 @@ final class ExploreController {
         // Get all categories and find out if one of them is selected.
         let categories = try Category.all().select(selected: queryCategory)
 
-        let numAccessories = categories.reduce(0, {$0 + $1.accessoriesCount})
-        let numManufacturers = try Manufacturer.makeQuery().filter("approved", true).all().count
+        let accessoryCount = categories.reduce(0, {$0 + $1.accessoriesCount})
+        let manufacturerCount = try Manufacturer.makeQuery().filter("approved", true).all().count
 
         let accessories: [Accessory]
         let pageTitle: String
@@ -50,8 +50,8 @@ final class ExploreController {
             "pageTitle": pageTitle.makeNode(in: nil),
             "pageIcon": pageIcon.makeNode(in: nil),
             "noAccessories": accessories.count == 0,
-            "numAccessories": numAccessories.makeNode(in: nil),
-            "numManufacturers": numManufacturers.makeNode(in: nil)
+            "accessoryCount": accessoryCount.makeNode(in: nil),
+            "manufacturerCount": manufacturerCount.makeNode(in: nil)
         ])
         return try droplet.view.make("explore", nodes)
     }
@@ -70,8 +70,8 @@ final class ExploreController {
 
         let categories = try Category.all()
 
-        let numAccessories = categories.reduce(0, {$0 + $1.accessoriesCount})
-        let numManufacturers = try Manufacturer.makeQuery().filter("approved", true).all().count
+        let accessoryCount = categories.reduce(0, {$0 + $1.accessoriesCount})
+        let manufacturerCount = try Manufacturer.makeQuery().filter("approved", true).all().count
 
         let pageTitle = "Results for \"\(search)\""
         let pageIcon = ""
@@ -82,8 +82,8 @@ final class ExploreController {
             "pageTitle": pageTitle.makeNode(in: nil),
             "pageIcon": pageIcon.makeNode(in: nil),
             "noAccessories": accessories.count == 0,
-            "numAccessories": numAccessories.makeNode(in: nil),
-            "numManufacturers": numManufacturers.makeNode(in: nil)
+            "accessoryCount": accessoryCount.makeNode(in: nil),
+            "manufacturerCount": manufacturerCount.makeNode(in: nil)
         ])
         return try droplet.view.make("explore", nodes)
     }
