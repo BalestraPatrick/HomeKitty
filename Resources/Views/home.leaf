@@ -35,12 +35,14 @@
 
             <!-- Content -->
             <div class="col-md-9">
+                #if(featuredAccessory) {
                 <div class="flex-item" style="margin-top: 10px;">
                     <p class="lead">Featured Accessory</p>
-                    <a href="#(featuredProductLink)" target="_blank">
+                    <a href="#(featuredAccessory)" target="_blank">
                     <img src="#raw(featuredImage)" width="100%">
                     </a>
                 </div>
+                }
                 <div class="flex-item" style="margin-top: 10px;">
                     <p class="lead">Latest Accessories</p>
                 </div>
