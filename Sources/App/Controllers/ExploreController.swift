@@ -25,6 +25,9 @@ final class ExploreController {
         // Get all categories and find out if one of them is selected.
         let categories = try Category.all().select(selected: queryCategory)
 
+        let numAccessories = categories.reduce(0, {$0 + $1.accessoriesCount})
+        let numManufacturers = try Manufacturer.makeQuery().filter("approved", true).all().count
+
         let accessories: [Accessory]
         let pageTitle: String
         let pageIcon: String
@@ -46,7 +49,9 @@ final class ExploreController {
             "accessories": accessories.makeNode(in: nil),
             "pageTitle": pageTitle.makeNode(in: nil),
             "pageIcon": pageIcon.makeNode(in: nil),
-            "noAccessories": accessories.count == 0
+            "noAccessories": accessories.count == 0,
+            "numAccessories": numAccessories.makeNode(in: nil),
+            "numManufacturers": numManufacturers.makeNode(in: nil)
         ])
         return try droplet.view.make("explore", nodes)
     }
@@ -55,12 +60,19 @@ final class ExploreController {
         let search = request.query?["term"]?.string ?? ""
 
         // Only search through accessory and manufacturer name.
+
         let categories = try Category.all()
         let accessories = try Accessory.makeQuery().filter("approved", true).sort("date", .descending).all().filter { accessory -> Bool in
             let manufacturerResult = try accessory.manufacturer.get()?.name.lowercased().contains(search) ?? false
             let nameResult = accessory.name.lowercased().contains(search)
             return manufacturerResult || nameResult
         }
+
+        let categories = try Category.all()
+
+        let numAccessories = categories.reduce(0, {$0 + $1.accessoriesCount})
+        let numManufacturers = try Manufacturer.makeQuery().filter("approved", true).all().count
+
         let pageTitle = "Results for \"\(search)\""
         let pageIcon = ""
 
@@ -69,7 +81,9 @@ final class ExploreController {
             "accessories": accessories.makeNode(in: nil),
             "pageTitle": pageTitle.makeNode(in: nil),
             "pageIcon": pageIcon.makeNode(in: nil),
-            "noAccessories": accessories.count == 0
+            "noAccessories": accessories.count == 0,
+            "numAccessories": numAccessories.makeNode(in: nil),
+            "numManufacturers": numManufacturers.makeNode(in: nil)
         ])
         return try droplet.view.make("explore", nodes)
     }
