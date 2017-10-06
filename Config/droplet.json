@@ -6,6 +6,7 @@
     "hash": "bcrypt",
     "cipher": "crypto",
     "view": "leaf",
+    "mail": "sendgrid",
     "middleware": [
        "leaf-error",
        "file",

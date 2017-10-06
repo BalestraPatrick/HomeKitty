@@ -6,6 +6,7 @@ import PostgreSQLProvider
 import LeafProvider
 import LeafErrorMiddleware
 import Stripe
+import SendGridProvider
 
 public extension Config {
 
@@ -21,6 +22,7 @@ public extension Config {
         try addProvider(Stripe.Provider.self)
         try addProvider(PostgreSQLProvider.Provider.self)
         try addProvider(LeafProvider.Provider.self)
+        try addProvider(SendGridProvider.Provider.self)
     }
 
     private func setUpMiddlewares() throws {

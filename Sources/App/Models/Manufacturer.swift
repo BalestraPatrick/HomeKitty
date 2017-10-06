@@ -52,7 +52,7 @@ extension Manufacturer: NodeRepresentable {
         return try Node(node: [
             "name": name,
             "website_link": websiteLink
-        ])
+            ])
     }
 }
 

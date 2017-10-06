@@ -14,6 +14,7 @@ let package = Package(
         .Package(url: "https://github.com/vapor/node.git", majorVersion: 2),
         .Package(url: "https://github.com/vapor-community/stripe.git", Version(1, 0, 0, prereleaseIdentifiers: ["beta"])),
         .Package(url: "https://github.com/brokenhandsio/leaf-error-middleware.git", majorVersion: 0),
+        .Package(url: "https://github.com/vapor-community/sendgrid-provider.git", majorVersion: 2)
     ],
     exclude: [
         "Config",

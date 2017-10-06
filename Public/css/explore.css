@@ -110,3 +110,7 @@ footer {
     padding: 0px 10px 0px 10px !important;
     height: 360px;
 }
+
+.navbar-nav {
+    padding-top: 1px !important;
+}
