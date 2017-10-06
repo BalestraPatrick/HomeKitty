@@ -20,6 +20,9 @@ final class ManufacturerController {
         let manufacturer = try Manufacturer.makeQuery().filter("approved", true).filter("name", queryManufacturer).first()
         let categories = try Category.all()
 
+        let numAccessories = categories.reduce(0, {$0 + $1.accessoriesCount})
+        let numManufacturers = try Manufacturer.makeQuery().filter("approved", true).all().count
+
         let node: Node
 
         if let manufacturer = manufacturer {
@@ -30,7 +33,9 @@ final class ManufacturerController {
                 "categories": categories.makeNode(in: nil),
                 "accessories": accessories.makeNode(in: nil),
                 "pageTitle": pageTitle.makeNode(in: nil),
-                "manufacturerLink": accessories.first?.manufacturer.get()?.websiteLink ?? ""
+                "manufacturerLink": accessories.first?.manufacturer.get()?.websiteLink ?? "",
+                "numAccessories": numAccessories.makeNode(in: nil),
+                "numManufacturers": numManufacturers.makeNode(in: nil)
             ])
         } else {
             let manufacturers = try Manufacturer.makeQuery().filter("approved", true).all()
@@ -41,7 +46,9 @@ final class ManufacturerController {
                 "categories": categories.makeNode(in: nil),
                 "manufacturers": manufacturers.makeNode(in: nil),
                 "pageTitle": pageTitle.makeNode(in: nil),
-                "pageIcon": pageIcon.makeNode(in: nil)
+                "pageIcon": pageIcon.makeNode(in: nil),
+                "numAccessories": numAccessories.makeNode(in: nil),
+                "numManufacturers": numManufacturers.makeNode(in: nil)
             ])
         }
         return try droplet.view.make("manufacturer", node)

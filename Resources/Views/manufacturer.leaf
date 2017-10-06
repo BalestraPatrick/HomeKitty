@@ -26,6 +26,10 @@
                 <br>
                 <p class="lead">Categories</p>
                 <div class="list-group">
+                    <a href="/explore" class="list-group-item">All Accessories<span class="badge">#(numAccessories)</span></a>
+                    <a href="/manufacturer" class="list-group-item">All Manufacturers<span class="badge">#(numManufacturers)</span></a>
+                </div>
+                <div class="list-group">
                     #loop(categories, "category") {
                     <a href="/explore?category=#(category.name)" class="list-group-item #if(category.selected) { selected }"><img src="#(category.image)" width="30px"> #(category.name)<span class="badge">#(category.accessoriesCount)</span></a>
                     }
