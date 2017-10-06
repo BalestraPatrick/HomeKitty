@@ -36,5 +36,8 @@ public extension Droplet {
         let donationController = DonationController()
         donationController.addRoutes(droplet: self)
 
+        // /report
+        let reportController = ReportController()
+        reportController.addRoutes(droplet: self)
     }
 }

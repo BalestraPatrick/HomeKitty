@@ -87,8 +87,8 @@
         "repositoryURL": "https://github.com/vapor/fluent.git",
         "state": {
           "branch": null,
-          "revision": "271ab0e0b9a81d0befc2673332715c3384f186bf",
-          "version": "2.4.0"
+          "revision": "9f94af35b177b5a5fdc40a81703e68c072c5013d",
+          "version": "2.4.1"
         }
       },
       {
@@ -96,8 +96,8 @@
         "repositoryURL": "https://github.com/vapor/fluent-provider.git",
         "state": {
           "branch": null,
-          "revision": "baaa6091c175382661d3a8a2b2ecb440986a37cb",
-          "version": "1.1.1"
+          "revision": "3bb67ad0be2df74367087e90391436b4336e7962",
+          "version": "1.2.0"
         }
       },
       {
@@ -105,8 +105,8 @@
         "repositoryURL": "https://github.com/vapor/json.git",
         "state": {
           "branch": null,
-          "revision": "5c2a62771cefdb04b1f96f4ccc52b581fe20cfb1",
-          "version": "2.2.0"
+          "revision": "735800d8f2e75ebe3be25559eb6a781f4666dcfc",
+          "version": "2.2.1"
         }
       },
       {
@@ -165,11 +165,11 @@
       },
       {
         "package": "PostgreSQLDriver",
-        "repositoryURL": "https://github.com/vapor/postgresql-driver.git",
+        "repositoryURL": "https://github.com/vapor-community/postgresql-driver.git",
         "state": {
           "branch": null,
-          "revision": "283a56e30f8e3a6bd77c9e1c6791b8b22f40fede",
-          "version": "2.0.1"
+          "revision": "a8a410d4291094b0adc4ebb49adbc9d9310567ef",
+          "version": "2.1.0"
         }
       },
       {
@@ -177,8 +177,8 @@
         "repositoryURL": "https://github.com/vapor-community/postgresql-provider.git",
         "state": {
           "branch": null,
-          "revision": "89cb3159f208ee6a2c241c135ebb069191fb6fbc",
-          "version": "2.0.0"
+          "revision": "28eda35d9887172d3f3e5769db603339d3e88f05",
+          "version": "2.1.0"
         }
       },
       {
@@ -195,8 +195,8 @@
         "repositoryURL": "https://github.com/vapor/routing.git",
         "state": {
           "branch": null,
-          "revision": "66750975f5e5abaacf4bfa4d37ec85dd20c89312",
-          "version": "2.1.0"
+          "revision": "cb9d78aca2540c1a6b45b0ab43e5b0c50f29d216",
+          "version": "2.2.0"
         }
       },
       {
@@ -204,8 +204,17 @@
         "repositoryURL": "https://github.com/vapor/sqlite.git",
         "state": {
           "branch": null,
-          "revision": "f110cbe9ff5283eca7d2edf1b8ee69dfb8b666d6",
-          "version": "2.2.0"
+          "revision": "9aceb6a0d7b1698a557647493bd78b030dad468b",
+          "version": "2.3.1"
+        }
+      },
+      {
+        "package": "SendGridProvider",
+        "repositoryURL": "https://github.com/vapor-community/sendgrid-provider.git",
+        "state": {
+          "branch": null,
+          "revision": "dd565b84d1f666c72591c94ef95a1f505eb4daee",
+          "version": "2.2.1"
         }
       },
       {
@@ -222,8 +231,8 @@
         "repositoryURL": "https://github.com/vapor-community/stripe.git",
         "state": {
           "branch": null,
-          "revision": "323d3f2e19df128454f77ef4c3295a7434023e4b",
-          "version": "1.0.0-beta.17"
+          "revision": "b7db491dca999f3eebbf761ad00489e44e2fae9e",
+          "version": "1.0.0-beta.18"
         }
       },
       {
