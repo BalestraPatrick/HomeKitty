@@ -19,7 +19,7 @@ class DonationControllerTests: TestCase {
 
     func testDonation() throws {
         try drop
-            .testResponse(to: .get, at: "/donation")
+            .testResponse(to: .get, at: "/donation/thanks")
             .assertStatus(is: .ok)
     }
 }
