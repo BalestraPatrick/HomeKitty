@@ -101,7 +101,17 @@ footer {
     margin-right: 10px;
 }
 
+.accessory-details-container {
+    position: relative;
+    top: 20%
+}
+
 .coming-soon-icon {
+    float: right;
+    margin-bottom: 0px;
+}
+
+.bridge-icon {
     float: right;
     margin-bottom: 0px;
 }

@@ -14,6 +14,7 @@ final class Accessory: Model {
     var id: Node?
     var categoryId: Identifier
     var manufacturerId: Identifier
+    var requiredHubId: Identifier?
 
     var name: String
     var image: String
@@ -22,6 +23,7 @@ final class Accessory: Model {
     var approved: Bool
     var released: Bool
     var date: Date
+    var requiresHub: Bool
 
     var category: Parent<Accessory, Category> {
         return parent(id: categoryId)
@@ -31,16 +33,30 @@ final class Accessory: Model {
         return parent(id: manufacturerId)
     }
 
-    init(name: String, image: String, price: String, productLink: String, category: Identifier, manufacturer: Identifier, released: Bool = true, approved: Bool = false, date: Date = Date()) {
+    init(
+        name: String,
+        image: String,
+        price: String,
+        productLink: String,
+        categoryId: Identifier,
+        manufacturerId: Identifier,
+        released: Bool = true,
+        approved: Bool = false,
+        date: Date = Date(),
+        requiresHub: Bool = false,
+        requiredHubId: Identifier?
+    ) {
         self.name = name
-        self.categoryId = category
-        self.manufacturerId = manufacturer
+        self.categoryId = categoryId
+        self.manufacturerId = manufacturerId
         self.image = image
         self.price = price
         self.productLink = productLink
         self.approved = approved
         self.released = released
         self.date = date
+        self.requiresHub = requiresHub
+        self.requiredHubId = requiredHubId
     }
 
     init(row: Row) throws {
@@ -54,6 +70,8 @@ final class Accessory: Model {
         approved = try row.get("approved")
         released = try row.get("released")
         date = try row.get("date")
+        requiresHub = try row.get("requireshub")
+        requiredHubId = try row.get("requiredhub_id")
     }
 
     func makeRow() throws -> Row {
@@ -68,6 +86,8 @@ final class Accessory: Model {
         try row.set("approved", approved)
         try row.set("released", released)
         try row.set("date", date)
+        try row.set("requireshub", requiresHub)
+        try row.set("requiredhub_id", requiredHubId)
         return row
     }
 }
@@ -86,6 +106,8 @@ extension Accessory: NodeRepresentable {
             "product_link": productLink,
             "released": released,
             "date": date,
+            "requireshub": requiresHub,
+            "requiredhub_id": requiredHubId?.string!
         ])
     }
 }
@@ -104,6 +126,8 @@ extension Accessory: ResponseRepresentable {
         try json.set("released", released)
         try json.set("approved", approved)
         try json.set("date", date)
+        try json.set("requireshub", requiresHub)
+        try json.set("requiredhub_id", requiredHubId)
         return try json.makeResponse()
     }
 }
@@ -122,6 +146,8 @@ extension Accessory: Preparation {
             builder.bool("approved")
             builder.bool("released")
             builder.date("date")
+            builder.bool("requireshub")
+            builder.int("requiredhub_id", optional: true)
         }
     }
 
