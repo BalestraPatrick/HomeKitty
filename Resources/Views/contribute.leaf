@@ -23,7 +23,7 @@
                 <p>The goal of HomeKitty is to be the central place of discovery for all HomeKit accessories. By contributing to our database, you can help many more people discover new, incredible possibilities. Do you want to report an issue with an existing accessory? Report it <a href="/report">here</a>.</p>
                 <p>Simply fill out the following form with the required details, and we will add it to the website as soon as we have double-checked all the information. 🎉</p>
                 <hr>
-                <p>Are you an accessory manufacturer and you would like to feature your newest accessory in the homepage to maximize visibility? <a href="mailto:me@patrickbalestra.com?subject=HomeKitty Sponsorship Information">Contact us</a>.</p>
+                <p>Are you an accessory manufacturer and you would like to feature your newest accessory in the homepage to maximize visibility? <a href="mailto:info@homekitty.world?subject=HomeKitty Sponsorship Information">Contact us</a>.</p>
                 <hr>
                 <form action="/contribute/submit" method="POST">
                     <!-- Accessory -->
