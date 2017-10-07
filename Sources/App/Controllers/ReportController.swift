@@ -35,7 +35,7 @@ final class ReportController {
         guard let sendgrid = droplet.mail as? SendGrid else { throw Abort.serverError }
 
         // Create and send email.
-        let myEmail = EmailAddress(name: name, address: "me@patrickbalestra.com")
+        let myEmail = EmailAddress(name: name, address: "info@homekitty.world")
         let contactMessage = self.contactMessage(for: topic, message: message, accessory: accessory)
         let sendGridEmail = SendGridEmail(from: email, subject: contactMessage.topic.subject, body: contactMessage.body)
         sendGridEmail.personalizations = [Personalization(to: [myEmail])]
