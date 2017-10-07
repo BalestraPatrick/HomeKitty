@@ -31,12 +31,12 @@ final class ExploreController {
 
         if let category = category {
             // Get all accessories for the selected category.
-            accessories = try Accessory.makeQuery().filter("approved", true).filter("category_id", category.id!.string!).all().sorted(by: { $0.date.compare($1.date) == .orderedDescending })
+            accessories = try Accessory.makeQuery().filter("approved", true).filter("category_id", category.id!.string!).sort("date", .descending).all()
             pageTitle = category.name
             pageIcon = category.image
         } else {
             // Get all accessories because no category was selected.
-            accessories = try Accessory.makeQuery().filter("approved", true).all().sorted(by: { $0.date.compare($1.date) == .orderedDescending })
+            accessories = try Accessory.makeQuery().filter("approved", true).sort("date", .descending).all()
             pageTitle = "All Accessories"
             pageIcon = ""
         }
@@ -56,7 +56,7 @@ final class ExploreController {
 
         // Only search through accessory and manufacturer name.
         let categories = try Category.all()
-        let accessories = try Accessory.makeQuery().filter("approved", true).all().sorted(by: { $0.date.compare($1.date) == .orderedDescending }).filter { accessory -> Bool in
+        let accessories = try Accessory.makeQuery().filter("approved", true).sort("date", .descending).all().filter { accessory -> Bool in
             let manufacturerResult = try accessory.manufacturer.get()?.name.lowercased().contains(search) ?? false
             let nameResult = accessory.name.lowercased().contains(search)
             return manufacturerResult || nameResult
