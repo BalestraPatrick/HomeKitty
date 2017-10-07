@@ -105,3 +105,8 @@ footer {
     float: right;
     margin-bottom: 0px;
 }
+
+.thumbnail.latest-list {
+    padding: 0px 10px 0px 10px !important;
+    height: 360px;
+}
