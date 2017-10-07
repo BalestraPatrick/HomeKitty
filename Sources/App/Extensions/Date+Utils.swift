@@ -3,47 +3,44 @@
 //
 
 import Vapor
-import Foundation
 
 extension Date {
-    func timeAgoSinceDate() -> String {
-        let calendar = NSCalendar.current
-        let unitFlags: Set<Calendar.Component> = [.minute, .hour, .day, .weekOfYear, .month, .year, .second]
-        let now = Date()
-        let earliest = now < self ? now : self
-        let latest = (earliest == now) ? self : now
-        let components = calendar.dateComponents(unitFlags, from: earliest,  to: latest)
-        
-        if (components.year! >= 2) {
-            return "\(components.year!) years ago"
-        } else if (components.year! >= 1){
-            return "1 year ago"
-        } else if (components.month! >= 2) {
-            return "\(components.month!) months ago"
-        } else if (components.month! >= 1){
-            return "1 month ago"
-        } else if (components.weekOfYear! >= 2) {
-            return "\(components.weekOfYear!) weeks ago"
-        } else if (components.weekOfYear! >= 1){
-            return "1 week ago"
-        } else if (components.day! >= 2) {
-            return "\(components.day!) days ago"
-        } else if (components.day! >= 1){
-            return "1 day ago"
-        } else if (components.hour! >= 2) {
-            return "\(components.hour!) hours ago"
-        } else if (components.hour! >= 1){
-            return "1 hour ago"
-        } else if (components.minute! >= 2) {
-            return "\(components.minute!) minutes ago"
-        } else if (components.minute! >= 1){
-            return "1 minute ago"
-        } else if (components.second! >= 3) {
-            return "\(components.second!) seconds ago"
+    func timeAgoString() -> String {
+        let secondsAgo = Int(Date().timeIntervalSince(self))
+
+        let minute = 60
+        let hour = 60 * minute
+        let day = 24 * hour
+        let week = 7 * day
+        let month = 4 * week
+        let year = 12 * month
+
+        let quotient: Int
+        let unit: String
+
+        if secondsAgo < minute {
+            quotient = secondsAgo
+            unit = "second"
+        } else if secondsAgo < hour {
+            quotient = secondsAgo / minute
+            unit = "min"
+        } else if secondsAgo < day {
+            quotient = secondsAgo / hour
+            unit = "hour"
+        } else if secondsAgo < week {
+            quotient = secondsAgo / day
+            unit = "day"
+        } else if secondsAgo < month {
+            quotient = secondsAgo / week
+            unit = "week"
+        } else if secondsAgo < year {
+            quotient = secondsAgo / month
+            unit = "month"
         } else {
-            return "Just now"
+            quotient = secondsAgo / year
+            unit = "year"
         }
-        
+        return "\(quotient) \(unit)\(quotient == 1 ? "" : "s") ago"
     }
 }
 
