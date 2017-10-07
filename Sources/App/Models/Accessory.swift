@@ -70,8 +70,8 @@ final class Accessory: Model {
         approved = try row.get("approved")
         released = try row.get("released")
         date = try row.get("date")
-        requiresHub = try row.get("requireshub")
-        requiredHubId = try row.get("requiredhub_id")
+        requiresHub = try row.get("requires_hub")
+        requiredHubId = try row.get("required_hub_id")
     }
 
     func makeRow() throws -> Row {
@@ -86,8 +86,8 @@ final class Accessory: Model {
         try row.set("approved", approved)
         try row.set("released", released)
         try row.set("date", date)
-        try row.set("requireshub", requiresHub)
-        try row.set("requiredhub_id", requiredHubId)
+        try row.set("requires_hub", requiresHub)
+        try row.set("required_hub_id", requiredHubId)
         return row
     }
 }
@@ -106,8 +106,8 @@ extension Accessory: NodeRepresentable {
             "product_link": productLink,
             "released": released,
             "date": date,
-            "requireshub": requiresHub,
-            "requiredhub_id": requiredHubId?.string!
+            "requires_hub": requiresHub,
+            "required_hub_id": requiredHubId?.string!
         ])
     }
 }
@@ -126,8 +126,8 @@ extension Accessory: ResponseRepresentable {
         try json.set("released", released)
         try json.set("approved", approved)
         try json.set("date", date)
-        try json.set("requireshub", requiresHub)
-        try json.set("requiredhub_id", requiredHubId)
+        try json.set("requires_hub", requiresHub)
+        try json.set("required_hub_id", requiredHubId)
         return try json.makeResponse()
     }
 }
@@ -146,8 +146,8 @@ extension Accessory: Preparation {
             builder.bool("approved")
             builder.bool("released")
             builder.date("date")
-            builder.bool("requireshub")
-            builder.int("requiredhub_id", optional: true)
+            builder.bool("requires_hub")
+            builder.int("required_hub_id", optional: true)
         }
     }
 
