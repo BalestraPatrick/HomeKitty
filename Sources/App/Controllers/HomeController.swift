@@ -32,7 +32,7 @@ final class HomeController {
         accessories = try Accessory.makeQuery().filter("approved", true).sort("date", .descending).limit(visibleAccessoriesLimit).all()
 
         // Creates a time ago string from the date of each accessory and stores it in a new array
-        accessoriesDateString = accessories.map { $0.date.timeAgoSinceDate() }
+        accessoriesDateString = accessories.map { $0.date.timeAgoString() }
 
         // Get featured accessory from item id
         //let featuredAccessoryId = 26
