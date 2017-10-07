@@ -57,6 +57,7 @@
                     #loop(accessories, "accessory") {
                     <div class="col-sm-4 col-lg-4 col-md-4">
                         <div class="thumbnail" style="display: flex;justify-content: space-between; flex-grow: 1; flex-direction: column;">
+                            <p>#index(accessoriesDateString, index)</p>
                             <a href="#(accessory.product_link)" target="_blank">
                                 <img src="#(accessory.image)" alt="#(accessory.name)" style="height:200px" class="accessory-image">
                             </a>
