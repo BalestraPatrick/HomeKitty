@@ -109,11 +109,13 @@ footer {
 .coming-soon-icon {
     float: right;
     margin-bottom: 0px;
+    margin-left: 5px;
 }
 
 .bridge-icon {
     float: right;
     margin-bottom: 0px;
+    margin-left: 5px;
 }
 
 .thumbnail.latest-list {
