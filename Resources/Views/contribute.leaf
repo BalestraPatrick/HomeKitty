@@ -54,6 +54,19 @@
                         If the accessory is coming soon and/or HomeKit compatibility has been announced for the future, don't select the checkbox.</p>
                         <input type="checkbox" name="released"> Available on the market
                     </div>
+                    <div class="form-group">
+                        <label for="link">Requires proprietary bridge</label>
+                        <p>Please select the checkbox only if the accessory won't work with HomeKit without bridge accessory and pick it from the list.</p>
+                        <input type="checkbox" name="requires_hub" onchange="toggleBridgesSelectionAppearance()"> Requires proprietary bridge
+                    </div>
+                    <div class="form-group">
+                        <select id="required-bridge-selection" name="required_bridge" style="display: none;">
+                            <option value="" disabled selected>Select required bridge</option>
+                            #loop(bridges, "bridge") {
+                                <option value="#(bridge.name)">#(bridge.name)</option>
+                            }
+                        </select>
+                    </div>
 
                     <!-- Category -->
                     <h4>Category</h4>
@@ -103,6 +116,15 @@
         </div>
     </div>
     <script>
+        function toggleBridgesSelectionAppearance() {
+            var bridgeOptionsList = document.getElementById('required-bridge-selection');
+            if (bridgeOptionsList.style.display !== 'none') {
+                bridgeOptionsList.style.display = 'none';
+            } else {
+                bridgeOptionsList.style.display = 'block';
+            }
+        }
+
         function showHide() {
             var addNewButton = document.getElementById('add-new-button');
             var form = document.getElementById('add-manufacturer-form');
