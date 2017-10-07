@@ -19,7 +19,7 @@ class ManufacturerControllerTests: TestCase {
 
     func testManufacturer() throws {
         try drop
-            .testResponse(to: .get, at: "")
+            .testResponse(to: .get, at: "/manufacturer")
             .assertStatus(is: .ok)
     }
 }

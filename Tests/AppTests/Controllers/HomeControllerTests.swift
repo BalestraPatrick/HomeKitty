@@ -19,7 +19,7 @@ class HomeControllerTests: TestCase {
     
     func testHome() throws {
         try drop
-            .testResponse(to: .get, at: "")
+            .testResponse(to: .get, at: "/")
             .assertStatus(is: .ok)
     }
 }

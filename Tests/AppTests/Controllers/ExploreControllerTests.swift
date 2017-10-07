@@ -19,7 +19,7 @@ class ExploreControllerTests: TestCase {
 
     func testExplore() throws {
         try drop
-            .testResponse(to: .get, at: "")
+            .testResponse(to: .get, at: "/explore")
             .assertStatus(is: .ok)
     }
 }
