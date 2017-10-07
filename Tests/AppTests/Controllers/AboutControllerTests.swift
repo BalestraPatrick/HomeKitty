@@ -19,7 +19,7 @@ class AboutControllerTests: TestCase {
 
     func testAbout() throws {
         try drop
-            .testResponse(to: .get, at: "/aboutddd")
+            .testResponse(to: .get, at: "/about")
             .assertStatus(is: .ok)
     }
 }
