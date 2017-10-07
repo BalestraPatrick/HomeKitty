@@ -69,7 +69,7 @@
                     <h4>Manufacturer</h4>
                     <div class="form-group">
                         <select id="manufacturer-selection" name="manufacturer" required>
-                            <option value="" disabled selected>Select a manufactuter</option>
+                            <option value="" disabled selected>Select a manufacturer</option>
                             #loop(manufacturers, "manufacturer") {
                                 <option value="#(manufacturer.name)">#(manufacturer.name)</option>
                             }
