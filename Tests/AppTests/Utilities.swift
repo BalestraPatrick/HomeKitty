@@ -1,4 +1,3 @@
-import Foundation
 @testable import App
 @testable import Vapor
 import XCTest

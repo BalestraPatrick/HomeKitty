@@ -29,7 +29,7 @@ final class HomeController {
         let visibleAccessoriesLimit = 18
 
         // Get limited amout of accessoires sorted by date
-        accessories = try Accessory.makeQuery().filter("approved", true).limit(visibleAccessoriesLimit).all().sorted(by: { $0.date.compare($1.date) == .orderedDescending })
+        accessories = try Accessory.makeQuery().filter("approved", true).sort("date", .descending).limit(visibleAccessoriesLimit).all()
 
         // Get featured accessory from item id
         //let featuredAccessoryId = 26
