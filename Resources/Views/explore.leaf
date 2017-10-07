@@ -74,7 +74,7 @@
                                             ##else() {
                                                 <img src="/images/coming-soon.png" class="coming-soon-icon" style="height: 25px; width: 25px;" data-toggle="popover" data-content="Accessory or HomeKit support will be released soon." data-placement="top" data-trigger="hover">
                                             }
-                                            #if(accessory.requireshub) {
+                                            #if(accessory.requires_hub) {
                                                 <img src="/images/bridge.png" class="bridge-icon" style="height: 25px; width: 25px;" data-toggle="popover" data-content="This accessory requires a proprietary bridge." data-placement="top" data-trigger="hover">
                                             }
                                         </div>
