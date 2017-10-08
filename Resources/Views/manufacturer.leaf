@@ -27,7 +27,11 @@
                 <p class="lead">Categories</p>
                 <div class="list-group">
                     <a href="/explore" class="list-group-item">All Accessories<span class="badge">#(accessoryCount)</span></a>
-                    <a href="/manufacturer" class="list-group-item">All Manufacturers<span class="badge">#(manufacturerCount)</span></a>
+                    #equal(currentRoute, "manufacturer") {
+                        <a href="/manufacturer" class="list-group-item selected">All Manufacturers<span class="badge">#(manufacturerCount)</span></a>
+                    } ##else() {
+                        <a href="/manufacturer" class="list-group-item">All Manufacturers<span class="badge">#(manufacturerCount)</span></a>
+                    }
                 </div>
                 <div class="list-group">
                     #loop(categories, "category") {
