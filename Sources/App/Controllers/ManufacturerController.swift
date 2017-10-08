@@ -28,19 +28,24 @@ final class ManufacturerController {
         if let manufacturer = manufacturer {
             let accessories = try manufacturer.accessories.filter("approved", true).all()
             let pageTitle = manufacturer.name
+            let pageIcon = ""
+            let currentRoute = "manufacturer-search"
             node = try Node(node: [
                 "manufacturerSelected": true,
                 "categories": categories.makeNode(in: nil),
                 "accessories": accessories.makeNode(in: nil),
                 "pageTitle": pageTitle.makeNode(in: nil),
+                "pageIcon": pageIcon.makeNode(in: nil),
                 "manufacturerLink": accessories.first?.manufacturer.get()?.websiteLink ?? "",
                 "accessoryCount": accessoryCount.makeNode(in: nil),
-                "manufacturerCount": manufacturerCount.makeNode(in: nil)
+                "manufacturerCount": manufacturerCount.makeNode(in: nil),
+                "currentRoute": currentRoute.makeNode(in: nil)
             ])
         } else {
             let manufacturers = try Manufacturer.makeQuery().filter("approved", true).all()
             let pageTitle = "All Manufacturers"
             let pageIcon = ""
+            let currentRoute = "manufacturer"
             node = try Node(node: [
                 "manufacturerSelected": false,
                 "categories": categories.makeNode(in: nil),
@@ -48,7 +53,8 @@ final class ManufacturerController {
                 "pageTitle": pageTitle.makeNode(in: nil),
                 "pageIcon": pageIcon.makeNode(in: nil),
                 "accessoryCount": accessoryCount.makeNode(in: nil),
-                "manufacturerCount": manufacturerCount.makeNode(in: nil)
+                "manufacturerCount": manufacturerCount.makeNode(in: nil),
+                "currentRoute": currentRoute.makeNode(in: nil)
             ])
         }
         return try droplet.view.make("manufacturer", node)
