@@ -51,7 +51,7 @@ final class ExploreController {
             currentRoute = "explore"
         }
 
-        let manufacturerCount = try Manufacturer.makeQuery().filter("approved", true).all().count
+        let manufacturerCount = try Manufacturer.makeQuery().filter("approved", true).count()
 
         let nodes = try Node(node: [
             "categories": categories.makeNode(in: nil),
@@ -86,7 +86,7 @@ final class ExploreController {
         let pageIcon = ""
         let currentRoute = "search"
 
-        let manufacturerCount = try Manufacturer.makeQuery().filter("approved", true).all().count
+        let manufacturerCount = try Manufacturer.makeQuery().filter("approved", true).count()
 
         let nodes = try Node(node: [
             "categories": categories.makeNode(in: nil),
