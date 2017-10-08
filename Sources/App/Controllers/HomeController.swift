@@ -47,7 +47,7 @@ final class HomeController {
             "accessories": accessories.makeNode(in: nil),
 //            "featuredImage": featuredAccessoryImage.makeNode(in: nil),
 //            "featuredAccessory": featuredAccessory.productLink.makeNode(in: nil),
-//            "accessoriesDateString": accessoriesDateString.makeNode(in: nil),
+            "accessoriesDateString": accessoriesDateString.makeNode(in: nil),
             "noAccessories": accessories.count == 0
             ])
         return try droplet.view.make("home", nodes)
