@@ -23,4 +23,3 @@ class HomeControllerTests: TestCase {
             .assertStatus(is: .ok)
     }
 }
-
