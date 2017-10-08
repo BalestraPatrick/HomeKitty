@@ -28,7 +28,7 @@ final class HomeController {
         // Limit of fetched items for accessories query
         let visibleAccessoriesLimit = 18
 
-        // Get limited amout of accessoires sorted by date
+        // Get limited amout of accessories sorted by date
         accessories = try Accessory.makeQuery().filter("approved", true).sort("date", .descending).limit(visibleAccessoriesLimit).all()
 
         // Get featured accessory from item id
@@ -41,10 +41,7 @@ final class HomeController {
         
         // Creates a time ago string from the date of each accessory and stores it in a new array
         accessoriesDateString = accessories.map { $0.date.timeAgoString() }
-        
-        
-        print(accessoriesDateString[0])
-        
+
         let nodes = try Node(node: [
             "categories": categories.makeNode(in: nil),
             "accessories": accessories.makeNode(in: nil),

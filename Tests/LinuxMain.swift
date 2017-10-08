@@ -8,6 +8,7 @@ XCTMain([
     testCase(DonationControllerTests.allTests),
     testCase(ExploreControllerTests.allTests),
     testCase(ManufacturerControllerTests.allTests),
+    testCase(HomeControllerTests.allTests),
 ])
 
 #endif
