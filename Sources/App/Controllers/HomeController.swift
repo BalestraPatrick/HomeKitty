@@ -45,13 +45,18 @@ final class HomeController {
         // Creates a time ago string from the date of each accessory and stores it in a new array
         accessoriesDateString = accessories.map { $0.date.timeAgoString() }
 
+        let accessoryCount = try Accessory.makeQuery().filter("approved", true).count()
+        let manufacturerCount = try Manufacturer.makeQuery().filter("approved", true).count()
+
         let nodes = try Node(node: [
             "categories": categories.makeNode(in: nil),
             "accessories": accessories.makeNode(in: nil),
 //            "featuredImage": featuredAccessoryImage.makeNode(in: nil),
 //            "featuredAccessory": featuredAccessory.productLink.makeNode(in: nil),
             "accessoriesDateString": accessoriesDateString.makeNode(in: nil),
-            "noAccessories": accessories.count == 0
+            "noAccessories": accessories.count == 0,
+            "accessoryCount": accessoryCount.makeNode(in: nil),
+            "manufacturerCount": manufacturerCount.makeNode(in: nil),
             ])
         return try droplet.view.make("home", nodes)
     }

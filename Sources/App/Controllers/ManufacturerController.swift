@@ -19,14 +19,14 @@ final class ManufacturerController {
         let queryManufacturer = request.query?["name"]?.string ?? ""
         let manufacturer = try Manufacturer.makeQuery().filter("approved", true).filter("name", queryManufacturer).first()
         let categories = try Category.all()
-
-        let accessoryCount = categories.reduce(0, {$0 + $1.accessoriesCount})
-        let manufacturerCount = try Manufacturer.makeQuery().filter("approved", true).all().count
+        let accessoryCount = try Accessory.makeQuery().filter("approved", true).count()
 
         let node: Node
+        let manufacturerCount: Int
 
         if let manufacturer = manufacturer {
             let accessories = try manufacturer.accessories.filter("approved", true).all()
+            manufacturerCount = try Manufacturer.makeQuery().filter("approved", true).count()
             let pageTitle = manufacturer.name
             let pageIcon = ""
             let currentRoute = "manufacturer-search"
@@ -43,6 +43,7 @@ final class ManufacturerController {
             ])
         } else {
             let manufacturers = try Manufacturer.makeQuery().filter("approved", true).all()
+            manufacturerCount = manufacturers.count
             let pageTitle = "All Manufacturers"
             let pageIcon = ""
             let currentRoute = "manufacturer"
