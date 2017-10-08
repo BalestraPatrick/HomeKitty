@@ -40,7 +40,7 @@ final class HomeController {
 //        featuredAccessory = try Accessory.makeQuery().filter("id", featuredAccessoryId).first()!
         
         // Creates a time ago string from the date of each accessory and stores it in a new array
-//        accessoriesDateString = accessories.map { $0.date.timeAgoString() }
+        accessoriesDateString = accessories.map { $0.date.timeAgoString() }
 
         let nodes = try Node(node: [
             "categories": categories.makeNode(in: nil),
