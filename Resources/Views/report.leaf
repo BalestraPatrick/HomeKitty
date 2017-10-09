@@ -21,7 +21,7 @@
                 <div class="col-md-6" id="contribute-column">
                 <h1>Contact / Report Issue</h1>
                 <p>The goal of HomeKitty is to be the central place of discovery for all HomeKit accessories. By helping to improve our database, you can make sure many more people can browse accurate and up to date information.</p>
-                <p>Simply fill out the following form with the required details, and we will get back to you as soon as possible.</p>
+                <p>Simply fill out the following form with the required details, and we will get back to you as soon as possible. If you prefer, send us an <a href="mailto:info@homekitty.world">email</a>.</p>
                 <hr>
                 <form action="/report/submit" method="POST">
                     <!-- Dynamic Form -->
