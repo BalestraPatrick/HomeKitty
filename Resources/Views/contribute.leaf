@@ -50,18 +50,17 @@
                     </div>
                     <div class="form-group">
                         <label for="link">Availability</label>
-                        <p>Please select the checkbox only if the accessory is already available on the market with HomeKit compatibility.<br>
-                        If the accessory is coming soon and/or HomeKit compatibility has been announced for the future, don't select the checkbox.</p>
+                        <p>If the accessory is coming soon and/or HomeKit compatibility is planned but not released, don't select the checkbox.</p>
                         <input type="checkbox" name="released"> Available on the market
                     </div>
                     <div class="form-group">
-                        <label for="link">Requires proprietary bridge</label>
-                        <p>Please select the checkbox only if the accessory won't work with HomeKit without bridge accessory and pick it from the list.</p>
+                        <label for="link">Required Bridge</label>
+                        <p>If the accessory requires a proprietary bridge to work with HomeKit, select the checkbox.</p>
                         <input type="checkbox" name="requires_hub" onchange="toggleBridgesSelectionAppearance()"> Requires proprietary bridge
                     </div>
                     <div class="form-group">
                         <select id="required-bridge-selection" name="required_bridge" style="display: none;">
-                            <option value="" disabled selected>Select required bridge</option>
+                            <option value="" disabled selected>Select a bridge</option>
                             #loop(bridges, "bridge") {
                                 <option value="#(bridge.name)">#(bridge.name)</option>
                             }

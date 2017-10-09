@@ -33,6 +33,10 @@ final class Accessory: Model {
         return parent(id: manufacturerId)
     }
 
+    var requiredHub: Parent<Accessory, Accessory>? {
+        return parent(id: requiredHubId)
+    }
+
     init(
         name: String,
         image: String,
@@ -147,7 +151,8 @@ extension Accessory: Preparation {
             builder.bool("released")
             builder.date("date")
             builder.bool("requires_hub")
-            builder.int("required_hub_id", optional: true)
+            builder.int("required_hub_id")
+            builder.foreignKey("required_hub_id", references: "id", on: Accessory.self)
         }
     }
 
