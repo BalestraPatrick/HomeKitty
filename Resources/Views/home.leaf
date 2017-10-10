@@ -5,6 +5,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" href="/css/explore.css">
+    <link href="//cdn-images.mailchimp.com/embedcode/classic-10_7.css" rel="stylesheet" type="text/css">
     <title>HomeKitty - Browse HomeKit Accessories</title>
 }
 
@@ -34,6 +35,20 @@
                     #loop(categories, "category") {
                     <a href="/explore?category=#(category.name)" class="list-group-item #if(category.selected) { selected }"><img src="#(category.image)" width="30px"> #(category.name)<span class="badge">#(category.accessoriesCount)</span></a>
                     }
+                </div>
+                <p class="lead" style="margin-bottom: 10px;">Keep up to date</p>
+                <p>Receive new accessories in your inbox once per month.</p>
+                <div class="input-group" style="display: block;">
+                    <form action="https://world.us16.list-manage.com/subscribe/post?u=87ff0444f06c586f363e15184&amp;id=e5c558d68d" method="post" id="mc-embedded-subscribe-form" name="mc-embedded-subscribe-form" class="validate" target="_blank" style="display: flex;" novalidate>
+                        <input type="email" value="" class="require email form-control" id="mce-EMAIL" name="EMAIL" placeholder="info@homekitty.world">
+                        <span class="input-group-btn" style="margin-right: 35px;">
+                            <button type="submit" value="Subscribe" name="subscribe" id="" class="button btn btn-default" type="button"><span class="glyphicon glyphicon-send"></span></button>
+                        </span>
+                    </form>
+                    <div id="mce-responses" class="clear" style="padding: 5px;">
+                        <div class="response" id="mce-error-response" style="display: none"></div>
+                        <div class="response" id="mce-success-response" style="display: none"></div>
+                    </div>
                 </div>
             </div>
 
@@ -91,4 +106,5 @@
     </div>
     #embed("footer")
     <script type="text/javascript" src="/js/explore.js"></script>
+    <script type='text/javascript' src='//s3.amazonaws.com/downloads.mailchimp.com/js/mc-validate.js'></script><script type='text/javascript'>(function($) {window.fnames = new Array(); window.ftypes = new Array();fnames[0]='EMAIL';ftypes[0]='email';fnames[1]='FNAME';ftypes[1]='text';fnames[2]='LNAME';ftypes[2]='text';fnames[3]='BIRTHDAY';ftypes[3]='birthday';}(jQuery));var $mcj = jQuery.noConflict(true);</script>
 }
