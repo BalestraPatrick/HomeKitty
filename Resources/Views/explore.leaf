@@ -34,7 +34,15 @@
                     }
                     <a href="/manufacturer" class="list-group-item">All Manufacturers<span class="badge">#(manufacturerCount)</span></a>
                 </div>
-                <div class="list-group">
+                <div class="btn-group btn-block visible-sm visible-xs">
+                    <button type="button" class="btn btn-default btn-block dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Choose accessory category <span class="caret"></span></button>
+                    <ul class="dropdown-menu btn-block">
+                        #loop(categories, "category") {
+                            <li><a href="/explore?category=#(category.name)" class="dropdown-item btn-block #if(category.selected) { selected }"><img src="#(category.image)" width="30px"> #(category.name)<span class="badge badge-important pull-right">#(category.accessoriesCount)</span></a></li>
+                        }
+                    </ul>
+                </div>
+                <div class="list-group hidden-sm hidden-xs">
                     #loop(categories, "category") {
                     <a href="/explore?category=#(category.name)" class="list-group-item #if(category.selected) { selected }"><img src="#(category.image)" width="30px"> #(category.name)<span class="badge">#(category.accessoriesCount)</span></a>
                     }
