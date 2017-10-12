@@ -250,3 +250,18 @@ header {
     position: relative;
     left: -50%;
 }
+
+.btn-block+.btn-block {
+    margin-top: 35px;
+}
+
+@media screen and (max-width: 990px) {
+    #email-subscription {
+        margin-top: 50px;
+        padding-top: 20px;
+    }
+
+    .dropdown-menu .divider {
+        margin: 2px 0px;
+    }
+}

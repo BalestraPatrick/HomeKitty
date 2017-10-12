@@ -35,7 +35,7 @@
                     <a href="/manufacturer" class="list-group-item">All Manufacturers<span class="badge">#(manufacturerCount)</span></a>
                 </div>
                 <div class="btn-group btn-block visible-sm visible-xs">
-                    <button type="button" class="btn btn-default btn-block dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Choose accessory category <span class="caret"></span></button>
+                    <button type="button" class="btn btn-default btn-block dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Choose Category <span class="caret"></span></button>
                     <ul class="dropdown-menu btn-block">
                         #loop(categories, "category") {
                             <li><a href="/explore?category=#(category.name)" class="dropdown-item btn-block #if(category.selected) { selected }"><img src="#(category.image)" width="30px"> #(category.name)<span class="badge badge-important pull-right">#(category.accessoriesCount)</span></a></li>
@@ -47,18 +47,20 @@
                     <a href="/explore?category=#(category.name)" class="list-group-item #if(category.selected) { selected }"><img src="#(category.image)" width="30px"> #(category.name)<span class="badge">#(category.accessoriesCount)</span></a>
                     }
                 </div>
-                <p class="lead" style="margin-bottom: 10px;">Keep up to date</p>
-                <p>Receive new accessories in your inbox once per month.</p>
-                <div class="input-group" style="display: block;">
-                    <form action="https://world.us16.list-manage.com/subscribe/post?u=87ff0444f06c586f363e15184&amp;id=e5c558d68d" method="post" id="mc-embedded-subscribe-form" name="mc-embedded-subscribe-form" class="validate" target="_blank" style="display: flex;" novalidate>
-                        <input type="email" value="" class="require email form-control" id="mce-EMAIL" name="EMAIL" placeholder="info@homekitty.world">
-                        <span class="input-group-btn" style="margin-right: 35px;">
-                            <button type="submit" value="Subscribe" name="subscribe" id="" class="button btn btn-default" type="button"><span class="glyphicon glyphicon-send"></span></button>
-                        </span>
-                    </form>
-                    <div id="mce-responses" class="clear" style="padding: 5px;">
-                        <div class="response" id="mce-error-response" style="display: none"></div>
-                        <div class="response" id="mce-success-response" style="display: none"></div>
+                <div id="email-subscription">
+                    <p class="lead" style="margin-bottom: 10px;">Keep up to date</p>
+                    <p>Receive new accessories in your inbox once per month.</p>
+                    <div class="input-group" style="display: block;">
+                        <form action="https://world.us16.list-manage.com/subscribe/post?u=87ff0444f06c586f363e15184&amp;id=e5c558d68d" method="post" id="mc-embedded-subscribe-form" name="mc-embedded-subscribe-form" class="validate" target="_blank" style="display: flex;" novalidate>
+                            <input type="email" value="" class="require email form-control" id="mce-EMAIL" name="EMAIL" placeholder="info@homekitty.world">
+                                <span class="input-group-btn" style="margin-right: 35px;">
+                                    <button type="submit" value="Subscribe" name="subscribe" id="" class="button btn btn-default" type="button"><span class="glyphicon glyphicon-send"></span></button>
+                                </span>
+                                </form>
+                        <div id="mce-responses" class="clear" style="padding: 5px;">
+                            <div class="response" id="mce-error-response" style="display: none"></div>
+                            <div class="response" id="mce-success-response" style="display: none"></div>
+                        </div>
                     </div>
                 </div>
             </div>
