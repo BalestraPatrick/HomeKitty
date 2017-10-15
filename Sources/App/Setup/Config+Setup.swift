@@ -33,5 +33,7 @@ public extension Config {
         preparations.append(Manufacturer.self)
         preparations.append(Category.self)
         preparations.append(Accessory.self)
+        preparations.append(Region.self)
+        preparations.append(Pivot<Accessory, Region>.self)
     }
 }

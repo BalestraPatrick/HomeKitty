@@ -1,6 +1,7 @@
 DELETE FROM category *;
 DELETE FROM manufacturer *;
 DELETE FROM accessories *;
+DELETE FROM regions *;
 
 INSERT INTO category (name, image) VALUES ('Lights', '/icons/lights.svg');
 INSERT INTO category (name, image) VALUES ('Switches', '/icons/switches.svg');

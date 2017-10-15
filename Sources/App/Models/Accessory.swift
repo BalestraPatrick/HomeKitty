@@ -159,3 +159,9 @@ extension Accessory: Preparation {
         try database.delete(Accessory.self)
     }
 }
+
+extension Accessory {
+    var regions: Siblings<Accessory, Region, Pivot<Accessory, Region>> {
+        return siblings()
+    }
+}

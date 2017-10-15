@@ -20,11 +20,13 @@ final class ContributeController {
         let manufacturers = try Manufacturer.makeQuery().filter("approved", true).sort("name", .ascending).all()
         let categories = try Category.makeQuery().sort("name", .ascending).all()
         let bridges = try Category.makeQuery().filter("name", "Bridges").first()?.accessories.all()
+        let regions = try Region.makeQuery().sort("full_name", .ascending).all()
 
         let node = try Node(node: [
             "categories": categories.makeNode(in: nil),
             "manufacturers": manufacturers.makeNode(in: nil),
-            "bridges": bridges.makeNode(in: nil)
+            "bridges": bridges.makeNode(in: nil),
+            "regions": regions.makeNode(in: nil)
         ])
         return try droplet.view.make("contribute", node)
     }
@@ -66,7 +68,17 @@ final class ContributeController {
                         requiresHub: requiresHub,
                         requiredHubId: bridge?.id
                     )
+
                     try accessory.save()
+
+                    if let regions = request.formURLEncoded?["regions"]?.array {
+                        let regionsFullNames = regions.map { $0.string }
+                        for regionFullName in regionsFullNames {
+                            if let region = try Region.makeQuery().filter("full_name", regionFullName).first() {
+                                try accessory.regions.add(region)
+                            }
+                        }
+                    }
                 }
         }
         let node = try Node(node: ["success": true])
