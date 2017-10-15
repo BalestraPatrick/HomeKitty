@@ -47,6 +47,15 @@
                         </div>
                     </div>
                     <div class="form-group">
+                        <label for="region">Regions</label>
+                        <p>Please provide accessory compatible regions.</p>
+                            <select name="regions" class="selectpicker" multiple title="Select a region">
+                                #loop(regions, "region") {
+                                    <option value="#(region.full_name)">#(region.full_name)</option>
+                                }
+                            </select>
+                    </div>
+                    <div class="form-group">
                         <label for="link">Link</label>
                         <p>Please provide the direct link (to the official manufacturer page).</p>
                         <input type="text" class="form-control" name="link" placeholder="http://www2.meethue.com/en-us/productdetail/philips-hue-white-extension-bulb-a19" required maxlength="255">
