@@ -58,6 +58,10 @@ body {
 }
 
 @media screen and (max-width: 480px) {
+
+    .dropdown-menu {
+        margin-top: 35px;
+    }
     #image-brand {
         padding-top: 20px;
         width: 100px;
