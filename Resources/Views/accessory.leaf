@@ -73,18 +73,36 @@
                     <p><a href="#(manufacturerLink)" target="_blank">#(manufacturerLink)</a></p>
                 </div>
                 <div class="row">
-                    <div style="display: flex;">
-                        <p>#(accessory.name)</p><br/>
-                        <p>By <a href="/#(accessory.manufacturer_link)">#(accessory.manufacturer)</a></p>
-                        <img src="#(accessory.image)" alt="#(accessory.name)" style="height:50%" class="accessory-image">
-                        <button>View on #(accessory.manufacturer)</button>
-                        <button>View on Amazon</button>
+                    <div style="display: flex; flex-direction: row;">
+                        <div style="display: flex; flex-direction: column; width: 50%; justify-content: center; align-items: center;">
+                            <div style="text-align: center;">
+                                <h1 style="margin-bottom: -10px !important">#(accessory.name)</h1><br/>
+                                <h4>By <a href="/#(accessory.manufacturer_link)">#(accessory.manufacturer)</a></h4>
+                                <h3>#(accessory.price)</h3>
+                            </div>
+                        </div>
+                        <div style="display: flex; justify-content: space-between; width:50%;">
+                            <img src="#(accessory.image)" alt="#(accessory.name)" style="width:100%" class="accessory-image">
+                        </div>
                     </div>
+                    <div style="display: flex; flex-direction: row; justify-content: center; padding: 20px !important;">
+                        <button class="btn btn-primary" style="margin:15px;">View on #(accessory.manufacturer)</button>
+                        <button class="btn btn-primary" style="margin:15px;">View on Amazon</button>
+                    </div>
+                    <div style="margin-left:50px;">
+                        <div style="display: flex;">
+                            <img src="/images/coming-soon.png" width="30px" height="30px">
+                            <p style="margin-left: 10px !important; margin-top: 7px !important;">Accessory or HomeKit support will be released soon.</p>
+                        </div>
+                        <div style="display: flex;">
+                            <img src="/images/bridge.png" width="30px" height="30px">
+                            <p style="margin-left: 10px !important; margin-top: 7px !important;">This accessory requires a proprietary <a href="">bridge</a>.</p>
+                        </div>
+                        <div style="display: flex;">
+                            <img src="/images/world.png" width="30px" height="30px">
+                            <p style="margin-left: 10px !important; margin-top: 7px !important;">This accessory is compatible in: US 🇺🇸, EU 🇪🇺.</p>
+                        </div>
                     <div>
-                    Accessory or HomeKit support will be released soon.
-                    This accessory requires a proprietary <a href="">bridge</a>.
-                    This accessory is compatible
-                    </div> 
                 </div>
             </div>
         </div>
