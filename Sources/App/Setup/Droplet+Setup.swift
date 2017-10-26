@@ -39,5 +39,9 @@ public extension Droplet {
         // /report
         let reportController = ReportController()
         reportController.addRoutes(droplet: self)
+        
+        // /rss.xml
+        let feedController = FeedController()
+        feedController.addRoutes(droplet: self)
     }
 }
