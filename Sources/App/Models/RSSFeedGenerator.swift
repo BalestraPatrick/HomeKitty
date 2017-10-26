@@ -77,19 +77,18 @@ struct RSSFeedGenerator {
     // MARK: - Private Helper
     
     private func getXMLMeta() -> String {
-        return """
-            <title>\(title)</title>
-            <link>\(link + path)</link>
-            <description>\(description)</description>
-            <generator>HomeKitty</generator>
-            <image>
-                <url>\(imageURL ?? "")</url>
-                <title>HomeKitty Latest Accessories RSS Feed</title>
-                <link>\(link + path)</link>
-            </image>
-            <ttl>60</ttl>
-            <copyright>\(copyright ?? "(copyright)")</copyright>
-        """
+        return
+            "<title>\(title)</title>" +
+            "<link>\(link + path)</link>" +
+            "<description>\(description)</description>" +
+            "<generator>HomeKitty</generator>" +
+            "<image>" +
+                "<url>\(imageURL ?? "")</url>" +
+                "<title>HomeKitty Latest Accessories RSS Feed</title>" +
+                "<link>\(link + path)</link>" +
+            "</image>" +
+            "<ttl>60</ttl>" +
+            "<copyright>\(copyright ?? "(copyright)")</copyright>"
     }
     
 }
