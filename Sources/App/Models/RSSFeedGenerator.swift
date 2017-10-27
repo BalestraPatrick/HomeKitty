@@ -98,7 +98,9 @@ extension Accessory {
         var entry = "<item>\n"
         entry += "<title>\(name)</title>\n"
         entry += "<description>\n<![CDATA[\n"
-        entry += "<img src=\"\(image)\" />\n"
+        if let imageURL = URL(string: image, relativeTo: URL(string: baseLink)) {
+            entry += "<img src=\"\(imageURL.absoluteString)\" />\n"
+        }
         entry += "Price: \(price)\n"
         if let manufacturer = try manufacturer.get() {
             entry += "<p><a href=\"\(baseLink)/\(manufacturer.directLink)\">By \(manufacturer.name)</a></p>\n"
