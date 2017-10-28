@@ -6,6 +6,19 @@ final class Region: Model {
 
     let storage = Storage()
 
+    var name: String {
+        let emoji: String
+        switch shortName {
+        case "US": emoji = "🇺🇸"
+        case "UK": emoji = "🇬🇧"
+        case "EU": emoji = "🇪🇺"
+        case "AU": emoji = "🇦🇺"
+        case "CN": emoji = "🇨🇳"
+        default: emoji = ""
+        }
+        return [shortName, emoji].joined(separator: " ")
+    }
+
     var id: Node?
     var shortName: String
     var fullName: String

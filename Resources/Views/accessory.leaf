@@ -107,11 +107,7 @@
 
                         <div style="display: flex;">
                             <img src="/images/world.png" width="30px" height="30px">
-                            <p style="margin-left: 10px !important; margin-top: 7px !important;">This accessory is compatible in: 
-                                #loop(regions, "region") {
-                                   #(region.short_name)
-                                }
-                            .</p>
+                            <p style="margin-left: 10px !important; margin-top: 7px !important;">This accessory is compatible in: #(accessory.region_compatibility).</p>
                         </div>
                     <div>
                 </div>

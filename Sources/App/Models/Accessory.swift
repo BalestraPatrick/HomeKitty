@@ -101,6 +101,14 @@ extension Accessory {
     var regions: Siblings<Accessory, Region, Pivot<Accessory, Region>> {
         return siblings()
     }
+
+    var regionCompatibility: String {
+        let regionNames = try? regions.all().map { $0.name }
+        if let regions = regionNames, !regions.isEmpty {
+            return regions.joined(separator: ", ")
+        }
+        return "World 🌍"
+    }
 }
 
 extension Accessory: NodeRepresentable {
@@ -115,6 +123,7 @@ extension Accessory: NodeRepresentable {
             "released": released,
             "date": date,
             "requires_hub": requiresHub,
+            "region_compatibility": regionCompatibility,
         ])
 
         if let manufacturer = try manufacturer.get() {
