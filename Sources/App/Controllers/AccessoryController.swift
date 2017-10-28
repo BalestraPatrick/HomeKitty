@@ -16,21 +16,19 @@ final class AccessoryController {
     }
 
     func accessory(request: Request) throws -> ResponseRepresentable {
-        let queryAccessory = request.query?["name"]?.string ?? ""
+        let query = request.query?["name"]?.string ?? ""
         let accessories = try Accessory.makeQuery().filter("approved", true)
-        let accessory = try accessories.filter("name", queryAccessory).first()
+        let accessory = try accessories.filter("name", query).first()
         let categories = try Category.all()
         let manufacturerCount = try Manufacturer.makeQuery().filter("approved", true).count()
 
         let node: Node
 
         if let accessory = accessory {
-            let regions = try accessory.regions.all()
             let pageTitle = "Accessory Details"
             let pageIcon = ""
             node = try Node(node: [
                 "accessory": accessory.makeNode(in: nil),
-                "regions": regions.makeNode(in: nil),
                 "manufacturerSelected": true,
                 "categories": categories.makeNode(in: nil),
                 "accessories": accessories.all().makeNode(in: nil),
