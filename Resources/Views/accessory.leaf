@@ -90,17 +90,28 @@
                         <button class="btn btn-primary" style="margin:15px;">View on Amazon</button>
                     </div>
                     <div style="margin-left:50px;">
-                        <div style="display: flex;">
-                            <img src="/images/coming-soon.png" width="30px" height="30px">
-                            <p style="margin-left: 10px !important; margin-top: 7px !important;">Accessory or HomeKit support will be released soon.</p>
-                        </div>
-                        <div style="display: flex;">
-                            <img src="/images/bridge.png" width="30px" height="30px">
-                            <p style="margin-left: 10px !important; margin-top: 7px !important;">This accessory requires a proprietary <a href="">bridge</a>.</p>
-                        </div>
+                        #if(accessory.released) {
+                        } ##else() {
+                            <div style="display: flex;">
+                                <img src="/images/coming-soon.png" width="30px" height="30px">
+                                <p style="margin-left: 10px !important; margin-top: 7px !important;">Accessory or HomeKit support will be released soon.</p>
+                            </div>
+                        }
+
+                        #if(accessory.requires_hub) {
+                            <div style="display: flex;">
+                                <img src="/images/bridge.png" width="30px" height="30px">
+                                <p style="margin-left: 10px !important; margin-top: 7px !important;">This accessory requires a proprietary <a href="#(accessory.required_hub_link)">bridge</a>.</p>
+                            </div>
+                        }
+
                         <div style="display: flex;">
                             <img src="/images/world.png" width="30px" height="30px">
-                            <p style="margin-left: 10px !important; margin-top: 7px !important;">This accessory is compatible in: US 🇺🇸, EU 🇪🇺.</p>
+                            <p style="margin-left: 10px !important; margin-top: 7px !important;">This accessory is compatible in: 
+                                #loop(regions, "region") {
+                                   #(region.short_name)
+                                }
+                            .</p>
                         </div>
                     <div>
                 </div>

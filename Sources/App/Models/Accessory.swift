@@ -25,18 +25,6 @@ final class Accessory: Model {
     var date: Date
     var requiresHub: Bool
 
-    var category: Parent<Accessory, Category> {
-        return parent(id: categoryId)
-    }
-
-    var manufacturer: Parent<Accessory, Manufacturer> {
-        return parent(id: manufacturerId)
-    }
-
-    var requiredHub: Parent<Accessory, Accessory>? {
-        return parent(id: requiredHubId)
-    }
-
     init(
         name: String,
         image: String,
@@ -96,23 +84,49 @@ final class Accessory: Model {
     }
 }
 
+extension Accessory {
+
+    var category: Parent<Accessory, Category> {
+        return parent(id: categoryId)
+    }
+
+    var manufacturer: Parent<Accessory, Manufacturer> {
+        return parent(id: manufacturerId)
+    }
+
+    var requiredHub: Parent<Accessory, Accessory>? {
+        return parent(id: requiredHubId)
+    }
+
+    var regions: Siblings<Accessory, Region, Pivot<Accessory, Region>> {
+        return siblings()
+    }
+}
+
 extension Accessory: NodeRepresentable {
 
     func makeNode(in context: Context?) throws -> Node {
-        return try Node(node: [
+        var node = try Node(node: [
             "name": name,
             "category_id": categoryId.string!,
-            "manufacturer": manufacturer.get()?.name,
-            "manufacturer_link": manufacturer.get()?.directLink,
-            "manufacturer_website": manufacturer.get()?.websiteLink,
             "image": image,
             "price": price,
             "product_link": productLink,
             "released": released,
             "date": date,
             "requires_hub": requiresHub,
-            "required_hub_id": requiredHubId?.string!
         ])
+
+        if let manufacturer = try manufacturer.get() {
+            node["manufacturer"] = manufacturer.name.makeNode(in: nil)
+            node["manufacturer_link"] = manufacturer.directLink.makeNode(in: nil)
+            node["manufacturer_website"] = manufacturer.websiteLink.makeNode(in: nil)
+        }
+        if let hub = try requiredHub?.get(), let hubId = hub.id {
+            node["required_hub_id"] = hubId.string?.makeNode(in: nil)
+            node["required_hub_link"] = hub.productLink.makeNode(in: nil)
+        }
+        return node
     }
 }
 
@@ -157,11 +171,5 @@ extension Accessory: Preparation {
 
     static func revert(_ database: Database) throws {
         try database.delete(Accessory.self)
-    }
-}
-
-extension Accessory {
-    var regions: Siblings<Accessory, Region, Pivot<Accessory, Region>> {
-        return siblings()
     }
 }
