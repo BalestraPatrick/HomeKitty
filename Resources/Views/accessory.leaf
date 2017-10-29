@@ -87,7 +87,7 @@
                     </div>
                     <div style="display: flex; flex-direction: row; justify-content: center; padding: 20px !important;">
                         <button class="btn btn-primary" style="margin:15px;">View on #(accessory.manufacturer)</button>
-                        <button class="btn btn-primary" style="margin:15px;">View on Amazon</button>
+                        <!--button class="btn btn-primary" style="margin:15px;">View on Amazon</button-->
                     </div>
                     <div style="margin-left:50px;">
                         #if(accessory.released) {

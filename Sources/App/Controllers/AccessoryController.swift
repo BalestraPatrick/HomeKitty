@@ -17,8 +17,9 @@ final class AccessoryController {
 
     func accessory(request: Request) throws -> ResponseRepresentable {
         let query = request.query?["name"]?.string ?? ""
-        let accessories = try Accessory.makeQuery().filter("approved", true)
-        let accessory = try accessories.filter("name", query).first()
+        let approvedAccessories = try Accessory.makeQuery().filter("approved", true)
+        let accessories = try approvedAccessories.all()
+        let accessory = try approvedAccessories.filter("name", query).first()
         let categories = try Category.all()
         let manufacturerCount = try Manufacturer.makeQuery().filter("approved", true).count()
 
@@ -31,10 +32,10 @@ final class AccessoryController {
                 "accessory": accessory.makeNode(in: nil),
                 "manufacturerSelected": true,
                 "categories": categories.makeNode(in: nil),
-                "accessories": accessories.all().makeNode(in: nil),
+                "accessories": accessories.makeNode(in: nil),
                 "pageTitle": pageTitle.makeNode(in: nil),
                 "pageIcon": pageIcon.makeNode(in: nil),
-                "accessoryCount": accessories.count().makeNode(in: nil),
+                "accessoryCount": accessories.count.makeNode(in: nil),
                 "manufacturerCount": manufacturerCount.makeNode(in: nil),
                 ])
         } else {
