@@ -20,6 +20,6 @@ class AccessoryControllerTests: TestCase {
     func testAccessory() throws {
         try drop
             .testResponse(to: .get, at: "/accessory")
-            .assertStatus(is: .ok)
+            .assertStatus(is: .notFound)
     }
 }
