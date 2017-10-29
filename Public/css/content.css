@@ -1,9 +1,3 @@
-/*!
- * Start Bootstrap - Shop Homepage (http://startbootstrap.com/)
- * Copyright 2013-2016 Start Bootstrap
- * Licensed under MIT (https://github.com/BlackrockDigital/startbootstrap/blob/gh-pages/LICENSE)
- */
-
 .container-content {
     padding-top: 70px;
 }
@@ -129,4 +123,15 @@ footer {
 
 .navbar-nav {
     padding-top: 1px !important;
+}
+
+#accessory-page-information {
+    margin-top: 50px;
+    text-align: center;
+}
+
+@media screen and (max-width: 990px) {
+    #accessory-page-information {
+        margin-top: 0px;
+    }
 }
