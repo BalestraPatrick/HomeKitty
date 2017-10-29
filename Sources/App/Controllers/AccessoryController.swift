@@ -27,7 +27,7 @@ final class AccessoryController {
 
         if let accessory = accessory {
             let pageTitle = "Accessory Details"
-            let pageIcon = ""
+            let pageIcon = (try? accessory.category.get()?.image) ?? ""
             node = try Node(node: [
                 "accessory": accessory.makeNode(in: nil),
                 "manufacturerSelected": true,

@@ -102,12 +102,12 @@ extension Accessory {
         return siblings()
     }
 
-    var regionCompatibility: String {
+    var regionCompatibility: String? {
         let regionNames = try? regions.all().map { $0.name }
         if let regions = regionNames, !regions.isEmpty {
             return regions.joined(separator: ", ")
         }
-        return "World 🌍"
+        return nil
     }
 }
 
@@ -123,7 +123,7 @@ extension Accessory: NodeRepresentable {
             "released": released,
             "date": date,
             "requires_hub": requiresHub,
-            "region_compatibility": regionCompatibility,
+            "page_link": "/accessory?name=\(name)"
         ])
 
         if let manufacturer = try manufacturer.get() {
@@ -133,7 +133,10 @@ extension Accessory: NodeRepresentable {
         }
         if let hub = try requiredHub?.get(), let hubId = hub.id {
             node["required_hub_id"] = hubId.string?.makeNode(in: nil)
-            node["required_hub_link"] = hub.productLink.makeNode(in: nil)
+            node["required_hub_page_link"] = "/accessory?name=\(hub.name)".makeNode(in: nil)
+        }
+        if let region = regionCompatibility {
+            node["region_compatibility"] = region.makeNode(in: nil)
         }
         return node
     }
