@@ -73,38 +73,38 @@
                     <p><a href="#(manufacturerLink)" target="_blank">#(manufacturerLink)</a></p>
                 </div>
                 <div class="row col-md-12">
-                    <div class="col-md-6" style="display: flex; flex-direction: column; justify-content: center; align-items: center;">
+                    <div class="col-md-6" id="accessory-page-information-container">
                         <div id="accessory-page-information">
-                            <h1 style="margin-bottom: -10px !important">#(accessory.name)</h1><br/>
+                            <h1 id="accessory-title">#(accessory.name)</h1><br/>
                             <h4>By <a href="/#(accessory.manufacturer_link)">#(accessory.manufacturer)</a></h4>
                             <h3>#(accessory.price)</h3>
                         </div>
                     </div>
-                    <div class="col-md-6" style="display: flex; justify-content: space-between; align-items: center;">
-                        <img src="#(accessory.image)" alt="#(accessory.name)" style="width: 350px; height: 350px; display: block; margin: 0 auto;" class="accessory-image">
+                    <div class="col-md-6" id="accessory-page-image-container">
+                        <img src="#(accessory.image)" alt="#(accessory.name)" class="accessory-image" id="accessory-page-image">
                     </div>
-                    <div style="display: flex; flex-direction: row; justify-content: center; padding: 20px !important;">
-                        <a href="#(accessory.manufacturer_website)" target="_blank"><button class="btn btn-primary" style="margin:15px;">View on #(accessory.manufacturer) website</button></a>
+                    <div id="accessory-page-buttons">
+                        <a href="#(accessory.manufacturer_website)" target="_blank"><button class="btn btn-primary">View on #(accessory.manufacturer) website</button></a>
                         <!--button class="btn btn-primary" style="margin:15px;">View on Amazon</button-->
                     </div>
-                    <div style="margin-left:50px;">
+                    <div id="accessory-page-features">
                         #if(accessory.released) {
                         } ##else() {
-                            <div style="display: flex;">
-                                <img src="/images/coming-soon.png" width="30px" height="30px">
-                                <p style="margin-left: 10px !important; margin-top: 7px !important;">Accessory or HomeKit support will be released soon.</p>
+                            <div id="accessory-page-feature">
+                                <img src="/images/coming-soon.png">
+                                <p>Accessory or HomeKit support will be released soon.</p>
                             </div>
                         }
                         #if(accessory.requires_hub) {
-                            <div style="display: flex;">
-                                <img src="/images/bridge.png" width="30px" height="30px">
-                                <p style="margin-left: 10px !important; margin-top: 7px !important;">This accessory requires a proprietary <a href="#(accessory.required_hub_page_link)">bridge</a>.</p>
+                            <div id="accessory-page-feature">
+                                <img src="/images/bridge.png">
+                                <p>This accessory requires a proprietary <a href="#(accessory.required_hub_page_link)">bridge</a>.</p>
                             </div>
                         }
                         #if(accessory.region_compatibility) {
-                            <div style="display: flex;">
-                                <img src="/images/world.png" width="30px" height="30px">
-                                <p style="margin-left: 10px !important; margin-top: 7px !important;">This accessory is compatible in: #(accessory.region_compatibility).</p>
+                            <div id="accessory-page-feature">
+                                <img src="/images/world.png">
+                                <p>This accessory is compatible in: #(accessory.region_compatibility).</p>
                             </div>
                         }
                     <div>
