@@ -5,7 +5,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>HomeKitty - Browse HomeKit Accessories</title>
-    <link rel="stylesheet" href="/css/explore.css">
+    <link rel="stylesheet" href="/css/content.css">
 }
 
 
@@ -74,13 +74,13 @@
                 </div>
                 <div class="row col-md-12">
                     <div class="col-md-6" style="display: flex; flex-direction: column; justify-content: center; align-items: center;">
-                        <div style="text-align: center;">
+                        <div id="accessory-page-information">
                             <h1 style="margin-bottom: -10px !important">#(accessory.name)</h1><br/>
                             <h4>By <a href="/#(accessory.manufacturer_link)">#(accessory.manufacturer)</a></h4>
                             <h3>#(accessory.price)</h3>
                         </div>
                     </div>
-                    <div class="col-md-6" style="display: flex; justify-content: space-between; text-align: center;">
+                    <div class="col-md-6" style="display: flex; justify-content: space-between; align-items: center;">
                         <img src="#(accessory.image)" alt="#(accessory.name)" style="width: 350px; height: 350px; display: block; margin: 0 auto;" class="accessory-image">
                     </div>
                     <div style="display: flex; flex-direction: row; justify-content: center; padding: 20px !important;">
