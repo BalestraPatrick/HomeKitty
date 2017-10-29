@@ -43,5 +43,9 @@ public extension Droplet {
         // /rss.xml
         let feedController = FeedController()
         feedController.addRoutes(droplet: self)
+
+        // /rss.xml
+        let accessoryController = AccessoryController()
+        accessoryController.addRoutes(droplet: self)
     }
 }
