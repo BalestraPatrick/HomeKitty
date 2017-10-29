@@ -1,26 +1,33 @@
+// swift-tools-version:4.0
+
 import PackageDescription
 
 let package = Package(
     name: "HomeKitty",
-    targets: [
-        Target(name: "App"),
-        Target(name: "Run", dependencies: ["App"])
+    products: [
+        .library(name: "App", targets: ["App"]),
+        .executable(name: "Run", targets: ["Run"])
     ],
     dependencies: [
-        .Package(url: "https://github.com/vapor/vapor.git", majorVersion: 2),
-        .Package(url: "https://github.com/vapor-community/postgresql-provider.git", majorVersion: 2),
-        .Package(url: "https://github.com/vapor/fluent-provider.git", majorVersion: 1),
-        .Package(url: "https://github.com/vapor/leaf-provider.git", majorVersion: 1),
-        .Package(url: "https://github.com/vapor/node.git", majorVersion: 2),
-        .Package(url: "https://github.com/vapor-community/stripe.git", Version(1, 0, 0, prereleaseIdentifiers: ["beta"])),
-        .Package(url: "https://github.com/brokenhandsio/leaf-error-middleware.git", majorVersion: 0),
-        .Package(url: "https://github.com/vapor-community/sendgrid-provider.git", majorVersion: 2)
+        .package(url: "https://github.com/vapor/vapor.git", from: "2.0.0"),
+        .package(url: "https://github.com/vapor-community/postgresql-provider.git", from: "2.0.0"),
+        .package(url: "https://github.com/vapor/fluent-provider.git", from: "1.0.0"),
+        .package(url: "https://github.com/vapor/leaf-provider.git", from: "1.0.0"),
+        .package(url: "https://github.com/vapor/node.git", from: "2.0.0"),
+        .package(url: "https://github.com/vapor-community/stripe.git", from: "1.0.0"),
+        .package(url: "https://github.com/brokenhandsio/leaf-error-middleware.git", from: "0.1.0"),
+        .package(url: "https://github.com/vapor-community/sendgrid-provider.git", from: "2.0.0")
     ],
-    exclude: [
-        "Config",
-        "Database",
-        "Localization",
-        "Public",
-        "Resources",
+    targets: [
+        .target(name: "App", dependencies: ["Vapor", "PostgreSQLProvider", "FluentProvider", "LeafProvider", "Node", "Stripe", "LeafErrorMiddleware", "SendGridProvider"],
+                exclude: [
+                    "Config",
+                    "Database",
+                    "Localization",
+                    "Public",
+                    "Resources",
+                    ]),
+        .testTarget(name: "AppTests", dependencies: ["App"]),
+        .target(name: "Run", dependencies: ["App"])
     ]
 )
