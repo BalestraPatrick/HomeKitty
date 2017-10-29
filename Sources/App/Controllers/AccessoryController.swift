@@ -16,7 +16,9 @@ final class AccessoryController {
     }
 
     func accessory(request: Request) throws -> ResponseRepresentable {
-        let query = request.query?["name"]?.string ?? ""
+        guard let query = request.query?["name"]?.string else {
+            return Response(redirect: "/")
+        }
         let approvedAccessories = try Accessory.makeQuery().filter("approved", true)
         let accessories = try approvedAccessories.all()
         let accessory = try approvedAccessories.filter("name", query).first()
@@ -39,7 +41,7 @@ final class AccessoryController {
                 "manufacturerCount": manufacturerCount.makeNode(in: nil),
                 ])
         } else {
-            node = try Node(node: [:])
+            throw Abort(.notFound)
         }
         return try droplet.view.make("accessory", node)
     }

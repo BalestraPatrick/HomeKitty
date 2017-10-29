@@ -11,6 +11,7 @@ XCTMain([
     testCase(HomeControllerTests.allTests),
     testCase(ReportControllerTests.allTests),
     testCase(FeedControllerTests.allTests),
+    testCase(AccessoryControllerTests.allTests),
 ])
 
 #endif
