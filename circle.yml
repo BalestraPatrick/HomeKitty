@@ -1,12 +1,17 @@
-dependencies:
-  override:
-   - eval "$(curl -sL https://apt.vapor.sh)"
-   - sudo apt-get install vapor
-   - sudo chmod -R a+rx /usr/
-
-  pre:
-   - sudo -u postgres createdb test
-
-test:
-  override:
-    - swift test
+version: 2
+jobs:
+  build:
+    working_directory: ~/app
+    docker:
+      - image: swift:4.0
+      - image: circleci/postgres:latest
+        environment:
+          POSTGRES_USER: postgres
+          POSTGRES_DB: test
+          POSTGRES_PASSWORD: ""
+    steps:
+      - checkout
+      - run: eval "$(curl -sL https://apt.vapor.sh)"
+      - run: apt-get install -yq libpq-dev ctls
+      - run: swift build -c release
+      - run: swift test
