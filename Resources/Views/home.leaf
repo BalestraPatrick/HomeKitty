@@ -108,6 +108,9 @@
                                             <img src="/images/coming-soon.png" class="coming-soon-icon" style="height: 25px; width: 25px;">
                                         </a>
                                         }
+                                        #if(accessory.requires_hub) {
+                                            <img src="/images/bridge.png" class="bridge-icon" style="height: 25px; width: 25px;" data-toggle="popover" data-content="This accessory requires a proprietary bridge." data-placement="top" data-trigger="hover">
+                                        }
                                     </div>
                                     <p>#index(accessoriesDateString, index)</p>
                                 </div>
