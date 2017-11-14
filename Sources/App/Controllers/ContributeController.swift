@@ -62,6 +62,7 @@ final class ContributeController {
                         image: image,
                         price: price.normalizedPrice,
                         productLink: link,
+                        amazonLink: nil,
                         categoryId: category.id!,
                         manufacturerId: manufacturerId,
                         released: released,

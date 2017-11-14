@@ -87,7 +87,9 @@
                     </div>
                     <div id="accessory-page-buttons">
                         <a href="#(accessory.manufacturer_website)" target="_blank"><button class="btn btn-primary">View on #(accessory.manufacturer) website</button></a>
-                        <!--button class="btn btn-primary" style="margin:15px;">View on Amazon</button-->
+                        #if(accessory.amazon_link) {
+                            <a href="#(accessory.amazon_link)" target="_blank"><button class="btn btn-primary" style="margin:15px;">View on Amazon</button></a>
+                        }
                     </div>
                     <div id="accessory-page-features">
                         #if(accessory.released) {

@@ -20,6 +20,7 @@ final class Accessory: Model {
     var image: String
     var price: String
     var productLink: String
+    var amazonLink: String?
     var approved: Bool
     var released: Bool
     var date: Date
@@ -30,6 +31,7 @@ final class Accessory: Model {
         image: String,
         price: String,
         productLink: String,
+        amazonLink: String?,
         categoryId: Identifier,
         manufacturerId: Identifier,
         released: Bool = true,
@@ -44,6 +46,7 @@ final class Accessory: Model {
         self.image = image
         self.price = price
         self.productLink = productLink
+        self.amazonLink = amazonLink
         self.approved = approved
         self.released = released
         self.date = date
@@ -59,6 +62,7 @@ final class Accessory: Model {
         image = try row.get("image")
         price = try row.get("price")
         productLink = try row.get("product_link")
+        amazonLink = try row.get("amazon_link")
         approved = try row.get("approved")
         released = try row.get("released")
         date = try row.get("date")
@@ -75,6 +79,7 @@ final class Accessory: Model {
         try row.set("image", image)
         try row.set("price", price)
         try row.set("product_link", productLink)
+        try row.set("amazon_link", amazonLink)
         try row.set("approved", approved)
         try row.set("released", released)
         try row.set("date", date)
@@ -138,6 +143,9 @@ extension Accessory: NodeRepresentable {
         if let region = regionCompatibility {
             node["region_compatibility"] = region.makeNode(in: nil)
         }
+        if let amazon = amazonLink {
+            node["amazon_link"] = amazon.makeNode(in: nil)
+        }
         return node
     }
 }
@@ -153,6 +161,7 @@ extension Accessory: ResponseRepresentable {
         try json.set("image", image)
         try json.set("price", price)
         try json.set("product_link", productLink)
+        try json.set("amazon_link", amazonLink)
         try json.set("released", released)
         try json.set("approved", approved)
         try json.set("date", date)
@@ -173,6 +182,7 @@ extension Accessory: Preparation {
             builder.string("image")
             builder.string("price")
             builder.string("product_link")
+            builder.string("amazon_link")
             builder.bool("approved")
             builder.bool("released")
             builder.date("date")
