@@ -8,23 +8,23 @@ import FluentPostgreSQL
 import Leaf
 
 final class ManufacturerController {
-
+    
     init(router: Router) {
         router.get("manufacturers", use: manufacturers)
         router.get("manufacturers", Int.parameter, use: manufacturer)
     }
-
+    
     func manufacturer(_ req: Request) throws -> Future<View> {
         let param: Int = try req.parameter()
-
+        
         let manufacturer = try Manufacturer.query(on: req).filter(\Manufacturer.id == param).first()
         let categories = try Category.query(on: req).sort(\Category.name, .ascending).all()
         let manufacturersCount =  Manufacturer.query(on: req).count()
         let accessories = try Accessory.query(on: req).filter(\Accessory.manufacturerId == param).all()
-
+        
         return manufacturer.flatMap(to: View.self) { manufacturer in
             guard let manufacturer = manufacturer else { throw Abort(.notFound) }
-
+            
             return flatMap(to: View.self, categories, manufacturersCount, accessories, { (categories, manufacturersCount, accessories) in
                 return try categories.compactMap { try $0.makeResponse(req) }.flatMap(to: View.self, on: req, { categories in
                     return try accessories.map { try $0.makeResponse(req) }.flatMap(to: View.self, on: req, { accessories in
@@ -35,19 +35,19 @@ final class ManufacturerController {
                                                                 manufacturerCount: manufacturersCount,
                                                                 categories: categories,
                                                                 accessories: accessories)
-
+                        
                         return leaf.render("manufacturer", responseData)
                     })
                 })
             })
         }
     }
-
+    
     func manufacturers(_ req: Request) throws -> Future<View> {
         let manufacturers = try Manufacturer.query(on: req).sort(\Manufacturer.name, .ascending).all()
         let categories = try Category.query(on: req).sort(\Category.name, .ascending).all()
         let accessoryCount = try Accessory.query(on: req).filter(\Accessory.approved == true).count()
-
+        
         return flatMap(to: View.self, manufacturers, categories, accessoryCount, { (manufacturers, categories, accessoryCount) in
             return try categories.compactMap { try $0.makeResponse(req) }.flatMap(to: View.self, on: req, { categories in
                 let leaf = try req.make(LeafRenderer.self)
@@ -57,12 +57,12 @@ final class ManufacturerController {
                                                          manufacturerCount: manufacturers.count,
                                                          categories: categories,
                                                          manufacturers: manufacturers)
-
+                
                 return leaf.render("manufacturers", responseData)
             })
         })
     }
-
+    
     struct ManufacturersResponse: Codable {
         let pageTitle: String
         let pageIcon: String
@@ -71,7 +71,7 @@ final class ManufacturerController {
         let categories: [Category.CategoryResponse]
         let manufacturers: [Manufacturer]
     }
-
+    
     struct ManufacturerResponse: Codable {
         let manufacturer: Manufacturer
         let pageIcon: String

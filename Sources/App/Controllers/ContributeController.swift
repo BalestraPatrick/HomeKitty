@@ -8,7 +8,7 @@ import Leaf
 import FluentPostgreSQL
 
 final class ContributeController {
-
+    
     init(router: Router) {
         router.get("contribute", use: contribute)
         router.post("contribute", use: submit)
@@ -21,12 +21,12 @@ final class ContributeController {
         let categories = try Category.query(on: req).sort(\Category.name, .ascending).all()
         let bridges = try Category.query(on: req).filter(\Category.name == "Bridges").first().flatMap(to: [Accessory].self, { (category)  in
             guard let category = category else { throw Abort(.internalServerError) }
-
+            
             return try category.accessories.query(on: req).all()
         })
-
+        
         let regions = try Region.query(on: req).sort(\Region.fullName, .ascending).all()
-
+        
         return flatMap(to: View.self, manufacturers, categories, bridges, regions, { (manufacturers, categories, bridges, regions) in
             return try categories.map { try $0.makeResponse(req) }.flatMap(to: View.self, on: req, { categories in
                 return try bridges.map { try $0.makeResponse(req) }.flatMap(to: View.self, on: req, { bridges in
@@ -34,14 +34,14 @@ final class ContributeController {
                                                   manufacturers: manufacturers,
                                                   bridges: bridges,
                                                   regions: regions)
-
+                    
                     let leaf = try req.make(LeafRenderer.self)
                     return leaf.render("contribute", data)
                 })
             })
         })
     }
-
+    
     func submit(_ req: Request) throws -> Future<View> {
         //        var manufacturerId: Identifier?
         //        if let name = request.formURLEncoded?["manufacturer-name"]?.string,
@@ -95,11 +95,11 @@ final class ContributeController {
         //        }
         //        let node = try Node(node: ["success": true])
         //        return try droplet.view.make("contribute", node)
-
+        
         let leaf = try req.make(LeafRenderer.self)
         return leaf.render("contribute", ["success": true])
     }
-
+    
     struct ContributeResponse: Codable {
         let categories: [Category.CategoryResponse]
         let manufacturers: [Manufacturer]
