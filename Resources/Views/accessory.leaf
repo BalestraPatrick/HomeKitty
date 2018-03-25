@@ -1,6 +1,4 @@
-#extend("base")
-
-#export("head") {
+#set("head") {
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -9,68 +7,17 @@
 }
 
 
-#export("body") {
-    #embed("navigation")
+#set("body") {
     <div class="container container-content">
         <div class="row">
 
             <!-- Side Menu -->
-            <div class="col-md-3">
-                <p class="lead">Search</p>
-                <div class="input-group" style="display: block;">
-                    <form action="/explore/search" style="display: flex;">
-                        <input type="text" class="form-control" placeholder="Search" name="term">
-                        <span class="input-group-btn" style="margin-right: 35px;">
-                            <button type="submit" class="btn btn-default" type="button"><span class="glyphicon glyphicon-search"></span></button>
-                        </span>
-                    </form>
-                </div>
-                <br>
-                <p class="lead">Categories</p>
-                <div class="list-group">
-                    <a href="/explore" class="list-group-item">All Accessories<span class="badge">#(accessoryCount)</span></a>
-                    <a href="/manufacturer" class="list-group-item">All Manufacturers<span class="badge">#(manufacturerCount)</span></a>
-                </div>
-                <div class="btn-group btn-block visible-sm visible-xs">
-                    <button type="button" class="btn btn-default btn-block dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">Choose Category <span class="caret"></span></button>
-                    <ul class="dropdown-menu btn-block">
-                        #loop(categories, "category") {
-                            <li>
-                                <a href="/explore?category=#(category.name)" class="dropdown-item btn-block #if(category.selected) { selected }"><img src="#(category.image)" width="30px">
-                                    #(category.name)<span class="badge badge-important pull-right">#(category.accessoriesCount)</span>
-                                </a>
-                            </li>
-                            <li role="separator" class="divider"></li>
-                        }
-                    </ul>
-                </div>
-                <div class="list-group hidden-sm hidden-xs">
-                    #loop(categories, "category") {
-                    <a href="/explore?category=#(category.name)" class="list-group-item #if(category.selected) { selected }"><img src="#(category.image)" width="30px"> #(category.name)<span class="badge">#(category.accessoriesCount)</span></a>
-                    }
-                </div>
-                <div id="email-subscription">
-                    <p class="lead" style="margin-bottom: 10px;">Keep up to date</p>
-                    <p>Receive new accessories in your inbox once per month.</p>
-                    <div class="input-group" style="display: block;">
-                        <form action="https://world.us16.list-manage.com/subscribe/post?u=87ff0444f06c586f363e15184&amp;id=e5c558d68d" method="post" id="mc-embedded-subscribe-form" name="mc-embedded-subscribe-form" class="validate" target="_blank" style="display: flex;" novalidate>
-                            <input type="email" value="" class="require email form-control" id="mce-EMAIL" name="EMAIL" placeholder="info@homekitty.world">
-                            <span class="input-group-btn" style="margin-right: 35px;">
-                                <button type="submit" value="Subscribe" name="subscribe" id="" class="button btn btn-default" type="button"><span class="glyphicon glyphicon-send"></span></button>
-                            </span>
-                        </form>
-                        <div id="mce-responses" class="clear" style="padding: 5px;">
-                            <div class="response" id="mce-error-response" style="display: none"></div>
-                            <div class="response" id="mce-success-response" style="display: none"></div>
-                        </div>
-                    </div>
-                </div>
-            </div>
+            #embed("sidemenu")
 
             <!-- Content -->
             <div class="col-md-9">
                 <div class="flex-item" style="margin-top: 10px;">
-                    <img src="#raw(pageIcon)" width="50px">
+                    <img src="#get(pageIcon)" width="50px">
                     <p class="lead">#(pageTitle)</p>
                     <p><a href="#(manufacturerLink)" target="_blank">#(manufacturerLink)</a></p>
                 </div>
@@ -86,14 +33,14 @@
                         <img src="#(accessory.image)" alt="#(accessory.name)" class="accessory-image" id="accessory-page-image">
                     </div>
                     <div id="accessory-page-buttons">
-                        <a href="#(accessory.manufacturer_website)" target="_blank"><button class="btn btn-primary">View on #(accessory.manufacturer) website</button></a>
+                        <a href="#(accessory.product_link)" target="_blank"><button class="btn btn-primary">View on #(accessory.manufacturer) website</button></a>
                         #if(accessory.amazon_link) {
                             <a href="#(accessory.amazon_link)" target="_blank"><button class="btn btn-primary" style="margin:15px;">View on Amazon</button></a>
                         }
                     </div>
                     <div id="accessory-page-features">
                         #if(accessory.released) {
-                        } ##else() {
+                        } else {
                             <div id="accessory-page-feature">
                                 <img src="/images/coming-soon.png">
                                 <p>Accessory or HomeKit support will be released soon.</p>
@@ -116,6 +63,8 @@
             </div>
         </div>
     </div>
-    #embed("footer")
     <script type="text/javascript" src="/js/explore.js"></script>
 }
+
+#embed("base")
+

@@ -5,43 +5,38 @@
 import Vapor
 import HTTP
 import Stripe
+import Leaf
 
 final class DonationController {
-
-    var droplet: Droplet!
-
-    func addRoutes(droplet: Droplet) {
-        self.droplet = droplet
-        let group = droplet.grouped("donation")
-        group.post(handler: donation)
-        group.get("thanks", handler: thanks)
+    
+    init(router: Router) {
+        router.get("donation", "thanks" , use: thanks)
+        router.get("donation", use: donation)
+//        self.droplet = droplet
+//        let group = droplet.grouped("donation")
+//        group.post(handler: donation)
+//        group.get("thanks", handler: thanks)
     }
 
-    func donation(request: Request) throws -> ResponseRepresentable {
-        guard let token: String = try request.formURLEncoded?.get("token"), let amount: String = try request.formURLEncoded?.get("amount") else {
-            throw Abort.badRequest
+
+    func donation(_ req: Request) throws -> Future<StripeCharge> {
+        guard let token: String = try req.query.get(at: "token"),
+            let amount: Int = try req.query.get(at: "amount") else {
+                throw Abort(.badRequest)
         }
-        let charge = try droplet.stripe?.charge.create(
-            amount: Int(amount)! * 100,
-            in: .usd,
-            withFee: nil,
-            toAccount: nil,
-            capture: true,
-            description: "HomeKitty Donation",
-            destinationAccountId: nil,
-            destinationAmount: nil,
-            transferGroup: nil,
-            onBehalfOf: nil,
-            receiptEmail: nil,
-            shippingLabel: nil,
-            customer: nil,
-            statementDescriptor: "HomeKitty Donation",
-            source: token
-        )
-        return try charge?.json() ?? JSON([:])
+
+        let stripeClient = try req.make(StripeClient.self)
+
+        return try stripeClient.charge.create(amount: amount,
+                                                    currency: .usd,
+                                                    capture: true,
+                                                    description: "HomeKitty Donation",
+                                                    source: token,
+                                                    statementDescriptor: "HomeKitty Donation")
     }
 
-    func thanks(request: Request) throws -> ResponseRepresentable {
-        return try droplet.view.make("thanks")
+    func thanks(_ req: Request) throws -> Future<View> {
+        let leaf = try req.make(LeafRenderer.self)
+        return leaf.render("thanks")
     }
 }
