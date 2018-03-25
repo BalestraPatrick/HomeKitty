@@ -10,10 +10,7 @@ public func routes(_ router: Router) throws {
     _ = AboutController(router: router)
     _ = ManufacturerController(router: router)
     _ = AccessoryController(router: router)
-
-    let exploreController = ExploreController()
-    exploreController.addRoutes(router)
-    
+    _ = SearchController(router: router)
     _ = ReportController(router: router)
     _ = DonationController(router: router)
     _ = CategoryController(router: router)
