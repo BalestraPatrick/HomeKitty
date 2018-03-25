@@ -15,7 +15,7 @@
                     <h1>👍👍👍</h1>
                     <p class="lead">Thanks for your message. We'll answer as soon as possible.</p>
                 </div>
-            } ##else() {
+            } else {
                 <div class="col-md-6" id="contribute-column">
                 <h1>Contact / Report Issue</h1>
                 <p>The goal of HomeKitty is to be the central place of discovery for all HomeKit accessories. By helping to improve our database, you can make sure many more people can browse accurate and up to date information.</p>
@@ -36,7 +36,7 @@
                         <label>Accessory related to your question</label>
                         <div class="form-group">
                             <select name="accessory" style="max-width:100%;">
-                                #loop(accessories, "accessory") {
+                                #for(accessory in accessories) {
                                 <option value="#(accessory.name)">#(accessory.name)</option>
                                 }
                             </select>

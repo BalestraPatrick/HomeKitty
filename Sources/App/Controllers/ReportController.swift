@@ -4,48 +4,54 @@
 
 import Vapor
 import HTTP
+import FluentPostgreSQL
+import Leaf
 //import SMTP
 //import SendGridProvider
 
 final class ReportController {
-    //
-    //    var droplet: Droplet!
-    //
-    //    func addRoutes(droplet: Droplet) {
-    //        self.droplet = droplet
-    //        let group = droplet.grouped("report")
-    //        group.get(handler: report)
-    //        group.post("submit", handler: submit)
-    //    }
-    //
-    //    func report(request: Request) throws -> ResponseRepresentable {
-    //        let accessories = try Accessory.makeQuery().filter("approved", true).all().sorted(by: { $0.name.compare($1.name) == .orderedAscending })
-    //        let nodes = try Node(node: [
-    //            "accessories": accessories.makeNode(in: nil),
-    //        ])
-    //        return try droplet.view.make("report", nodes)
-    //    }
-    //
-    //    func submit(request: Request) throws -> ResponseRepresentable {
-    //        guard let topic = ContactTopic(request.formURLEncoded?["topic"]?.string) else { throw Abort.badRequest }
-    //        guard let name = request.formURLEncoded?["name"]?.string else { throw Abort.badRequest }
-    //        guard let email = request.formURLEncoded?["email"]?.string else { throw Abort.badRequest }
-    //        guard let message = request.formURLEncoded?["message"]?.string else { throw Abort.badRequest }
-    //        let accessory = request.formURLEncoded?["accessory"]?.string
-    //        guard let sendgrid = droplet.mail as? SendGrid else { throw Abort.serverError }
-    //
-    //        // Create and send email.
-    //        let myEmail = EmailAddress(name: name, address: "info@homekitty.world")
-    //        let contactMessage = self.contactMessage(for: topic, message: message, accessory: accessory)
-    //        let sendGridEmail = SendGridEmail(from: email, subject: contactMessage.topic.subject, body: contactMessage.body)
-    //        sendGridEmail.personalizations = [Personalization(to: [myEmail])]
-    //        try sendgrid.send([sendGridEmail])
-    //
-    //        // Render success/failure page.
-    //        let node = try Node(node: ["success": true])
-    //        return try droplet.view.make("report", node)
-    //    }
-    //
+
+    init(router: Router) {
+        router.get("report", use: report)
+        router.post("report","submit", use: submit)
+        // group.get(handler: report)
+        // group.post("submit", handler: submit)
+    }
+
+        func report(_ req: Request) throws -> Future<View> {
+            let accessories = try Accessory.query(on: req).filter(\Accessory.approved == true).sort(\Accessory.name, .ascending).all()
+
+            return accessories.flatMap(to: View.self) { accessories in
+                let leaf = try req.make(LeafRenderer.self)
+                let responseData = ReportResponse(accessories: accessories)
+
+                return leaf.render("report", responseData)
+            }
+        }
+
+        func submit(_ req: Request) throws -> Future<View> {
+
+//            guard let topic = ContactTopic(request.formURLEncoded?["topic"]?.string) else { throw Abort.badRequest }
+//            guard let name = request.formURLEncoded?["name"]?.string else { throw Abort.badRequest }
+//            guard let email = request.formURLEncoded?["email"]?.string else { throw Abort.badRequest }
+//            guard let message = request.formURLEncoded?["message"]?.string else { throw Abort.badRequest }
+//            let accessory = request.formURLEncoded?["accessory"]?.string
+//            guard let sendgrid = droplet.mail as? SendGrid else { throw Abort.serverError }
+//
+//            // Create and send email.
+//            let myEmail = EmailAddress(name: name, address: "info@homekitty.world")
+//            let contactMessage = self.contactMessage(for: topic, message: message, accessory: accessory)
+//            let sendGridEmail = SendGridEmail(from: email, subject: contactMessage.topic.subject, body: contactMessage.body)
+//            sendGridEmail.personalizations = [Personalization(to: [myEmail])]
+//            try sendgrid.send([sendGridEmail])
+
+            return try req.content.decode(ReportRequest.self).flatMap(to: View.self) { data in
+                let leaf = try req.make(LeafRenderer.self)
+
+                return leaf.render("report", ["success": true])
+            }
+        }
+    
     //    private func contactMessage(for topic: ContactTopic, message: String, accessory: String? = nil) -> ContactMessage {
     //        let body: String
     //        switch topic {
@@ -54,4 +60,16 @@ final class ReportController {
     //        }
     //        return ContactMessage(topic: topic, body: body)
     //    }
+
+    private struct ReportResponse: Codable {
+        let accessories: [Accessory]
+    }
+
+    private struct ReportRequest: Codable {
+        let topic: String
+        let name: String
+        let email: String
+        let message: String
+        let accessory: String
+    }
 }
