@@ -10,4 +10,5 @@ extension String {
         guard self.hasPrefix("$") == false else { return self }
         return "$\(self)"
     }
+    
 }

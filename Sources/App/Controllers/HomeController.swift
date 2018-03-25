@@ -41,17 +41,6 @@ final class HomeController {
                 })
             })
         })
-
-
-
-//        // Creates a time ago string from the date of each accessory and stores it in a new array
-//        accessoriesDateString = accessories.map { $0.date.timeAgoString() }
-//
-//        // Creates a time ago string from the date of each accessory and stores it in a new array
-//        accessoriesDateString = accessories.map { $0.date.timeAgoString() }
-//
-//        let accessoryCount = try Accessory.makeQuery().filter("approved", true).count()
-//        let manufacturerCount = try Manufacturer.makeQuery().filter("approved", true).count()
     }
 
     private struct HomeResponse: Codable {

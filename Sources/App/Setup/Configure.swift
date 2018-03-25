@@ -18,13 +18,13 @@ public func configure(_ config: inout Config, env: inout Environment, services: 
     try services.register(LeafProvider())
 
     // Stripe
-//    let config = StripeConfig(apiKey: "sk_12345678")
-//
-//    services.register(config)
-//
-//    StripeProvider()
-//
-//    try services.register()
+    //    let config = StripeConfig(apiKey: "sk_12345678")
+    //
+    //    services.register(config)
+    //
+    //    StripeProvider()
+    //
+    //    try services.register()
 
     // Register routes to the router
     let router = EngineRouter.default()

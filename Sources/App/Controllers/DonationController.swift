@@ -12,29 +12,29 @@ final class DonationController {
     init(router: Router) {
         router.get("donation", "thanks" , use: thanks)
         router.get("donation", use: donation)
-//        self.droplet = droplet
-//        let group = droplet.grouped("donation")
-//        group.post(handler: donation)
-//        group.get("thanks", handler: thanks)
+        //        self.droplet = droplet
+        //        let group = droplet.grouped("donation")
+        //        group.post(handler: donation)
+        //        group.get("thanks", handler: thanks)
     }
-
-
+    
+    
     func donation(_ req: Request) throws -> Future<StripeCharge> {
         guard let token: String = try req.query.get(at: "token"),
             let amount: Int = try req.query.get(at: "amount") else {
                 throw Abort(.badRequest)
         }
-
+        
         let stripeClient = try req.make(StripeClient.self)
-
+        
         return try stripeClient.charge.create(amount: amount,
-                                                    currency: .usd,
-                                                    capture: true,
-                                                    description: "HomeKitty Donation",
-                                                    source: token,
-                                                    statementDescriptor: "HomeKitty Donation")
+                                              currency: .usd,
+                                              capture: true,
+                                              description: "HomeKitty Donation",
+                                              source: token,
+                                              statementDescriptor: "HomeKitty Donation")
     }
-
+    
     func thanks(_ req: Request) throws -> Future<View> {
         let leaf = try req.make(LeafRenderer.self)
         return leaf.render("thanks")
