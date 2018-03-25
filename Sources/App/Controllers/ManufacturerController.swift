@@ -19,7 +19,7 @@ final class ManufacturerController {
         
         let manufacturer = try Manufacturer.query(on: req).filter(\Manufacturer.id == param).first()
         let categories = try Category.query(on: req).sort(\Category.name, .ascending).all()
-        let manufacturersCount =  Manufacturer.query(on: req).count()
+        let manufacturersCount =  Manufacturer.query(on: req).filter(\Manufacturer.approved == true).count()
         let accessories = try Accessory.query(on: req).filter(\Accessory.manufacturerId == param).all()
         
         return manufacturer.flatMap(to: View.self) { manufacturer in
@@ -44,7 +44,7 @@ final class ManufacturerController {
     }
     
     func manufacturers(_ req: Request) throws -> Future<View> {
-        let manufacturers = try Manufacturer.query(on: req).sort(\Manufacturer.name, .ascending).all()
+        let manufacturers = try Manufacturer.query(on: req).filter(\Manufacturer.approved == true).sort(\Manufacturer.name, .ascending).all()
         let categories = try Category.query(on: req).sort(\Category.name, .ascending).all()
         let accessoryCount = try Accessory.query(on: req).filter(\Accessory.approved == true).count()
         

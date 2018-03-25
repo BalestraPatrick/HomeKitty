@@ -17,7 +17,7 @@ final class CategoryController {
         let param: Int = try req.parameter()
         
         let categories = try Category.query(on: req).sort(\Category.name, .ascending).all()
-        let manufacturersCount =  Manufacturer.query(on: req).count()
+        let manufacturersCount =  try Manufacturer.query(on: req).filter(\Manufacturer.approved == true).count()
         let accessoriesCount = try Accessory.query(on: req).filter(\Accessory.approved == true).count()
         
         return categories.flatMap(to: View.self, { categories in

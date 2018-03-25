@@ -18,7 +18,7 @@ final class AccessoryController {
     
     func accessories(_ req: Request) throws -> Future<View> {
         let categories = try Category.query(on: req).sort(\Category.name, .ascending).all()
-        let manufacturerCount = Manufacturer.query(on: req).count()
+        let manufacturerCount = try Manufacturer.query(on: req).filter(\Manufacturer.approved == true).count()
         let accessories = try Accessory.query(on: req).filter(\Accessory.approved == true).all()
         
         return flatMap(to: View.self, categories, manufacturerCount, accessories) { categories, manufacturersCount, accesories in
@@ -42,7 +42,7 @@ final class AccessoryController {
         
         let accessory = try Accessory.query(on: req).filter(\Accessory.id == paramId).first()
         let categories = try Category.query(on: req).sort(\Category.name, .ascending).all()
-        let manufacturersCount = Manufacturer.query(on: req).count()
+        let manufacturersCount = try Manufacturer.query(on: req).filter(\Manufacturer.approved == true).count()
         let accessoryCount = try Accessory.query(on: req).filter(\Accessory.approved == true).count()
         
         return accessory.flatMap(to: View.self) { accessory in
