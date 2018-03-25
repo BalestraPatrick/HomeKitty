@@ -22,7 +22,7 @@ final class HomeController {
         // Fetch featured accessory
         let featuredAccessory = try Accessory.query(on: req).filter(\Accessory.featured == true).sort(\Accessory.date, .descending).all()
         let categories = try Category.query(on: req).sort(\Category.name, .ascending).all()
-        let manufacturersCount = Manufacturer.query(on: req).count()
+        let manufacturersCount = try Manufacturer.query(on: req).filter(\Manufacturer.approved == true).count()
         let accessoryCount = try Accessory.query(on: req).filter(\Accessory.approved == true).count()
         let accessories = try Accessory.query(on: req).filter(\Accessory.approved == true).sort(\Accessory.date, .descending).range(lower: 0, upper: visibleAccessoriesLimit).all()
 
