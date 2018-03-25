@@ -1,7 +1,7 @@
 <div class="col-md-3">
     <p class="lead">Search</p>
     <div class="input-group" style="display: block;">
-        <form action="/explore/search" style="display: flex;">
+        <form action="/search" style="display: flex;">
             <input type="text" class="form-control" placeholder="Search" name="term">
             <span class="input-group-btn" style="margin-right: 35px;">
                 <button type="submit" class="btn btn-default" type="button">

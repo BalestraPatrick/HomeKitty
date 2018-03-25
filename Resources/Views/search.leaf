@@ -27,7 +27,7 @@
                         <h5 class="lead">Why not <a href="/contribute">contribute</a> with one yourself?<h5>
                     </div>
                     }
-                    #loop(accessories, "accessory") {
+                    #for(accessory in accessories) {
                         #embed("accessoryItem")
                     }
                 </div>
