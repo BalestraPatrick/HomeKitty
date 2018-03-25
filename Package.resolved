@@ -104,9 +104,9 @@
         "package": "Stripe",
         "repositoryURL": "https://github.com/vapor-community/stripe-provider.git",
         "state": {
-          "branch": "beta",
-          "revision": "a4415c4d003f735c181d232b3c475c4c1578b3e4",
-          "version": null
+          "branch": null,
+          "revision": "9bf4ba87644604f43d651b91fb2e52c6e92fc7d5",
+          "version": "2.0.0-rc1.1"
         }
       },
       {

@@ -82,11 +82,7 @@
             </div>
         </div>
     </div>
-    <script>
-        $(".dropdown-menu li:not(.disabled) a").click(function () {
-          $(this).closest(".dropdown").find(".btn").html('<span id="donation-amount">' + $(this).text() + '</span> <span class="caret"></span>');
-        });
-    </script>
+    <script type="text/javascript" src="/js/about.js"></script>
     <script type="text/javascript" src="/js/product.js"></script>
 }
 #embed("base")

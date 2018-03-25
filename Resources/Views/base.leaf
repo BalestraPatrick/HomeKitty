@@ -46,8 +46,4 @@
         #get(body)
     </body>
     #embed("footer")
-
-    <script>
-        #get(script)
-    </script>
 </html>

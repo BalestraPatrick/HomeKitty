@@ -67,16 +67,7 @@
             }
         </div>
     </div>
-    <script>
-        function topicChanged(selected) {
-            var accessoryIssue = document.getElementById('accessory-issue');
-            if (selected == 'issue') {
-                accessoryIssue.style.display = 'block';
-            } else {
-                accessoryIssue.style.display = 'none';
-            }
-        }
-    </script>
+    <script type="text/javascript" src="/js/report.js"></script>
     #embed("footer")
 }
 
