@@ -1,48 +1,84 @@
 //
-//  Copyright © 2017 Patrick Balestra. All rights reserved.
+//  Copyright © 2018 Kim de Vos. All rights reserved.
 //
 
+import Foundation
 import Vapor
 import HTTP
+import FluentPostgreSQL
+import Leaf
+import Fluent
 
 final class AccessoryController {
 
-    var droplet: Droplet!
-
-    func addRoutes(droplet: Droplet) {
-        self.droplet = droplet
-        let group = droplet.grouped("accessory")
-        group.get(handler: accessory)
+    init(router: Router) {
+        router.get("accessories", Int.parameter, use: accessory)
+        router.get("accessories", use: accessories)
     }
 
-    func accessory(request: Request) throws -> ResponseRepresentable {
-        guard let query = request.query?["name"]?.string else {
-            return Response(redirect: "/")
-        }
-        let approvedAccessories = try Accessory.makeQuery().filter("approved", true)
-        let accessories = try approvedAccessories.all()
-        let accessory = try approvedAccessories.filter("name", query).first()
-        let categories = try Category.all()
-        let manufacturerCount = try Manufacturer.makeQuery().filter("approved", true).count()
+    func accessories(_ req: Request) throws -> Future<View> {
+        let categories = try Category.query(on: req).sort(\Category.name, .ascending).all()
+        let manufacturerCount = Manufacturer.query(on: req).count()
+        let accessories = try Accessory.query(on: req).filter(\Accessory.approved == true).all()
 
-        let node: Node
-
-        if let accessory = accessory {
-            let pageTitle = "Accessory Details"
-            let pageIcon = (try? accessory.category.get()?.image) ?? ""
-            node = try Node(node: [
-                "accessory": accessory.makeNode(in: nil),
-                "manufacturerSelected": true,
-                "categories": categories.makeNode(in: nil),
-                "accessories": accessories.makeNode(in: nil),
-                "pageTitle": pageTitle.makeNode(in: nil),
-                "pageIcon": pageIcon.makeNode(in: nil),
-                "accessoryCount": accessories.count.makeNode(in: nil),
-                "manufacturerCount": manufacturerCount.makeNode(in: nil),
-                ])
-        } else {
-            throw Abort(.notFound)
+        return flatMap(to: View.self, categories, manufacturerCount, accessories) { categories, manufacturersCount, accesories in
+            return try categories.map { try $0.makeResponse(req) }.flatMap(to: View.self, on: req, { categories in
+                return accessories.flatMap(to: View.self, { accessories in
+                    return try accessories.map { try $0.makeResponse(req) }.flatMap(to: View.self, on: req, { accesories in
+                        let data = AccessoriesResponse(accessories: accesories,
+                                                       categories: categories,
+                                                       accessoryCount: accesories.count,
+                                                       manufacturerCount: manufacturersCount)
+                        let leaf = try req.make(LeafRenderer.self)
+                        return leaf.render("accessories", data)
+                    })
+                })
+            })
         }
-        return try droplet.view.make("accessory", node)
+    }
+
+    func accessory(_ req: Request) throws -> Future<View> {
+        let paramId: Int = try req.parameter()
+
+        let accessory = try Accessory.query(on: req).filter(\Accessory.id == paramId).first()
+        let categories = try Category.query(on: req).sort(\Category.name, .ascending).all()
+        let manufacturersCount = Manufacturer.query(on: req).count()
+        let accessoryCount = try Accessory.query(on: req).filter(\Accessory.approved == true).count()
+
+        return accessory.flatMap(to: View.self) { accessory in
+            guard let accessory = accessory else { throw Abort(.notFound) }
+
+            return try accessory.makeResponse(req).flatMap(to: View.self, { accessoryItem in
+                return flatMap(to: View.self, categories, manufacturersCount, accessoryCount) { (categories, manufacturersCount, accessoryCount) in
+                    return try categories.map { try $0.makeResponse(req) }.flatMap(to: View.self, on: req, { categoryItems in
+
+                        let data = AccessoryResponse(pageIcon: categories.first(where: { $0.id == accessory.categoryId })?.image ?? "",
+                                                     accessory: accessoryItem,
+                                                     categories: categoryItems,
+                                                     accessoryCount: accessoryCount,
+                                                     manufacturerCount: manufacturersCount)
+
+                        let leaf = try req.make(LeafRenderer.self)
+                        return leaf.render("accessory", data)
+                    })
+                }
+            })
+        }
+    }
+
+    private struct AccessoryResponse: Codable {
+        let pageTitle = "Accessory Details"
+        let pageIcon: String
+        let accessory: Accessory.AccessoryResponse
+        let categories: [Category.CategoryResponse]
+        let accessoryCount: Int
+        let manufacturerCount: Int
+    }
+
+    private struct AccessoriesResponse: Codable {
+        let accessories: [Accessory.AccessoryResponse]
+        let categories: [Category.CategoryResponse]
+        let accessoryCount: Int
+        let manufacturerCount: Int
     }
 }

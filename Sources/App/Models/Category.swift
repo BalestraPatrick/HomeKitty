@@ -3,24 +3,36 @@
 //
 
 import Vapor
-import FluentProvider
+import Fluent
+import FluentPostgreSQL
 
-final class Category: Model {
-    
+final class Category: PostgreSQLModel {
+
     static var entity = "category"
 
-    let storage = Storage()
-
-    var id: Node?
+    var id: Int?
     var name: String
     var image: String
-    var selected = false
 
     var accessories: Children<Category, Accessory> {
-        return children()
+        return children(\Accessory.categoryId)
     }
-    var accessoriesCount: Int {
-        return (try? accessories.makeQuery().filter("approved", true).all().count) ?? 0
+
+    func accessoriesCount(on req: Request) throws -> Future<Int> {
+        return try accessories.query(on: req).filter(\Accessory.approved == true).count()
+    }
+
+    func makeResponse(_ req: Request) throws -> Future<CategoryResponse> {
+        return try accessoriesCount(on: req).flatMap(to: CategoryResponse.self) { accessoriesCount in
+            let promise = req.eventLoop.newPromise(CategoryResponse.self)
+
+            promise.succeed(result: CategoryResponse(id: self.id,
+                                                     name: self.name,
+                                                     image: self.image,
+                                                     accessoriesCount: accessoriesCount))
+
+            return promise.futureResult
+        }
     }
 
     init(name: String, image: String) {
@@ -28,60 +40,26 @@ final class Category: Model {
         self.image = image
     }
 
-    init(row: Row) throws {
-        id = try row.get("id")
-        name = try row.get("name")
-        image = try row.get("image")
-    }
-
-    func makeRow() throws -> Row {
-        var row = Row()
-        try row.set("id", id)
-        try row.set("name", name)
-        try row.set("image", image)
-        try row.set("accessoriesCount", accessoriesCount)
-        try row.set("selected", selected)
-        return row
-    }
-}
-
-extension Category: NodeRepresentable {
-
-    func makeNode(in context: Context?) throws -> Node {
-        return try Node(node: [
-            "name": name,
-            "image": image,
-            "accessoriesCount": accessoriesCount,
-            "selected": selected,
-        ])
+    struct CategoryResponse: Content {
+        let id: Int?
+        let name: String
+        let image: String
+        let accessoriesCount: Int
     }
 }
 
 // MARK: - Database Preparation
 
-extension Category: Preparation {
-
-    static func prepare(_ database: Database) throws {
-        try database.create(Category.self) { builder in
-            builder.id()
-            builder.string("name")
-            builder.string("image")
-        }
+extension Category: Migration {
+    static func prepare(on connection: PostgreSQLConnection) -> Future<Void> {
+        return Database.create(self, on: connection, closure: { builder in
+            try! builder.field(type: Database.fieldType(for: Int.self), for: \Category.id, isOptional: false, isIdentifier: true)
+            try! builder.field(for: \Category.name)
+            try! builder.field(for: \Category.image)
+        })
     }
 
-    static func revert(_ database: Database) throws {
-        try database.delete(self)
-    }
-}
-
-extension Array where Element: Category {
-
-    func select(selected: String?) -> [Element] {
-        forEach { category in
-            if let selected = selected, selected == category.name {
-                category.selected = true
-            }
-        }
-        return self
+    static func revert(on connection: PostgreSQLConnection) -> Future<Void> {
+        return Database.delete(self, on: connection)
     }
 }

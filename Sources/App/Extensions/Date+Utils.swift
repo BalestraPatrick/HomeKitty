@@ -2,7 +2,7 @@
 //  Copyright © 2017 Patrick Balestra. All rights reserved.
 //
 
-import Vapor
+import Foundation
 
 extension Date {
     func timeAgoString() -> String {

@@ -4,12 +4,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" href="/css/content.css">
     <link href="//cdn-images.mailchimp.com/embedcode/classic-10_7.css" rel="stylesheet" type="text/css">
-    <title>HomeKitty - Browse HomeKit Accessories</title>
+    <title>HomeKitty - HomeKit Accessories</title>
 }
 
 
 #set("body") {
-    #embed("navigation")
     <div class="container container-content">
         <div class="row">
             <!-- Side Menu -->
@@ -17,14 +16,6 @@
 
             <!-- Content -->
             <div class="col-md-9">
-                #if(featuredAccessory) {
-                <div class="flex-item" style="margin-top: 10px;">
-                    <p class="lead">Featured Accessory</p>
-                    <a href="/accessories/#(featuredAccessory.id)">
-                    <img src="#(featuredAccessory.image)" width="100%" style="height:200px" >
-                    </a>
-                </div>
-                }
                 <div class="flex-item" style="margin-top: 10px;">
                     <p class="lead">Latest Accessories</p>
                 </div>
@@ -43,7 +34,6 @@
             </div>
         </div>
     </div>
-    #embed("footer")
     <script type="text/javascript" src="/js/explore.js"></script>
     <script type='text/javascript' src='//s3.amazonaws.com/downloads.mailchimp.com/js/mc-validate.js'></script><script type='text/javascript'>(function($) {window.fnames = new Array(); window.ftypes = new Array();fnames[0]='EMAIL';ftypes[0]='email';fnames[1]='FNAME';ftypes[1]='text';fnames[2]='LNAME';ftypes[2]='text';fnames[3]='BIRTHDAY';ftypes[3]='birthday';}(jQuery));var $mcj = jQuery.noConflict(true);</script>
 }

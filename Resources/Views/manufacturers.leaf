@@ -1,0 +1,45 @@
+#set("head") {
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>HomeKitty - Browse HomeKit Accessories</title>
+    <link rel="stylesheet" href="/css/content.css">
+}
+
+
+#set("body") {
+    <div class="container container-content">
+        <div class="row">
+
+            <!-- Side Menu -->
+            #embed("sidemenu")
+
+            <!-- Content -->
+            <div class="col-md-9">
+                <div class="flex-item" style="margin-top: 10px;">
+                    <img src="#get(pageIcon)" width="50px">
+                    <p class="lead">#(pageTitle)</p>
+                    <p><a href="#(manufacturerLink)" target="_blank">#(manufacturerLink)</a></p>
+                </div>
+                <div class="row">
+                        #for(manufacturer in manufacturers) {
+                        <div class="col-sm-4 col-lg-4 col-md-4">
+                            <div class="thumbnail" style="height: auto;">
+                                <a href="/manufacturers/#(manufacturer.id)"></a>
+                                <div class="caption">
+                                    <div><h4><a href="/manufacturers/#(manufacturer.id)">#(manufacturer.name)</a></h4></div>
+                                    <div style="display: flex; justify-content: center; align-items: center;">
+                                        <p><a href="#(manufacturer.website_link)" target="_blank">#(manufacturer.website_link)</a></p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        }
+                </div>
+            </div>
+        </div>
+    </div>
+    <script type="text/javascript" src="/js/explore.js"></script>
+}
+
+#embed("base")

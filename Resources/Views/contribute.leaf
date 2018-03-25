@@ -1,6 +1,4 @@
-#extend("base")
-
-#export("head") {
+#set("head") {
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -8,8 +6,19 @@
     <title>HomeKitty - Browse HomeKit Accessories</title>
 }
 
-#export("body") {
-    #embed("navigation")
+#set("script") {
+        function toggleBridgesSelectionAppearance() {
+            var bridgeOptionsList = document.getElementById('required-bridge-selection');
+            if (bridgeOptionsList.style.display !== 'none') {
+                bridgeOptionsList.style.display = 'none';
+            } else {
+                bridgeOptionsList.style.display = 'block';
+            }
+        }
+}
+        
+
+#set("body") {
     <div class="container container-content">
         <div class="row">
             #if(success) {
@@ -17,7 +26,7 @@
                     <h1>👏👏👏</h1>
                     <p class="lead">Thanks for you contribution. We'll review it as soon as possible and publicly make it available.</p>
                 </div>
-            } ##else() {
+            } else {
                 <div class="col-md-6" id="contribute-column">
                 <h1>Submit an accessory</h1>
                 <p>The goal of HomeKitty is to be the central place of discovery for all HomeKit accessories. By contributing to our database, you can help many more people discover new, incredible possibilities. Do you want to report an issue with an existing accessory? Report it <a href="/report">here</a>.</p>
@@ -50,7 +59,7 @@
                         <label for="region">Regions</label>
                         <p>Please provide accessory compatible regions.</p>
                             <select name="regions" class="selectpicker" multiple title="Select a region">
-                                #loop(regions, "region") {
+                                #for(region in regions) {
                                     <option value="#(region.full_name)">#(region.full_name)</option>
                                 }
                             </select>
@@ -73,7 +82,7 @@
                     <div class="form-group">
                         <select id="required-bridge-selection" name="required_bridge" style="display: none;">
                             <option value="" disabled selected>Select a bridge</option>
-                            #loop(bridges, "bridge") {
+                            #for(bridge in bridges) {
                                 <option value="#(bridge.name)">#(bridge.name)</option>
                             }
                         </select>
@@ -83,7 +92,7 @@
                     <h4>Category</h4>
                     <div class="form-group">
                         <select name="category">
-                            #loop(categories, "category") {
+                            #for(category in categories) {
                             <option value="#(category.name)">#(category.name)</option>
                             }
                         </select>
@@ -94,7 +103,7 @@
                     <div class="form-group">
                         <select id="manufacturer-selection" name="manufacturer" required>
                             <option value="" disabled selected>Select a manufacturer</option>
-                            #loop(manufacturers, "manufacturer") {
+                            #for(manufacturer in manufacturers) {
                                 <option value="#(manufacturer.name)">#(manufacturer.name)</option>
                             }
                         </select>
@@ -126,52 +135,5 @@
             }
         </div>
     </div>
-    <script>
-        function toggleBridgesSelectionAppearance() {
-            var bridgeOptionsList = document.getElementById('required-bridge-selection');
-            if (bridgeOptionsList.style.display !== 'none') {
-                bridgeOptionsList.style.display = 'none';
-            } else {
-                bridgeOptionsList.style.display = 'block';
-            }
-        }
-
-        function showHide() {
-            var addNewButton = document.getElementById('add-new-button');
-            var form = document.getElementById('add-manufacturer-form');
-            var optionList = document.getElementById('manufacturer-selection');
-            if (form.style.display !== 'none') {
-                form.style.display = 'none';
-                addNewButton.innerHTML = 'Add New Manufacturer';
-                optionList.required = true;
-                optionList.disabled = false;
-                document.getElementById('manufacturer-name-input').required = false;
-                document.getElementById('manufacturer-name-input').disabled = true;
-                document.getElementById('manufacturer-logo-input').required = false;
-                document.getElementById('manufacturer-logo-input').disabled = true;
-                document.getElementById('manufacturer-website-input').required = false;
-                document.getElementById('manufacturer-website-input').disabled = true;
-            } else {
-                form.style.display = 'block';
-                addNewButton.innerHTML = 'Choose Existing';
-                optionList.required = false;
-                optionList.disabled = true;
-                document.getElementById('manufacturer-name-input').required = true;
-                document.getElementById('manufacturer-name-input').disabled = false;
-                document.getElementById('manufacturer-logo-input').required = true;
-                document.getElementById('manufacturer-logo-input').disabled = false;
-                document.getElementById('manufacturer-website-input').required = true;
-                document.getElementById('manufacturer-website-input').disabled = false;
-            }
-        }
-
-        function formatPriceInput() {
-            var priceInput = document.getElementById('price-input');
-            if (priceInput) {
-                var formattedPrice = Number(priceInput.value).toFixed(2);
-                priceInput.value = isNaN(formattedPrice) ? "" : formattedPrice;
-            }
-        }
-    </script>
-    #embed("footer")
 }
+#embed("base")

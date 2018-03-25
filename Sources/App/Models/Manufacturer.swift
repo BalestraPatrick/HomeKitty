@@ -3,25 +3,25 @@
 //
 
 import Vapor
-import FluentProvider
+import FluentPostgreSQL
 
-final class Manufacturer: Model {
+final class Manufacturer: PostgreSQLModel {
 
     static var entity = "manufacturer"
 
-    let storage = Storage()
-
-    var id: Node?
+    var id: Int?
     var name: String
     var websiteLink: String
     var approved = false
 
     var directLink: String {
-        return "manufacturer?name=\(name)"
+        guard let id = id else { return "error" }
+        return "manufacturers/\(id)"
     }
-    var accessories: Children<Manufacturer, Accessory> {
-        return children()
-    }
+    
+//    var accessories: Children<Manufacturer, Accessory> {
+//        return children()
+//    }
 
     init(name: String, websiteLink: String, approved: Bool = false) {
         self.name = name
@@ -29,59 +29,29 @@ final class Manufacturer: Model {
         self.approved = approved
     }
 
-    init(row: Row) throws {
-        id = try row.get("id")
-        name = try row.get("name")
-        websiteLink = try row.get("website_link")
-        approved = try row.get("approved")
-    }
-
-    func makeRow() throws -> Row {
-        var row = Row()
-        try row.set("id", id)
-        try row.set("name", name)
-        try row.set("website_link", websiteLink)
-        try row.set("approved", approved)
-        return row
+    enum CodingKeys: String, CodingKey {
+        case id
+        case name
+        case websiteLink = "website_link"
+        case approved
     }
 }
 
-extension Manufacturer: NodeRepresentable {
+// MARK: - Database Migration
 
-    func makeNode(in context: Context?) throws -> Node {
-        return try Node(node: [
-            "name": name,
-            "website_link": websiteLink
-            ])
-    }
-}
-
-extension Manufacturer: ResponseRepresentable {
-
-    func makeResponse() throws -> Response {
-        var json = JSON()
-        try json.set("id", id)
-        try json.set("name", name)
-        try json.set("website_link", websiteLink)
-        try json.set("approved", approved)
-        return try json.makeResponse()
-    }
-}
-
-// MARK: - Database Preparation
-
-extension Manufacturer: Preparation {
-
-    static func prepare(_ database: Database) throws {
-        try database.create(self) { builder in
-            builder.id()
-            builder.string("name")
-            builder.string("website_link")
-            builder.bool("approved")
-        }
+extension Manufacturer: Migration {
+    static func prepare(on connection: PostgreSQLConnection) -> Future<Void> {
+        return Database.create(self, on: connection, closure: { builder in
+            try! builder.field(type: Database.fieldType(for: Int.self), for: \Manufacturer.id, isOptional: false, isIdentifier: true)
+            try! builder.field(for: \Manufacturer.name)
+            try! builder.field(for: \Manufacturer.websiteLink)
+            try! builder.field(for: \Manufacturer.approved)
+        })
     }
 
-    static func revert(_ database: Database) throws {
-        try database.delete(self)
+    static func revert(on connection: PostgreSQLConnection) -> Future<Void> {
+        return Database.delete(self, on: connection)
     }
+
+
 }

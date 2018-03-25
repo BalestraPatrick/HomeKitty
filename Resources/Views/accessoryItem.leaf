@@ -1,0 +1,30 @@
+<div class="col-sm-4 col-lg-4 col-md-4">
+    <div class="thumbnail latest-list" style="display: flex;justify-content: space-between; flex-grow: 1; flex-direction: column;">
+        <a href="/accessories/#(accessory.id)">
+            <img src="#(accessory.image)" alt="#(accessory.name)" style="height:200px" class="accessory-image">
+        </a>
+        <a href="/accessories/#(accessory.id)" class="accessory-name">
+            <h4>#(accessory.name)</h4>
+        </a>
+        <div class="accessory-information-container">
+            <div>
+                <h4 class="accessory-price">#(accessory.price)</h4>
+                <div class="accessory-information">
+                    <div class="accessory-manufacturer-container">
+                        <p class="accessory-manufacturer">By
+                            <a href="/#(accessory.manufacturer_link)">#get(accessory.manufacturer)</a>
+                        </p>
+                    </div>
+                    #if(accessory.released) { } else {
+                    <a data-toggle="popover" data-content="Accessory or HomeKit support will be released soon." data-placement="top" data-trigger="hover">
+                        <img src="/images/coming-soon.png" class="coming-soon-icon" style="height: 25px; width: 25px;">
+                    </a>
+                    } #if(accessory.requires_hub) {
+                    <img src="/images/bridge.png" class="bridge-icon" style="height: 25px; width: 25px;" data-toggle="popover" data-content="This accessory requires a proprietary bridge."
+                        data-placement="top" data-trigger="hover"> }
+                </div>
+                <p>#(accessory.time_ago)</p>
+            </div>
+        </div>
+    </div>
+</div>
