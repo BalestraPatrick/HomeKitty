@@ -122,6 +122,37 @@ final class Accessory: PostgreSQLModel {
         }
     }
 
+    func didCreate(on connection: PostgreSQLConnection) throws -> EventLoopFuture<Accessory> {
+        try updateCounterCache(connection)
+        return Future.map(on: connection, { self })
+    }
+
+    func didUpdate(on connection: PostgreSQLConnection) throws -> EventLoopFuture<Accessory> {
+        try updateCounterCache(connection)
+        return Future.map(on: connection, { self })
+    }
+    func willDelete(on connection: PostgreSQLConnection) throws -> EventLoopFuture<Accessory> {
+        try updateCounterCache(connection, willDelete: true)
+        return Future.map(on: connection, { self })
+    }
+
+    func updateCounterCache(_ connection: PostgreSQLConnection, willDelete: Bool = false) throws {
+        _ = try category.get(on: connection).flatMap(to: Category.self, { category in
+            return try Category
+                .query(on: connection)
+                .filter(\Category.id == self.categoryId)
+                .count()
+                .flatMap(to: Category.self, { participationCount in
+                    if !willDelete {
+                        category.accessoriesCount = participationCount
+                    } else {
+                        category.accessoriesCount = participationCount - 1
+                    }
+                    return category.save(on: connection)
+                })
+        })
+    }
+
     struct AccessoryResponse: Codable {
         let id: Int?
         let name: String

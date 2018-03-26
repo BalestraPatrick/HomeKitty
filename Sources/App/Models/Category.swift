@@ -13,40 +13,26 @@ final class Category: PostgreSQLModel {
     var id: Int?
     var name: String
     var image: String
+    var accessoriesCount: Int = 0
+
+    enum CodingKeys: String, CodingKey {
+        case id
+        case name
+        case image
+        case accessoriesCount = "accessories_count"
+    }
 
     var accessories: Children<Category, Accessory> {
         return children(\Accessory.categoryId)
-    }
-
-    func accessoriesCount(on req: Request) throws -> Future<Int> {
-        return try accessories.query(on: req).filter(\Accessory.approved == true).count()
-    }
-
-    func makeResponse(_ req: Request) throws -> Future<CategoryResponse> {
-        return try accessoriesCount(on: req).flatMap(to: CategoryResponse.self) { accessoriesCount in
-            let promise = req.eventLoop.newPromise(CategoryResponse.self)
-
-            promise.succeed(result: CategoryResponse(id: self.id,
-                                                     name: self.name,
-                                                     image: self.image,
-                                                     accessoriesCount: accessoriesCount))
-
-            return promise.futureResult
-        }
     }
 
     init(name: String, image: String) {
         self.name = name
         self.image = image
     }
-
-    struct CategoryResponse: Content {
-        let id: Int?
-        let name: String
-        let image: String
-        let accessoriesCount: Int
-    }
 }
+
+extension Category: Content {}
 
 // MARK: - Database Preparation
 
@@ -56,6 +42,7 @@ extension Category: Migration {
             try! builder.field(type: Database.fieldType(for: Int.self), for: \Category.id, isOptional: false, isIdentifier: true)
             try! builder.field(for: \Category.name)
             try! builder.field(for: \Category.image)
+            try! builder.field(for: \Category.accessoriesCount)
         })
     }
 

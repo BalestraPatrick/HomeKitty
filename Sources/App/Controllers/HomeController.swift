@@ -27,7 +27,6 @@ final class HomeController {
         let accessories = try Accessory.query(on: req).filter(\Accessory.approved == true).sort(\Accessory.date, .descending).range(lower: 0, upper: visibleAccessoriesLimit).all()
 
         return flatMap(to: View.self, featuredAccessory, categories, manufacturersCount, accessoryCount, accessories, { (featuredAccessory, categories, manufacturersCount, accessoryCount, accessories) in
-            return try categories.map { try $0.makeResponse(req) }.flatMap(to: View.self, on: req, { categories in
                 return try featuredAccessory.map { try $0.makeResponse(req) }.flatMap(to: View.self, on: req, { featuredAccessory in
                     return try accessories.map { try $0.makeResponse(req) }.flatMap(to: View.self, on: req, { accessories in
                         let data = HomeResponse(featuredAccessory: featuredAccessory.first,
@@ -37,7 +36,6 @@ final class HomeController {
                                                 manufacturerCount: manufacturersCount)
                         let leaf = try req.make(LeafRenderer.self)
                         return leaf.render("home", data)
-                    })
                 })
             })
         })
@@ -45,7 +43,7 @@ final class HomeController {
 
     private struct HomeResponse: Codable {
         let featuredAccessory: Accessory.AccessoryResponse?
-        let categories: [Category.CategoryResponse]
+        let categories: [Category]
         let accessories: [Accessory.AccessoryResponse]
         let accessoryCount: Int
         let manufacturerCount: Int

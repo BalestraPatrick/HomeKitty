@@ -28,16 +28,14 @@ final class ContributeController {
         let regions = try Region.query(on: req).sort(\Region.fullName, .ascending).all()
         
         return flatMap(to: View.self, manufacturers, categories, bridges, regions, { (manufacturers, categories, bridges, regions) in
-            return try categories.map { try $0.makeResponse(req) }.flatMap(to: View.self, on: req, { categories in
-                return try bridges.map { try $0.makeResponse(req) }.flatMap(to: View.self, on: req, { bridges in
-                    let data = ContributeResponse(categories: categories,
-                                                  manufacturers: manufacturers,
-                                                  bridges: bridges,
-                                                  regions: regions)
-                    
-                    let leaf = try req.make(LeafRenderer.self)
-                    return leaf.render("contribute", data)
-                })
+            return try bridges.map { try $0.makeResponse(req) }.flatMap(to: View.self, on: req, { bridges in
+                let data = ContributeResponse(categories: categories,
+                                              manufacturers: manufacturers,
+                                              bridges: bridges,
+                                              regions: regions)
+                
+                let leaf = try req.make(LeafRenderer.self)
+                return leaf.render("contribute", data)
             })
         })
     }
@@ -101,7 +99,7 @@ final class ContributeController {
     }
     
     struct ContributeResponse: Codable {
-        let categories: [Category.CategoryResponse]
+        let categories: [Category]
         let manufacturers: [Manufacturer]
         let bridges: [Accessory.AccessoryResponse]
         let regions: [Region]
