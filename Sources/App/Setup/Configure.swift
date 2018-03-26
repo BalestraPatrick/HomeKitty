@@ -39,7 +39,9 @@ public func configure(_ config: inout Config, env: inout Environment, services: 
     services.register(middlewares)
 
     // Configure a SQLite database
-    let databases = PostgreSQLDatabaseConfig(hostname: "localhost", port: 5432, username: "kimdevos", database: "postgres")
+    let databases = PostgreSQLDatabase(config: PostgreSQLDatabaseConfig(hostname: "localhost", port: 5432, username: "kimdevos", database: "postgres"))
+    databases.enableLogging(using: DatabaseLogger.print)
+    
     services.register(databases)
 
     // Configure migrations

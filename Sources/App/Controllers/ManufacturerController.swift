@@ -19,14 +19,13 @@ final class ManufacturerController {
         
         let manufacturer = try Manufacturer.query(on: req).filter(\Manufacturer.id == param).first()
         let categories = try Category.query(on: req).sort(\Category.name, .ascending).all()
-        let manufacturersCount =  Manufacturer.query(on: req).filter(\Manufacturer.approved == true).count()
+        let manufacturersCount = try Manufacturer.query(on: req).filter(\Manufacturer.approved == true).count()
         let accessories = try Accessory.query(on: req).filter(\Accessory.manufacturerId == param).all()
         
         return manufacturer.flatMap(to: View.self) { manufacturer in
             guard let manufacturer = manufacturer else { throw Abort(.notFound) }
             
             return flatMap(to: View.self, categories, manufacturersCount, accessories, { (categories, manufacturersCount, accessories) in
-                return try categories.compactMap { try $0.makeResponse(req) }.flatMap(to: View.self, on: req, { categories in
                     return try accessories.map { try $0.makeResponse(req) }.flatMap(to: View.self, on: req, { accessories in
                         let leaf = try req.make(LeafRenderer.self)
                         let responseData = ManufacturerResponse(manufacturer: manufacturer,
@@ -37,7 +36,6 @@ final class ManufacturerController {
                                                                 accessories: accessories)
                         
                         return leaf.render("manufacturer", responseData)
-                    })
                 })
             })
         }
@@ -49,7 +47,6 @@ final class ManufacturerController {
         let accessoryCount = try Accessory.query(on: req).filter(\Accessory.approved == true).count()
         
         return flatMap(to: View.self, manufacturers, categories, accessoryCount, { (manufacturers, categories, accessoryCount) in
-            return try categories.compactMap { try $0.makeResponse(req) }.flatMap(to: View.self, on: req, { categories in
                 let leaf = try req.make(LeafRenderer.self)
                 let responseData = ManufacturersResponse(pageTitle: "All Manufacturers",
                                                          pageIcon: "",
@@ -59,7 +56,6 @@ final class ManufacturerController {
                                                          manufacturers: manufacturers)
                 
                 return leaf.render("manufacturers", responseData)
-            })
         })
     }
     
@@ -68,7 +64,7 @@ final class ManufacturerController {
         let pageIcon: String
         let accessoryCount: Int
         let manufacturerCount: Int
-        let categories: [Category.CategoryResponse]
+        let categories: [Category]
         let manufacturers: [Manufacturer]
     }
     
@@ -77,7 +73,7 @@ final class ManufacturerController {
         let pageIcon: String
         let accessoryCount: Int
         let manufacturerCount: Int
-        let categories: [Category.CategoryResponse]
+        let categories: [Category]
         let accessories: [Accessory.AccessoryResponse]
     }
 }
