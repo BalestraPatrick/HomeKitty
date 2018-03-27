@@ -6,6 +6,7 @@ import Vapor
 import HTTP
 import FluentPostgreSQL
 import Leaf
+import FluentSQL
 
 final class SearchController {
 
@@ -65,7 +66,9 @@ final class SearchController {
     //
     func search(_ req: Request) throws -> Future<View> {
         guard let search: String = try req.query.get(at: "term") else { throw Abort(.badRequest) }
-
+        let categories = try QueryHelper.categories(request: req)
+        let manufacturerCount = try QueryHelper.manufacturerCount(request: req)
+        let accessoryCount = try QueryHelper.accessoriesCount(request: req)
 
         //            let allAccessories = try Accessory.makeQuery().filter("approved", true).all()
         //            let accessoryCount = allAccessories.count
@@ -76,37 +79,27 @@ final class SearchController {
         //                let nameResult = accessory.name.lowercased().contains(search)
         //                return manufacturerResult || nameResult
         //            }
-
-        let manufacturerCount = try Manufacturer.query(on: req).filter(\Manufacturer.approved == true).count()
-        let accessoryCount = try Accessory.query(on: req).filter(\Accessory.approved == true).count()
-
-        let categories = try Category.query(on: req).sort(\Category.name, .ascending).all()
-        let accessories = try Accessory.query(on: req).filter(\Accessory.name.localizedLowercase == search).all()
+        let accessories = try QueryHelper.accessories(request: req, searchQuery: search).all()
 
         return flatMap(to: View.self, manufacturerCount, accessoryCount, categories, accessories, { (manufacturerCount, accessoryCount, categories, accessories) in
-            return try categories.map { try $0.makeResponse(req) }.flatMap(to: View.self, on: req, { categories in
-                return try accessories.map { try $0.makeResponse(req) }.flatMap(to: View.self, on: req, { accessories in
-                    let data = SearchResponse(categories: categories,
-                                              accessories: accessories,
-                                              pageTitle: "Results for \"\(search)\"",
-                        noAccessories: accessories.isEmpty,
-                        accessoryCount: accessoryCount,
-                        manufacturerCount: manufacturerCount)
-
-                    let leaf = try req.make(LeafRenderer.self)
-                    return leaf.render("search", data)
-                })
-            })
+            let data = SearchResponse(categories: categories,
+                                      accessories: accessories,
+                                      pageTitle: "Results for \"\(search)\"",
+                noAccessories: accessories.isEmpty,
+                accessoryCount: accessoryCount,
+                manufacturerCount: manufacturerCount)
+            
+            let leaf = try req.make(LeafRenderer.self)
+            return leaf.render("search", data)
         })
     }
 
     private struct SearchResponse: Codable {
-        let categories: [Category.CategoryResponse]
+        let categories: [Category]
         let accessories: [Accessory.AccessoryResponse]
         let pageTitle: String
         let noAccessories: Bool
         let accessoryCount: Int
         let manufacturerCount: Int
-
     }
 }

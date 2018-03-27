@@ -19,10 +19,6 @@ final class Manufacturer: PostgreSQLModel {
         return "manufacturers/\(id)"
     }
     
-//    var accessories: Children<Manufacturer, Accessory> {
-//        return children()
-//    }
-
     init(name: String, websiteLink: String, approved: Bool = false) {
         self.name = name
         self.websiteLink = websiteLink

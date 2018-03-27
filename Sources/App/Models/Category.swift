@@ -32,8 +32,6 @@ final class Category: PostgreSQLModel {
     }
 }
 
-extension Category: Content {}
-
 // MARK: - Database Preparation
 
 extension Category: Migration {

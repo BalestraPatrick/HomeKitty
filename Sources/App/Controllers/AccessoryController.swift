@@ -17,48 +17,41 @@ final class AccessoryController {
     }
     
     func accessories(_ req: Request) throws -> Future<View> {
-        let categories = try Category.query(on: req).sort(\Category.name, .ascending).all()
-        let manufacturerCount = try Manufacturer.query(on: req).filter(\Manufacturer.approved == true).count()
-        let accessories = try Accessory.query(on: req).filter(\Accessory.approved == true).all()
+        let categories = try QueryHelper.categories(request: req)
+        let manufacturerCount = try QueryHelper.manufacturerCount(request: req)
+        let accessories = try QueryHelper.accessories(request: req).all()
         
         return flatMap(to: View.self, categories, manufacturerCount, accessories) { categories, manufacturersCount, accesories in
-            return accessories.flatMap(to: View.self, { accessories in
-                return try accessories.map { try $0.makeResponse(req) }.flatMap(to: View.self, on: req, { accesories in
-                    let data = AccessoriesResponse(accessories: accesories,
-                                                   categories: categories,
-                                                   accessoryCount: accesories.count,
-                                                   manufacturerCount: manufacturersCount)
-                    let leaf = try req.make(LeafRenderer.self)
-                    return leaf.render("accessories", data)
-                })
-            })
+            let data = AccessoriesResponse(accessories: accesories,
+                                           categories: categories,
+                                           accessoryCount: accesories.count,
+                                           manufacturerCount: manufacturersCount)
+            let leaf = try req.make(LeafRenderer.self)
+            return leaf.render("accessories", data)
         }
     }
     
     func accessory(_ req: Request) throws -> Future<View> {
         let paramId: Int = try req.parameter()
         
-        let accessory = try Accessory.query(on: req).filter(\Accessory.id == paramId).first()
-        let categories = try Category.query(on: req).sort(\Category.name, .ascending).all()
-        let manufacturersCount = try Manufacturer.query(on: req).filter(\Manufacturer.approved == true).count()
-        let accessoryCount = try Accessory.query(on: req).filter(\Accessory.approved == true).count()
+        let accessory = try QueryHelper.accessory(request: req, id: paramId)
+        let categories = try QueryHelper.categories(request: req)
+        let manufacturersCount = try QueryHelper.manufacturerCount(request: req)
+        let accessoryCount = try QueryHelper.accessoriesCount(request: req)
         
         return accessory.flatMap(to: View.self) { accessory in
             guard let accessory = accessory else { throw Abort(.notFound) }
             
-            return try accessory.makeResponse(req).flatMap(to: View.self, { accessoryItem in
-                return flatMap(to: View.self, categories, manufacturersCount, accessoryCount) { (categories, manufacturersCount, accessoryCount) in
-                    
-                    let data = AccessoryResponse(pageIcon: categories.first(where: { $0.id == accessory.categoryId })?.image ?? "",
-                                                 accessory: accessoryItem,
-                                                 categories: categories,
-                                                 accessoryCount: accessoryCount,
-                                                 manufacturerCount: manufacturersCount)
-                    
-                    let leaf = try req.make(LeafRenderer.self)
-                    return leaf.render("accessory", data)
-                }
-            })
+            return flatMap(to: View.self, categories, manufacturersCount, accessoryCount) { (categories, manufacturersCount, accessoryCount) in
+                let data = AccessoryResponse(pageIcon: categories.first(where: { $0.id == accessory.categoryId })?.image ?? "",
+                                             accessory: accessory,
+                                             categories: categories,
+                                             accessoryCount: accessoryCount,
+                                             manufacturerCount: manufacturersCount)
+
+                let leaf = try req.make(LeafRenderer.self)
+                return leaf.render("accessory", data)
+            }
         }
     }
     

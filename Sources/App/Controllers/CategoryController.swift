@@ -16,27 +16,25 @@ final class CategoryController {
     func manufacturer(_ req: Request) throws -> Future<View> {
         let param: Int = try req.parameter()
         
-        let categories = try Category.query(on: req).sort(\Category.name, .ascending).all()
-        let manufacturersCount =  try Manufacturer.query(on: req).filter(\Manufacturer.approved == true).count()
-        let accessoriesCount = try Accessory.query(on: req).filter(\Accessory.approved == true).count()
+        let categories = try QueryHelper.categories(request: req)
+        let manufacturersCount = try QueryHelper.manufacturerCount(request: req)
+        let accessoriesCount = try QueryHelper.accessoriesCount(request: req)
         
         return categories.flatMap(to: View.self, { categories in
             guard let category = categories.first(where: { $0.id == param }) else { throw Abort(.notFound) }
             
-            let accessories = try category.accessories.query(on: req).filter(\Accessory.approved == true).all()
+            let accessories = try QueryHelper.accessories(request: req, categoryId: category.id).all()
             
             return flatMap(to: View.self, manufacturersCount, accessories, accessoriesCount, { (manufacturersCount, accessories, accessoriesCount) in
-                return try accessories.map { try $0.makeResponse(req) }.flatMap(to: View.self, on: req, { accessories in
-                    let leaf = try req.make(LeafRenderer.self)
-                    let responseData = CategoryResponse(category: category,
-                                                        pageIcon: category.image,
-                                                        accessoryCount: accessoriesCount,
-                                                        manufacturerCount: manufacturersCount,
-                                                        categories: categories,
-                                                        accessories: accessories)
-                    
-                    return leaf.render("manufacturer", responseData)
-                })
+                let leaf = try req.make(LeafRenderer.self)
+                let responseData = CategoryResponse(category: category,
+                                                    pageIcon: category.image,
+                                                    accessoryCount: accessoriesCount,
+                                                    manufacturerCount: manufacturersCount,
+                                                    categories: categories,
+                                                    accessories: accessories)
+                
+                return leaf.render("manufacturer", responseData)
             })
         })
     }
