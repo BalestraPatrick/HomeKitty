@@ -84,6 +84,14 @@ final class QueryHelper {
             .first()
     }
 
+    static func bridges(request req: Request) throws -> Future<[Accessory.AccessoryResponse]> {
+        return try Category.query(on: req).filter(\Category.name == "Bridges").first().flatMap(to: [Accessory.AccessoryResponse].self, { (category)  in
+            guard let category = category else { throw Abort(.internalServerError) }
+
+            return try QueryHelper.accessories(request: req, categoryId: category.id).all()
+        })
+    }
+
     // MARK: - Regions
     static func regions(request req: Request) throws -> Future<[Region]> {
         return try Region.query(on: req).sort(\Region.fullName, .ascending).all()

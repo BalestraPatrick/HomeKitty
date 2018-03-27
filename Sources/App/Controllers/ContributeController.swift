@@ -17,16 +17,10 @@ final class ContributeController {
     }
     
     func contribute(_ req: Request) throws -> Future<View> {
-        let manufacturers = try Manufacturer.query(on: req).filter(\Manufacturer.approved == true).sort(\Manufacturer.name, .ascending).all()
-        let categories = try Category.query(on: req).sort(\Category.name, .ascending).all()
-        let bridges = try Category.query(on: req).filter(\Category.name == "Bridges").first().flatMap(to: [Accessory.AccessoryResponse].self, { (category)  in
-            guard let category = category else { throw Abort(.internalServerError) }
-            
-            return try QueryHelper.accessories(request: req, categoryId: category.id).all()
-        })
-        
+        let manufacturers = try QueryHelper.manufacturers(request: req)
+        let categories = try QueryHelper.categories(request: req)
+        let bridges = try QueryHelper.bridges(request: req)
         let regions = try QueryHelper.regions(request: req)
-
 
         return flatMap(to: View.self, manufacturers, categories, bridges, regions, { (manufacturers, categories, bridges, regions) in
             let data = ContributeResponse(categories: categories,
