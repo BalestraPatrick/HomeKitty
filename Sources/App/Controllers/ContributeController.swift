@@ -19,24 +19,23 @@ final class ContributeController {
     func contribute(_ req: Request) throws -> Future<View> {
         let manufacturers = try Manufacturer.query(on: req).filter(\Manufacturer.approved == true).sort(\Manufacturer.name, .ascending).all()
         let categories = try Category.query(on: req).sort(\Category.name, .ascending).all()
-        let bridges = try Category.query(on: req).filter(\Category.name == "Bridges").first().flatMap(to: [Accessory].self, { (category)  in
+        let bridges = try Category.query(on: req).filter(\Category.name == "Bridges").first().flatMap(to: [Accessory.AccessoryResponse].self, { (category)  in
             guard let category = category else { throw Abort(.internalServerError) }
             
-            return try category.accessories.query(on: req).all()
+            return try QueryHelper.accessories(request: req, categoryId: category.id).all()
         })
         
-        let regions = try Region.query(on: req).sort(\Region.fullName, .ascending).all()
-        
+        let regions = try QueryHelper.regions(request: req)
+
+
         return flatMap(to: View.self, manufacturers, categories, bridges, regions, { (manufacturers, categories, bridges, regions) in
-            return try bridges.map { try $0.makeResponse(req) }.flatMap(to: View.self, on: req, { bridges in
-                let data = ContributeResponse(categories: categories,
-                                              manufacturers: manufacturers,
-                                              bridges: bridges,
-                                              regions: regions)
-                
-                let leaf = try req.make(LeafRenderer.self)
-                return leaf.render("contribute", data)
-            })
+            let data = ContributeResponse(categories: categories,
+                                          manufacturers: manufacturers,
+                                          bridges: bridges,
+                                          regions: regions)
+
+            let leaf = try req.make(LeafRenderer.self)
+            return leaf.render("contribute", data)
         })
     }
     

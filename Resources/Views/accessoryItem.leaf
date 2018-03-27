@@ -12,7 +12,7 @@
                 <div class="accessory-information">
                     <div class="accessory-manufacturer-container">
                         <p class="accessory-manufacturer">By
-                            <a href="/#(accessory.manufacturer_link)">#get(accessory.manufacturer)</a>
+                            <a href="/manufacturers/#(accessory.manufacturer_id)">#get(accessory.manufacturer_name)</a>
                         </p>
                     </div>
                     #if(accessory.released) { } else {

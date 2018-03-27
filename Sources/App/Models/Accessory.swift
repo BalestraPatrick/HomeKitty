@@ -98,30 +98,6 @@ final class Accessory: PostgreSQLModel {
 //        return nil
 //    }
     
-
-    func makeResponse(_ req: Request) throws -> Future<AccessoryResponse> {
-        let manufacturer = try self.manufacturer.get(on: req)
-        
-        return manufacturer.flatMap(to: AccessoryResponse.self) { manufacturer in
-            let promise = req.eventLoop.newPromise(AccessoryResponse.self)
-            promise.succeed(result: AccessoryResponse(id: self.id,
-                                                      name: self.name,
-                                                      image: self.image,
-                                                      price: self.price, productLink: self.productLink,
-                                                      amazonLink: self.amazonLink,
-                                                      approved: self.approved,
-                                                      released: self.released,
-                                                      date: self.date,
-                                                      requiresHub: self.requiresHub,
-                                                      featured: self.featured,
-                                                      manufacturer: manufacturer.name,
-                                                      manufacturerLink: manufacturer.directLink,
-                                                      manufacturerWebsite: manufacturer.websiteLink,
-                                                      timeAgo: self.date.timeAgoString()))
-            return promise.futureResult
-        }
-    }
-
     func didCreate(on connection: PostgreSQLConnection) throws -> EventLoopFuture<Accessory> {
         try updateCounterCache(connection)
         return Future.map(on: connection, { self })
@@ -159,16 +135,18 @@ final class Accessory: PostgreSQLModel {
         let image: String
         let price: String
         let productLink: String
+        let categoryId: Int
         let amazonLink: String?
         let approved: Bool
         let released: Bool
         let date: Date
         let requiresHub: Bool
         let featured: Bool
-        let manufacturer: String
-        let manufacturerLink: String
-        let manufacturerWebsite: String
-        let timeAgo: String
+        let manufacturerId: Int?
+        let manufacturerName: String?
+        let manufacturerWebsite: String?
+
+        var timeAgo: String?
 
         enum CodingKeys: String, CodingKey {
             case id
@@ -182,10 +160,11 @@ final class Accessory: PostgreSQLModel {
             case date
             case requiresHub = "requires_hub"
             case featured
-            case manufacturer
+            case manufacturerId = "manufacturer_id"
+            case manufacturerName = "manufacturer_name"
             case timeAgo = "time_ago"
-            case manufacturerLink = "manufacturer_link"
             case manufacturerWebsite = "manufacturer_website"
+            case categoryId = "category_id"
         }
     }
 }
