@@ -96,8 +96,8 @@
         "repositoryURL": "https://github.com/vapor-community/sendgrid-provider.git",
         "state": {
           "branch": null,
-          "revision": "9a05b9067db51641c005b8e989d940028de5d1b9",
-          "version": "3.0.0-rc1.1"
+          "revision": "4547bcf26cc371578b2e64683637703ce6231ac9",
+          "version": "3.0.0"
         }
       },
       {
@@ -114,8 +114,8 @@
         "repositoryURL": "https://github.com/vapor-community/stripe-provider.git",
         "state": {
           "branch": null,
-          "revision": "9bf4ba87644604f43d651b91fb2e52c6e92fc7d5",
-          "version": "2.0.0-rc1.1"
+          "revision": "9b9b5d5b50956cc6d4d4beff86d221a745aa570c",
+          "version": "2.0.0"
         }
       },
       {
