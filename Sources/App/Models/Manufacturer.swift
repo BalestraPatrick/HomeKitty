@@ -14,15 +14,10 @@ final class Manufacturer: PostgreSQLModel {
     var websiteLink: String
     var approved = false
 
-    var directLink: String {
-        guard let id = id else { return "error" }
-        return "manufacturers/\(id)"
-    }
-    
-    init(name: String, websiteLink: String, approved: Bool = false) {
+    init(name: String, websiteLink: String) {
         self.name = name
         self.websiteLink = websiteLink
-        self.approved = approved
+        self.approved = false
     }
 
     enum CodingKeys: String, CodingKey {

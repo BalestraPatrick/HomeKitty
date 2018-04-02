@@ -9,29 +9,43 @@ import FluentSQL
 
 final class QueryHelper {
     static func categories(request req: Request) throws -> Future<[Category]> {
-        return try Category.query(on: req).sort(\Category.name, .ascending).all()
+        return try Category.query(on: req)
+            .sort(\Category.name, .ascending)
+            .all()
     }
 
     // MARK: - Manufacturers
     static func manufacturerCount(request req: Request) throws -> Future<Int> {
-        return try Manufacturer.query(on: req).filter(\Manufacturer.approved == true).count()
+        return try Manufacturer.query(on: req)
+            .filter(\Manufacturer.approved == true)
+            .count()
     }
 
     static func manufacturer(request req: Request, id: Int) throws -> Future<Manufacturer?> {
-        return try Manufacturer.query(on: req).filter(\Manufacturer.approved == true).filter(\Manufacturer.id == id).first()
+        return try Manufacturer.query(on: req)
+            .filter(\Manufacturer.approved == true)
+            .filter(\Manufacturer.id == id)
+            .first()
     }
 
     static func manufacturers(request req: Request) throws -> Future<[Manufacturer]> {
-        return try Manufacturer.query(on: req).filter(\Manufacturer.approved == true).sort(\Manufacturer.name, .ascending).all()
+        return try Manufacturer.query(on: req)
+            .filter(\Manufacturer.approved == true)
+            .sort(\Manufacturer.name, .ascending)
+            .all()
     }
 
     // MARK: - Accessories
     static func featuredAccessories(request req: Request) throws -> QueryBuilder<Accessory, Accessory.AccessoryResponse> {
-        return try accessories(request: req).filter(\Accessory.featured == true)
+        return try accessories(request: req)
+            .filter(\Accessory.featured == true)
+            .sort(\Accessory.date, .descending)
     }
 
     static func accessoriesCount(request req: Request) throws -> Future<Int> {
-        return try Accessory.query(on: req).filter(\Accessory.approved == true).count()
+        return try Accessory.query(on: req)
+            .filter(\Accessory.approved == true)
+            .count()
     }
 
     static func accessories(request req: Request, manufacturerId: Int? = nil, categoryId: Int? = nil, searchQuery: String? = nil) throws -> QueryBuilder<Accessory, Accessory.AccessoryResponse> {
@@ -59,6 +73,7 @@ final class QueryHelper {
             .sort(\Accessory.date, .descending)
             .decode(Accessory.AccessoryResponse.self)
 
+
         if let manufacturerId = manufacturerId {
             try query.filter(\Accessory.manufacturerId == manufacturerId)
         }
@@ -74,7 +89,7 @@ final class QueryHelper {
             })
         }
 
-        return try query.filter(\Accessory.approved == true)
+        return try query.filter(Accessory.self, \Accessory.approved == true)
     }
 
     static func accessory(request req: Request, id: Int) throws -> Future<Accessory.AccessoryResponse?> {
@@ -85,7 +100,9 @@ final class QueryHelper {
     }
 
     static func bridges(request req: Request) throws -> Future<[Accessory.AccessoryResponse]> {
-        return try Category.query(on: req).filter(\Category.name == "Bridges").first().flatMap(to: [Accessory.AccessoryResponse].self, { (category)  in
+        return try Category.query(on: req)
+            .filter(\Category.name == "Bridges").first()
+            .flatMap(to: [Accessory.AccessoryResponse].self, { category  in
             guard let category = category else { throw Abort(.internalServerError) }
 
             return try QueryHelper.accessories(request: req, categoryId: category.id).all()
@@ -97,3 +114,5 @@ final class QueryHelper {
         return try Region.query(on: req).sort(\Region.fullName, .ascending).all()
     }
 }
+
+

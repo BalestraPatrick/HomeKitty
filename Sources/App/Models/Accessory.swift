@@ -34,13 +34,9 @@ final class Accessory: PostgreSQLModel {
         amazonLink: String?,
         categoryId: Int,
         manufacturerId: Int,
-        released: Bool = true,
-        approved: Bool = false,
-        date: Date = Date(),
-        requiresHub: Bool = false,
-        requiredHubId: Int?,
-        featured: Bool = false
-    ) {
+        released: Bool,
+        requiresHub: Bool,
+        requiredHubId: Int?) {
         self.name = name
         self.categoryId = categoryId
         self.manufacturerId = manufacturerId
@@ -48,12 +44,12 @@ final class Accessory: PostgreSQLModel {
         self.price = price
         self.productLink = productLink
         self.amazonLink = amazonLink
-        self.approved = approved
+        self.approved = false
         self.released = released
-        self.date = date
+        self.date = Date()
         self.requiresHub = requiresHub
         self.requiredHubId = requiredHubId
-        self.featured = featured
+        self.featured = false
     }
 
     enum CodingKeys: String, CodingKey {
