@@ -73,8 +73,8 @@ final class ContributeController {
                                 try regions.forEach { regionId in
                                     let future = try QueryHelper.region(request: req, id: regionId).flatMap(to: AccessoryRegionPivot.self, { region in
                                         guard let region = region,
-                                        let accessoryId = newAccessory.id,
-                                        let regionId = region.id else { throw Abort(.internalServerError) }
+                                            let accessoryId = newAccessory.id,
+                                            let regionId = region.id else { throw Abort(.internalServerError) }
                                         let pivot = AccessoryRegionPivot()
 
                                         pivot.accessoryId = accessoryId
