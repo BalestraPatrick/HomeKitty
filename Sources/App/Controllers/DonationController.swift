@@ -12,10 +12,6 @@ final class DonationController {
     init(router: Router) {
         router.get("donation", "thanks" , use: thanks)
         router.get("donation", use: donation)
-        //        self.droplet = droplet
-        //        let group = droplet.grouped("donation")
-        //        group.post(handler: donation)
-        //        group.get("thanks", handler: thanks)
     }
     
     
