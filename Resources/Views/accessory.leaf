@@ -49,7 +49,7 @@
                         #if(accessory.requires_hub) {
                             <div id="accessory-page-feature">
                                 <img src="/images/bridge.png">
-                                <p>This accessory requires a proprietary <a href="#(accessory.required_hub_page_link)">bridge</a>.</p>
+                                <p>This accessory requires a proprietary <a href="/accessories/#(accessory.id)">bridge</a>.</p>
                             </div>
                         }
                         #if(accessory.region_compatibility) {
