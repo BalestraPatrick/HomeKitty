@@ -81,19 +81,21 @@ final class Accessory: PostgreSQLModel {
     var requiredHub: Parent<Accessory, Accessory>? {
         return parent(\Accessory.requiredHubId)
     }
-
-//    var regions: Siblings<Accessory, Region, Pivot<Accessory, Region>> {
-//        return siblings()
-//    }
-
-//    var regionCompatibility: String? {
-//        let regionNames = try? regions.all().map { $0.name }
-//        if let regions = regionNames, !regions.isEmpty {
-//            return regions.joined(separator: ", ")
-//        }
-//        return nil
-//    }
     
+    var regions: Siblings<Accessory, Region, AccessoryRegionPivot> {
+        return siblings()
+    }
+
+    func regionCompatibility(_ req: Request) throws -> Future<String> {
+        return try regions.query(on: req).all().flatMap(to: String.self) { regions in
+            let promise = req.eventLoop.newPromise(String.self)
+
+            promise.succeed(result: regions.map { $0.name }.joined(separator: ", "))
+
+            return promise.futureResult
+        }
+    }
+
     func didCreate(on connection: PostgreSQLConnection) throws -> EventLoopFuture<Accessory> {
         try updateCounterCache(connection)
         return Future.map(on: connection, { self })

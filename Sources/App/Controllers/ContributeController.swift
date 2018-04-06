@@ -12,8 +12,6 @@ final class ContributeController {
     init(router: Router) {
         router.get("contribute", use: contribute)
         router.post("contribute", use: submit)
-        //        group.get(handler: contribute)
-        //        group.post("submit", handler: submit)
     }
     
     func contribute(_ req: Request) throws -> Future<View> {
@@ -34,67 +32,93 @@ final class ContributeController {
     }
     
     func submit(_ req: Request) throws -> Future<View> {
-        //        var manufacturerId: Identifier?
-        //        if let name = request.formURLEncoded?["manufacturer-name"]?.string,
-        //            let website = request.formURLEncoded?["manufacturer-website"]?.string {
-        //            // Create the manufacturer because it's a new one
-        //            let manufacturer = Manufacturer(name: name, websiteLink: website)
-        //            try manufacturer.save()
-        //            manufacturerId = manufacturer.id
-        //        } else if let manufacturerName = request.formURLEncoded?["manufacturer"]?.string, let category = try Manufacturer.makeQuery().filter("name", manufacturerName).first() {
-        //            // Grab the exising manufacturer and store it for later assignment to the accessory.
-        //            manufacturerId = category.id
-        //        } else {
-        //            return "Unrecognized manufacturer or error in creating it."
-        //        }
-        //
-        //        if let name = request.formURLEncoded?["name"]?.string,
-        //            let price = request.formURLEncoded?["price"]?.string,
-        //            let image = request.formURLEncoded?["image"]?.string,
-        //            let link = request.formURLEncoded?["link"]?.string,
-        //            let categoryName = request.formURLEncoded?["category"]?.string,
-        //            let manufacturerId = manufacturerId {
-        //                let released = request.formURLEncoded?["released"]?.bool ?? false
-        //                let requiresHub = request.formURLEncoded?["requires_hub"]?.bool ?? false
-        //                let requiredBridgeName = request.formURLEncoded?["required_bridge"]?.string
-        //                let bridge = try Accessory.makeQuery().filter("name", requiredBridgeName).first()
-        //                if let category = try Category.makeQuery().filter("name", categoryName).first() {
-        //                    let accessory = Accessory(
-        //                        name: name,
-        //                        image: image,
-        //                        price: price.normalizedPrice,
-        //                        productLink: link,
-        //                        amazonLink: nil,
-        //                        categoryId: category.id!,
-        //                        manufacturerId: manufacturerId,
-        //                        released: released,
-        //                        requiresHub: requiresHub,
-        //                        requiredHubId: bridge?.id
-        //                    )
-        //
-        //                    try accessory.save()
-        //
-        //                    if let regions = request.formURLEncoded?["regions"]?.array {
-        //                        let regionsFullNames = regions.map { $0.string }
-        //                        for regionFullName in regionsFullNames {
-        //                            if let region = try Region.makeQuery().filter("full_name", regionFullName).first() {
-        //                                try accessory.regions.add(region)
-        //                            }
-        //                        }
-        //                    }
-        //                }
-        //        }
-        //        let node = try Node(node: ["success": true])
-        //        return try droplet.view.make("contribute", node)
-        
-        let leaf = try req.make(LeafRenderer.self)
-        return leaf.render("contribute", ["success": true])
+        return try req.content.decode(ContributeRequest.self).flatMap(to: View.self, { contributionData in
+            if let manufacturerId = contributionData.manufacturerId {
+                return self.newAccessory(req, manufacturerId: manufacturerId, contributeData: contributionData)
+            } else {
+                return try self.newManufacturer(req, contributeData: contributionData)
+            }
+        })
     }
-    
-    struct ContributeResponse: Codable {
+
+    // MARK: - Helpers
+
+    private func newManufacturer(_ req: Request, contributeData: ContributeRequest) throws -> Future<View> {
+        return try req.content.decode(ContributeManufactorerRequest.self).flatMap(to: View.self) { data in
+            return Manufacturer(name: data.manufacturerName, websiteLink: data.manufacturerWebsite)
+                .create(on: req)
+                .flatMap(to: View.self) { manufacturer throws -> EventLoopFuture<View> in
+                    guard let manufacturerId = manufacturer.id else { throw Abort.init(.internalServerError) }
+                    return self.newAccessory(req, manufacturerId: manufacturerId, contributeData: contributeData)
+            }
+        }
+    }
+
+    private func newAccessory(_ req: Request, manufacturerId: Int, contributeData: ContributeRequest) -> Future<View> {
+
+        return Accessory(name: contributeData.name,
+                         image: contributeData.image,
+                         price: contributeData.price.normalizedPrice,
+                         productLink: contributeData.link,
+                         amazonLink: nil,
+                         categoryId: contributeData.category,
+                         manufacturerId: manufacturerId,
+                         released: contributeData.released ?? false,
+                         requiresHub: contributeData.requiresBridge ?? false,
+                         requiredHubId: contributeData.requiredBridge).create(on: req).flatMap(to: View.self) { newAccessory in
+
+                            if let regions = contributeData.regions {
+                                var futures = [Future<AccessoryRegionPivot>]()
+
+                                try regions.forEach { regionId in
+                                    let future = try QueryHelper.region(request: req, id: regionId).flatMap(to: AccessoryRegionPivot.self, { region in
+                                        guard let region = region,
+                                        let accessoryId = newAccessory.id,
+                                        let regionId = region.id else { throw Abort(.internalServerError) }
+                                        let pivot = AccessoryRegionPivot()
+
+                                        pivot.accessoryId = accessoryId
+                                        pivot.regionId = regionId
+
+                                        return pivot.create(on: req)
+                                    })
+
+                                    futures.append(future)
+                                }
+
+                                return futures.flatMap(to: View.self, on: req, { _ in
+                                    let leaf = try req.make(LeafRenderer.self)
+                                    return leaf.render("contribute", ["success": true])
+                                })
+                            } else {
+                                let leaf = try req.make(LeafRenderer.self)
+                                return leaf.render("contribute", ["success": true])
+                            }
+        }
+    }
+
+    struct ContributeResponse: Content {
         let categories: [Category]
         let manufacturers: [Manufacturer]
         let bridges: [Accessory.AccessoryResponse]
         let regions: [Region]
+    }
+
+    struct ContributeManufactorerRequest: Content {
+        let manufacturerName: String
+        let manufacturerWebsite: String
+    }
+
+    struct ContributeRequest: Content {
+        let manufacturerId: Int?
+        let name: String
+        let image: String
+        let price: String
+        let link: String
+        let category: Int
+        let released: Bool?
+        let requiresBridge: Bool?
+        let requiredBridge: Int?
+        let regions: [Int]?
     }
 }
