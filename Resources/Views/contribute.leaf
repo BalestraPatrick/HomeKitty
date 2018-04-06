@@ -22,7 +22,7 @@
                 <hr>
                 <p>Are you an accessory manufacturer and you would like to feature your newest accessory in the homepage to maximize visibility? <a href="mailto:info@homekitty.world?subject=HomeKitty Sponsorship Information">Contact us</a>.</p>
                 <hr>
-                <form action="/contribute/submit" method="POST">
+                <form action="/contribute" method="POST">
                     <!-- Accessory -->
                     <h4>Accessory</h4>
                     <div class="form-group">
@@ -46,9 +46,9 @@
                     <div class="form-group">
                         <label for="region">Regions</label>
                         <p>Please provide accessory compatible regions.</p>
-                            <select name="regions" class="selectpicker" multiple title="Select a region">
+                            <select name="regions[]" class="selectpicker" multiple title="Select a region">
                                 #for(region in regions) {
-                                    <option value="#(region.full_name)">#(region.full_name)</option>
+                                    <option value="#(region.id)">#(region.full_name)</option>
                                 }
                             </select>
                     </div>
@@ -60,18 +60,18 @@
                     <div class="form-group">
                         <label for="link">Availability</label>
                         <p>If the accessory is coming soon and/or HomeKit compatibility is planned but not released, don't select the checkbox.</p>
-                        <input type="checkbox" name="released"> Available on the market
+                        <input type="checkbox" name="released" value="true"> Available on the market
                     </div>
                     <div class="form-group">
                         <label for="link">Required Bridge</label>
                         <p>If the accessory requires a proprietary bridge to work with HomeKit, select the checkbox.</p>
-                        <input type="checkbox" name="requires_hub" onchange="toggleBridgesSelectionAppearance()"> Requires proprietary bridge
+                        <input type="checkbox" name="requiresBridge" onchange="toggleBridgesSelectionAppearance()" value="true"> Requires proprietary bridge
                     </div>
                     <div class="form-group">
-                        <select id="required-bridge-selection" name="required_bridge" style="display: none;">
+                        <select id="required-bridge-selection" name="requiredBridge" style="display: none;">
                             <option value="" disabled selected>Select a bridge</option>
                             #for(bridge in bridges) {
-                                <option value="#(bridge.name)">#(bridge.name)</option>
+                                <option value="#(bridge.id)">#(bridge.name)</option>
                             }
                         </select>
                     </div>
@@ -81,7 +81,7 @@
                     <div class="form-group">
                         <select name="category">
                             #for(category in categories) {
-                            <option value="#(category.name)">#(category.name)</option>
+                            <option value="#(category.id)">#(category.name)</option>
                             }
                         </select>
                     </div>
@@ -89,10 +89,10 @@
                     <!-- Manufacturer -->
                     <h4>Manufacturer</h4>
                     <div class="form-group">
-                        <select id="manufacturer-selection" name="manufacturer" required>
+                        <select id="manufacturer-selection" name="manufacturerId" required>
                             <option value="" disabled selected>Select a manufacturer</option>
                             #for(manufacturer in manufacturers) {
-                                <option value="#(manufacturer.name)">#(manufacturer.name)</option>
+                                <option value="#(manufacturer.id)">#(manufacturer.name)</option>
                             }
                         </select>
                         <div>
@@ -100,14 +100,14 @@
                         </div>
                         <div id="add-manufacturer-form">
                             <div class="form-group">
-                                <label for="manufacturer-name">Name</label>
+                                <label for="manufacturerName">Name</label>
                                 <p>Please provide the name (ex: Philips).</p>
-                                <input type="text" class="form-control" id="manufacturer-name-input" name="manufacturer-name" placeholder="Philips" maxlength="255">
+                                <input type="text" class="form-control" id="manufacturer-name-input" name="manufacturerName" placeholder="Philips" maxlength="255">
                             </div>
                             <div class="form-group">
-                                <label for="website">Website</label>
+                                <label for="manufacturerWebsite">Website</label>
                                 <p>Please provide the direct link to the website.</p>
-                                <input type="text" class="form-control" id="manufacturer-name-website" name="manufacturer-website" placeholder="URL" maxlength="255">
+                                <input type="text" class="form-control" id="manufacturer-name-website" name="manufacturerWebsite" placeholder="URL" maxlength="255">
                             </div>
                         </div>
                     </div>
