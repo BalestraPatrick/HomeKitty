@@ -3,7 +3,6 @@
 //
 
 import XCTest
-import Testing
 @testable import Vapor
 @testable import App
 
@@ -11,15 +10,15 @@ class DonationControllerTests: TestCase {
 
     static var allTests : [(String, (DonationControllerTests) -> () throws -> Void)] {
         return [
-            ("testDonation", testDonation),
+            ("testDonationThanks", testDonationThanks),
         ]
     }
 
-    let drop = try! Droplet.testable()
+    func testDonationThanks() throws {
+        let responder = try app.make(Responder.self)
+        let wrappedRequest = Request(http: HTTPRequest(url: URL(string: "/donation/thanks")!), using: app)
+        let response = try responder.respond(to: wrappedRequest).wait()
 
-    func testDonation() throws {
-        try drop
-            .testResponse(to: .get, at: "/donation/thanks")
-            .assertStatus(is: .ok)
+        XCTAssert(response.http.status == .ok)
     }
 }
