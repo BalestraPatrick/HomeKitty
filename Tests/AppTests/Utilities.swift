@@ -1,31 +1,20 @@
 @testable import App
 @testable import Vapor
+
 import XCTest
-import Testing
-import FluentProvider
-
-extension Droplet {
-
-    static func testable() throws -> Droplet {
-        let config = try Config(arguments: ["vapor", "--env=test"])
-        try config.setUp()
-        let drop = try Droplet(config)
-        try drop.setUp()
-        return drop
-    }
-
-    func serveInBackground() throws {
-        background {
-            try! self.run()
-        }
-        console.wait(seconds: 0.5)
-    }
-}
+import FluentPostgreSQL
 
 class TestCase: XCTestCase {
 
-    override func setUp() {
-        Node.fuzzy = [Row.self, JSON.self, Node.self]
-        Testing.onFail = XCTFail
-    }
+    lazy var app: Application = {
+        var config = Config.default()
+        var env = try! Environment.detect()
+        var services = Services.default()
+
+        try! App.configure(&config, env: &env, services: &services)
+
+        return try! Application(config: config,
+                                environment: env,
+                                services: services)
+    }()
 }
