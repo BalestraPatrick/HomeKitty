@@ -6,9 +6,12 @@ jobs:
       - image: codevapor/swift:4.1
       - image: circleci/postgres:latest
         environment:
-          POSTGRES_USER: postgres
-          POSTGRES_DB: test
-          POSTGRES_PASSWORD: ""
+          SENDGRID_API_KEY: none
+          STRIPE_API_KEY: none
+          DB_HOSTNAME: localhost
+          DB_USER: postgres
+          DB_DATABASE: test
+          DB_PASSWORD: ""
     steps:
       - checkout
       - run: eval "$(curl -sL https://apt.vapor.sh)"
