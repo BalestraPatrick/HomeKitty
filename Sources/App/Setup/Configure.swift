@@ -10,16 +10,14 @@ import Stripe
 import SendGrid
 
 public func configure(_ config: inout Config, env: inout Environment, services: inout Services) throws {
-    guard let sendGridKey = ProcessInfo.processInfo.environment["SENDGRID_API_KEY"]?.stringValue,
-        let stripeKey = ProcessInfo.processInfo.environment["STRIPE_API_KEY"]?.stringValue,
-        let dbHostname = ProcessInfo.processInfo.environment["DB_HOSTNAME"]?.stringValue,
-        let dbUsername = ProcessInfo.processInfo.environment["DB_USER"]?.stringValue,
-        let db = ProcessInfo.processInfo.environment["DB_DATABASE"]?.stringValue else {
-            fatalError("Missing some API keys")
-    }
+    let sendGridKey = Environment.get("SENDGRID_API_KEY") ?? "SENDGRID_API_KEY"
+    let stripeKey = Environment.get("STRIPE_API_KEY") ?? "STRIPE_API_KEY"
 
-    let dbPort = ProcessInfo.processInfo.environment["DB_PORT"]?.intValue ?? 5432
-    let dbPassword = ProcessInfo.processInfo.environment["DB_PASSWORD"]?.stringValue
+    let dbHostname = Environment.get("DB_HOSTNAME") ?? "localhost"
+    let dbUsername = Environment.get("DB_USER") ?? "test"
+    let db = Environment.get("DB_DATABASE") ?? "test"
+    let dbPort = Environment.get("DB_PORT")?.intValue ?? 5432
+    let dbPassword = Environment.get("DB_PASSWORD")
 
     // Register providers first
     try services.register(FluentPostgreSQLProvider())
