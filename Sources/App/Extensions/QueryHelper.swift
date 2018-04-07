@@ -73,7 +73,6 @@ final class QueryHelper {
             .sort(\Accessory.date, .descending)
             .decode(Accessory.AccessoryResponse.self)
 
-
         if let manufacturerId = manufacturerId {
             try query.filter(\Accessory.manufacturerId == manufacturerId)
         }
@@ -103,15 +102,19 @@ final class QueryHelper {
         return try Category.query(on: req)
             .filter(\Category.name == "Bridges").first()
             .flatMap(to: [Accessory.AccessoryResponse].self, { category  in
-            guard let category = category else { throw Abort(.internalServerError) }
+                guard let category = category else { throw Abort(.internalServerError) }
 
-            return try QueryHelper.accessories(request: req, categoryId: category.id).all()
-        })
+                return try QueryHelper.accessories(request: req, categoryId: category.id).all()
+            })
     }
 
     // MARK: - Regions
     static func regions(request req: Request) throws -> Future<[Region]> {
         return try Region.query(on: req).sort(\Region.fullName, .ascending).all()
+    }
+    
+    static func region(request req: Request, id: Int) throws -> Future<Region?> {
+        return try Region.query(on: req).sort(\Region.fullName, .ascending).filter(\Region.id == id).first()
     }
 }
 
