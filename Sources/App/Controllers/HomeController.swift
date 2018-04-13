@@ -35,7 +35,7 @@ final class HomeController {
         accessoriesDateString = accessories.map { $0.date.timeAgoString() }
 
         // Get featured accessory from item id
-        //let featuredAccessoryId = 26
+        //let featuredAccessoryId = 25
         // Path to the banner image of the featured image
         //featuredAccessoryImage = "/images/featured-item.png"
 
