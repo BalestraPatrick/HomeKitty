@@ -21,9 +21,9 @@ final class HomeController {
         let categories = try Category.all()
         
         let accessories: [Accessory]
-        let featuredAccessory: Accessory
         var accessoriesDateString: [String]
         let featuredAccessoryImage: String
+        let featuredAccessoryLink: String
         
         // Limit of fetched items for accessories query
         let visibleAccessoriesLimit = 18
@@ -34,13 +34,10 @@ final class HomeController {
         // Creates a time ago string from the date of each accessory and stores it in a new array
         accessoriesDateString = accessories.map { $0.date.timeAgoString() }
 
-        // Get featured accessory from item id
-        //let featuredAccessoryId = 25
         // Path to the banner image of the featured image
-        //featuredAccessoryImage = "/images/featured-item.png"
+        featuredAccessoryImage = "/images/featured.jpg"
 
-        // Fetch featured accessory
-        // featuredAccessory = try Accessory.makeQuery().filter("id", featuredAccessoryId).first()!
+        featuredAccessoryLink = "https://www.xxter.com/pairot/homekitty"
 
         // Creates a time ago string from the date of each accessory and stores it in a new array
         accessoriesDateString = accessories.map { $0.date.timeAgoString() }
@@ -51,13 +48,13 @@ final class HomeController {
         let nodes = try Node(node: [
             "categories": categories.makeNode(in: nil),
             "accessories": accessories.makeNode(in: nil),
-//            "featuredImage": featuredAccessoryImage.makeNode(in: nil),
-//            "featuredAccessory": featuredAccessory.productLink.makeNode(in: nil),
+            "featuredImage": featuredAccessoryImage.makeNode(in: nil),
+            "featuredAccessory": featuredAccessoryLink,
             "accessoriesDateString": accessoriesDateString.makeNode(in: nil),
             "noAccessories": accessories.count == 0,
             "accessoryCount": accessoryCount.makeNode(in: nil),
             "manufacturerCount": manufacturerCount.makeNode(in: nil),
-            ])
+        ])
         return try droplet.view.make("home", nodes)
     }
 }
