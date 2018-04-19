@@ -38,15 +38,6 @@
         }
       },
       {
-        "package": "Engine",
-        "repositoryURL": "https://github.com/vapor/engine.git",
-        "state": {
-          "branch": null,
-          "revision": "bcc330e964a0a294afb9c829b6e6b4626cdea427",
-          "version": "3.0.0-rc.2.4"
-        }
-      },
-      {
         "package": "Fluent",
         "repositoryURL": "https://github.com/vapor/fluent.git",
         "state": {
@@ -62,6 +53,15 @@
           "branch": null,
           "revision": "495db9b9113cfbdf80377801c0f1cf7a95ebf05e",
           "version": "1.0.0-rc.2.1"
+        }
+      },
+      {
+        "package": "HTTP",
+        "repositoryURL": "https://github.com/vapor/http.git",
+        "state": {
+          "branch": null,
+          "revision": "2cb664097006e3fda625934079b51c90438947e1",
+          "version": "3.0.0"
         }
       },
       {
@@ -177,8 +177,8 @@
         "repositoryURL": "https://github.com/vapor/url-encoded-form.git",
         "state": {
           "branch": null,
-          "revision": "aca8efc7176f3ea2352dcbcd32526f82af5647c3",
-          "version": "1.0.1"
+          "revision": "8448fa943057c01220f6a940d3b1b8e9fd92a96e",
+          "version": "1.0.2"
         }
       },
       {
@@ -195,8 +195,17 @@
         "repositoryURL": "https://github.com/vapor/vapor.git",
         "state": {
           "branch": null,
-          "revision": "752e6a6c392f18e4986e2251c5db76fd7f79d4e9",
-          "version": "3.0.0-rc.2.5"
+          "revision": "95f94041400f54d0442d1dd5f12f91868d1a2a1c",
+          "version": "3.0.0-rc.2.6"
+        }
+      },
+      {
+        "package": "WebSocket",
+        "repositoryURL": "https://github.com/vapor/websocket.git",
+        "state": {
+          "branch": null,
+          "revision": "23acd21aa37a200faa2f5d5525c974efa6b5676c",
+          "version": "1.0.0"
         }
       }
     ]
