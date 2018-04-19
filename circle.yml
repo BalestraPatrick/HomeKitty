@@ -3,7 +3,7 @@ jobs:
   build:
     working_directory: ~/app
     docker:
-      - image: codevapor/swift:4.1
+      - image: swift:latest
       - image: circleci/postgres:latest
         environment:
           POSTGRES_USER: postgres
