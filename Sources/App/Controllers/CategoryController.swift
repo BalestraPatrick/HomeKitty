@@ -14,7 +14,7 @@ final class CategoryController {
     }
     
     func manufacturer(_ req: Request) throws -> Future<View> {
-        let param: Int = try req.parameter()
+        let param: Int = try req.parameters.next()
         
         let categories = try QueryHelper.categories(request: req)
         let manufacturersCount = try QueryHelper.manufacturerCount(request: req)

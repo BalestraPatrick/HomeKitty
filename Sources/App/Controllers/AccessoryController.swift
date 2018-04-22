@@ -32,7 +32,7 @@ final class AccessoryController {
     }
     
     func accessory(_ req: Request) throws -> Future<View> {
-        let paramId: Int = try req.parameter()
+        let paramId: Int = try req.parameters.next()
         
         let accessory = try QueryHelper.accessory(request: req, id: paramId)
         let categories = try QueryHelper.categories(request: req)

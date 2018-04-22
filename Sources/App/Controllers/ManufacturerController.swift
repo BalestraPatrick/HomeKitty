@@ -15,7 +15,7 @@ final class ManufacturerController {
     }
     
     func manufacturer(_ req: Request) throws -> Future<View> {
-        let param: Int = try req.parameter()
+        let param: Int = try req.parameters.next()
         
         let manufacturer = try QueryHelper.manufacturer(request: req, id: param)
         let categories = try QueryHelper.categories(request: req)
