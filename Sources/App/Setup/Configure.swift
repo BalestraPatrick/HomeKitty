@@ -9,6 +9,8 @@ import Leaf
 import Stripe
 import SendGrid
 
+let databaseLogger = DatabaseLogger(database: .psql, handler: PrintLogHandler())
+
 public func configure(_ config: inout Config, env: inout Environment, services: inout Services) throws {
     let sendGridKey = Environment.get("SENDGRID_API_KEY") ?? "SENDGRID_API_KEY"
     let stripeKey = Environment.get("STRIPE_API_KEY") ?? "STRIPE_API_KEY"
@@ -16,7 +18,7 @@ public func configure(_ config: inout Config, env: inout Environment, services: 
     let dbHostname = Environment.get("DB_HOSTNAME") ?? "localhost"
     let dbUsername = Environment.get("DB_USER") ?? "test"
     let db = Environment.get("DB_DATABASE") ?? "test"
-    let dbPort = Environment.get("DB_PORT")?.intValue ?? 5432
+    let dbPort = Int(Environment.get("DB_PORT") ?? "5432") ?? 5432
     let dbPassword = Environment.get("DB_PASSWORD")
 
     // Register providers first
@@ -37,16 +39,15 @@ public func configure(_ config: inout Config, env: inout Environment, services: 
 
     // Register middleware
     var middlewares = MiddlewareConfig()
-    middlewares.use(DateMiddleware.self)
     middlewares.use(ErrorMiddleware.self)
     middlewares.use(FileMiddleware.self)
     services.register(middlewares)
 
     // Configure a SQLite database
-
-    let databases = PostgreSQLDatabase(config: PostgreSQLDatabaseConfig(hostname: dbHostname, port: dbPort, username: dbUsername, database: db, password: dbPassword))
-    databases.enableLogging(using: DatabaseLogger.print)
-    
+    var databases = DatabasesConfig()
+    let dbConfig = PostgreSQLDatabaseConfig(hostname: dbHostname, port: dbPort, username: dbUsername, database: db, password: dbPassword)
+    databases.add(database: PostgreSQLDatabase(config: dbConfig), as: .psql)
+    databases.enableLogging(on: .psql)
     services.register(databases)
 
     // Configure migrations
