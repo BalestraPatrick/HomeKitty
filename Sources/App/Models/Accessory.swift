@@ -143,8 +143,26 @@ final class Accessory: PostgreSQLModel {
         let manufacturerId: Int?
         let manufacturerName: String?
         let manufacturerWebsite: String?
+        let timeAgo: String?
 
-        var timeAgo: String?
+        init(accessory: Accessory, manufacturer: Manufacturer) {
+            id = accessory.id
+            name = accessory.name
+            image = accessory.image
+            price = accessory.price
+            productLink = accessory.productLink
+            categoryId = accessory.categoryId
+            amazonLink = accessory.amazonLink
+            approved = accessory.approved
+            released = accessory.released
+            date = accessory.date
+            requiresHub = accessory.requiresHub
+            featured = accessory.featured
+            manufacturerId = accessory.manufacturerId
+            manufacturerName = manufacturer.name
+            manufacturerWebsite = manufacturer.websiteLink
+            timeAgo = accessory.date.timeAgoString()
+        }
 
         enum CodingKeys: String, CodingKey {
             case id

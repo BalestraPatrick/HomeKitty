@@ -28,9 +28,9 @@ final class HomeController {
             .all()
 
         return flatMap(to: View.self, featuredAccessory, categories, manufacturersCount, accessoryCount, accessories, { (featuredAccessory, categories, manufacturersCount, accessoryCount, accessories) in
-            let data = HomeResponse(featuredAccessory: featuredAccessory.first,
+            let data = HomeResponse(featuredAccessory: featuredAccessory.first.map { Accessory.AccessoryResponse(accessory: $0.0, manufacturer: $0.1) },
                                     categories: categories,
-                                    accessories: accessories,
+                                    accessories: accessories.map { Accessory.AccessoryResponse(accessory: $0.0, manufacturer: $0.1) },
                                     accessoryCount: accessoryCount,
                                     manufacturerCount: manufacturersCount)
             let leaf = try req.make(LeafRenderer.self)

@@ -23,7 +23,7 @@ final class ContributeController {
         return flatMap(to: View.self, manufacturers, categories, bridges, regions, { (manufacturers, categories, bridges, regions) in
             let data = ContributeResponse(categories: categories,
                                           manufacturers: manufacturers,
-                                          bridges: bridges,
+                                          bridges: bridges.map { Accessory.AccessoryResponse(accessory: $0.0, manufacturer: $0.1) },
                                           regions: regions)
 
             let leaf = try req.make(LeafRenderer.self)
