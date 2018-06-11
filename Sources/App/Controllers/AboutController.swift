@@ -14,6 +14,7 @@ public final class AboutController {
     
     func about(_ req: Request) throws -> Future<View> {
         let leaf = try req.make(LeafRenderer.self)
-        return leaf.render("about")
+        // temp bug fix: https://github.com/vapor/template-kit/issues/17
+        return leaf.render("about", [String: String]())
     }
 }

@@ -33,6 +33,7 @@ final class DonationController {
     
     func thanks(_ req: Request) throws -> Future<View> {
         let leaf = try req.make(LeafRenderer.self)
-        return leaf.render("thanks")
+        // temp bug fix: https://github.com/vapor/template-kit/issues/17
+        return leaf.render("thanks", [String: String]())
     }
 }
