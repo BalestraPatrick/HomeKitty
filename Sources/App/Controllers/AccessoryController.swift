@@ -20,11 +20,11 @@ final class AccessoryController {
         let categories = try QueryHelper.categories(request: req)
         let manufacturerCount = try QueryHelper.manufacturerCount(request: req)
         let accessories = try QueryHelper.accessories(request: req).all()
-        
-        return flatMap(to: View.self, categories, manufacturerCount, accessories) { categories, manufacturersCount, accesories in
-            let data = AccessoriesResponse(accessories: accesories,
+
+        return flatMap(to: View.self, categories, manufacturerCount, accessories) { categories, manufacturersCount, accessories in
+            let data = AccessoriesResponse(accessories: accessories.map { Accessory.AccessoryResponse(accessory: $0.0, manufacturer: $0.1) },
                                            categories: categories,
-                                           accessoryCount: accesories.count,
+                                           accessoryCount: accessories.count,
                                            manufacturerCount: manufacturersCount)
             let leaf = try req.make(LeafRenderer.self)
             return leaf.render("accessories", data)
@@ -43,8 +43,8 @@ final class AccessoryController {
             guard let accessory = accessory else { throw Abort(.notFound) }
             
             return flatMap(to: View.self, categories, manufacturersCount, accessoryCount) { (categories, manufacturersCount, accessoryCount) in
-                let data = AccessoryResponse(pageIcon: categories.first(where: { $0.id == accessory.categoryId })?.image ?? "",
-                                             accessory: accessory,
+                let data = AccessoryResponse(pageIcon: categories.first(where: { $0.id == accessory.0.categoryId })?.image ?? "",
+                                             accessory: Accessory.AccessoryResponse(accessory: accessory.0, manufacturer: accessory.1),
                                              categories: categories,
                                              accessoryCount: accessoryCount,
                                              manufacturerCount: manufacturersCount)

@@ -32,7 +32,7 @@ final class CategoryController {
                                                     accessoryCount: accessoriesCount,
                                                     manufacturerCount: manufacturersCount,
                                                     categories: categories,
-                                                    accessories: accessories)
+                                                    accessories: accessories.map { Accessory.AccessoryResponse(accessory: $0.0, manufacturer: $0.1) })
                 
                 return leaf.render("manufacturer", responseData)
             })
