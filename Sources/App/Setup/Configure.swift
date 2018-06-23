@@ -5,7 +5,7 @@
 import Vapor
 import FluentPostgreSQL
 import Leaf
-//import LeafErrorMiddleware
+import LeafErrorMiddleware
 import Stripe
 import SendGrid
 
@@ -26,9 +26,9 @@ public func configure(_ config: inout Config, env: inout Environment, services: 
     try services.register(LeafProvider())
 
     // Stripe
-    let config = SendGridConfig(apiKey: sendGridKey)
+    let sendGridConfig = SendGridConfig(apiKey: sendGridKey)
 
-    services.register(config)
+    services.register(sendGridConfig)
 
     try services.register(SendGridProvider())
 
@@ -37,10 +37,17 @@ public func configure(_ config: inout Config, env: inout Environment, services: 
     try routes(router)
     services.register(router, as: Router.self)
 
+    // Must set the preferred renderer:
+    config.prefer(LeafRenderer.self, for: TemplateRenderer.self)
+
+    services.register { worker in
+        return try LeafErrorMiddleware(environment: worker.environment, log: worker.make())
+    }
+
     // Register middleware
     var middlewares = MiddlewareConfig()
-    middlewares.use(ErrorMiddleware.self)
     middlewares.use(FileMiddleware.self)
+    middlewares.use(LeafErrorMiddleware.self)
     services.register(middlewares)
 
     // Configure a SQLite database
@@ -59,6 +66,4 @@ public func configure(_ config: inout Config, env: inout Environment, services: 
     migrations.add(model: AccessoryRegionPivot.self, database: .psql)
 
     services.register(migrations)
-
-    // Configure the rest of your application here
 }
