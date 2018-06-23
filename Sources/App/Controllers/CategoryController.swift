@@ -11,6 +11,7 @@ final class CategoryController {
     
     init(router: Router) {
         router.get("categories", Int.parameter, use: manufacturer)
+        router.get("explore", use: oldExplore)
     }
     
     func manufacturer(_ req: Request) throws -> Future<View> {
@@ -38,7 +39,15 @@ final class CategoryController {
             })
         })
     }
-    
+
+    func oldExplore(_ req: Request) throws -> Future<Response> {
+        let paramName: String = try req.query.get(at: "category")
+
+        return Category.query(on: req).filter(\Category.name == paramName).first().map { category in
+            return req.redirect(to: "categories/\(category?.id ?? -1)")
+        }
+    }
+
     struct CategoryResponse: Codable {
         let category: Category
         let pageIcon: String

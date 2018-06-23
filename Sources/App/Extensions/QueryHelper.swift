@@ -48,7 +48,7 @@ final class QueryHelper {
             .count()
     }
 
-    static func accessories(request req: Request, manufacturerId: Int? = nil, categoryId: Int? = nil, searchQuery: String? = nil) throws -> QueryBuilder<PostgreSQLDatabase, (Accessory, Manufacturer)> {
+    static func accessories(request req: Request, manufacturerId: Int? = nil, categoryId: Int? = nil) throws -> QueryBuilder<PostgreSQLDatabase, (Accessory, Manufacturer)> {
         let query = Accessory.query(on: req)
             .join(\Manufacturer.id, to: \Accessory.manufacturerId, method: .inner)
             .sort(\Accessory.date, .descending)
@@ -60,13 +60,6 @@ final class QueryHelper {
         if let categoryId = categoryId {
             query.filter(\Accessory.categoryId == categoryId)
         }
-
-//        if let searchQuery: String = searchQuery {
-//            try query.group(.or, closure: { builder in
-//                builder.filter(\Accessory.name ~~ searchQuery)
-//                builder.filter(Manufacturer.self, \Manufacturer.name ~~ searchQuery)
-//            })
-//        }
 
         return query.filter(\Accessory.approved == true).alsoDecode(Manufacturer.self)
     }

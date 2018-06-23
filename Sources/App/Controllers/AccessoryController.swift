@@ -14,6 +14,7 @@ final class AccessoryController {
     init(router: Router) {
         router.get("accessories", Int.parameter, use: accessory)
         router.get("accessories", use: accessories)
+        router.get("accessory", use: oldAccessory)
     }
     
     func accessories(_ req: Request) throws -> Future<View> {
@@ -54,7 +55,15 @@ final class AccessoryController {
             }
         }
     }
-    
+
+    func oldAccessory(_ req: Request) throws -> Future<Response> {
+        let paramName: String = try req.query.get(at: "name")
+
+        return Accessory.query(on: req).filter(\Accessory.name == paramName).first().map { accessory in
+            return req.redirect(to: "accessories/\(accessory?.id ?? -1)")
+        }
+    }
+
     private struct AccessoryResponse: Codable {
         let pageTitle = "Accessory Details"
         let pageIcon: String
