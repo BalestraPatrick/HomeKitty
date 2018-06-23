@@ -7,11 +7,17 @@ import HTTP
 import FluentPostgreSQL
 import Leaf
 import FluentSQL
+import FluentQuery
 
 final class SearchController {
 
+    struct Result: Codable {
+        var accessory: Accessory
+        var manufacturer: Manufacturer
+    }
+
     init(router: Router) {
-                router.get("search", use: search)
+        router.get("search", use: search)
     }
 
     func search(_ req: Request) throws -> Future<View> {
@@ -20,13 +26,22 @@ final class SearchController {
         let manufacturerCount = try QueryHelper.manufacturerCount(request: req)
         let accessoryCount = try QueryHelper.accessoriesCount(request: req)
 
-        //            // Only search through accessory and manufacturer name.
-        //            let accessories = try Accessory.makeQuery().filter("approved", true).sort("date", .descending).all().filter { accessory -> Bool in
-        //                let manufacturerResult = try accessory.manufacturer.get()?.name.lowercased().contains(search) ?? false
-        //                let nameResult = accessory.name.lowercased().contains(search)
-        //                return manufacturerResult || nameResult
-        //            }
-        let accessories = try QueryHelper.accessories(request: req, searchQuery: search).all()
+        let accessories = req.databaseConnection(to: .psql).flatMap { connection -> Future<[Accessory.AccessoryResponse]> in
+            return try FluentQuery()
+                .select(all: Accessory.self)
+                .select(.row(Accessory.self), as: "accessory")
+                .select(.row(Manufacturer.self), as: "manufacturer")
+                .where(FQWhere(\Accessory.name %% search).and(\Accessory.approved == true).or(\Manufacturer.name %% search).and(\Accessory.approved == true))
+                .join(FQJoinMode.left, Manufacturer.self, where: FQWhere(\Accessory.manufacturerId == \Manufacturer.id))
+                .from(Accessory.self)
+                .execute(on: connection)
+                .decode(Result.self)
+                .map { result in
+                    result.forEach { print($0.accessory.name) }
+
+                    return result.map { Accessory.AccessoryResponse(accessory: $0.accessory, manufacturer: $0.manufacturer) }
+            }
+        }
 
         return flatMap(to: View.self, manufacturerCount, accessoryCount, categories, accessories, { (manufacturerCount, accessoryCount, categories, accessories) in
             let data = SearchResponse(categories: categories,
