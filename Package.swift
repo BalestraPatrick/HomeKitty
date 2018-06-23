@@ -15,7 +15,7 @@ let package = Package(
         .package(url: "https://github.com/vapor/fluent-postgresql.git", from: "1.0.0-rc"),
         .package(url: "https://github.com/vapor/leaf.git", from: "3.0.0-rc"),
         .package(url: "https://github.com/vapor-community/stripe-provider.git", from: "2.0.9"),
-//        .package(url: "https://github.com/brokenhandsio/leaf-error-middleware.git", from: "0.1.0"),
+        .package(url: "https://github.com/brokenhandsio/leaf-error-middleware.git", .branch("vapor3")),
         .package(url: "https://github.com/vapor-community/sendgrid-provider.git", from: "3.0.4"),
 
         // More advanced postgres queries. Might be implemented PostgresFluent later
@@ -29,7 +29,8 @@ let package = Package(
                                "Leaf",
                                "Stripe",
                                "SendGrid",
-                               "FluentQuery"],
+                               "FluentQuery",
+                               "LeafErrorMiddleware"],
                 exclude: ["Config",
                           "Database",
                           "Localization",

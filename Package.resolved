@@ -83,6 +83,15 @@
         }
       },
       {
+        "package": "LeafErrorMiddleware",
+        "repositoryURL": "https://github.com/brokenhandsio/leaf-error-middleware.git",
+        "state": {
+          "branch": "vapor3",
+          "revision": "90cf1d0f081ec7f82616217378252ff502a7e40e",
+          "version": null
+        }
+      },
+      {
         "package": "Multipart",
         "repositoryURL": "https://github.com/vapor/multipart.git",
         "state": {
