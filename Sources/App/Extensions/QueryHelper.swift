@@ -38,8 +38,6 @@ final class QueryHelper {
     // MARK: - Accessories
     static func featuredAccessories(request req: Request) throws -> QueryBuilder<PostgreSQLDatabase, (Accessory, Manufacturer)> {
         return try accessories(request: req)
-//            .sort(\Accessory.date, PostgreSQLDirection.descending)
-//            .sort(\Accessory.date, .descending)
     }
 
     static func accessoriesCount(request req: Request) throws -> Future<Int> {
