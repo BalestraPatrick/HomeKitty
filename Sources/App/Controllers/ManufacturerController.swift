@@ -12,6 +12,7 @@ final class ManufacturerController {
     init(router: Router) {
         router.get("manufacturers", use: manufacturers)
         router.get("manufacturers", Int.parameter, use: manufacturer)
+        router.get("manufacturer", use: oldManufacturer)
     }
     
     func manufacturer(_ req: Request) throws -> Future<View> {
@@ -55,6 +56,14 @@ final class ManufacturerController {
             
             return leaf.render("manufacturers", responseData)
         })
+    }
+
+    func oldManufacturer(_ req: Request) throws -> Future<Response> {
+        let paramName: String = try req.query.get(at: "name")
+
+        return Manufacturer.query(on: req).filter(\Manufacturer.name == paramName).first().map { manufacturer in
+            return req.redirect(to: "manufacturers/\(manufacturer?.id ?? -1)")
+        }
     }
     
     struct ManufacturersResponse: Codable {
