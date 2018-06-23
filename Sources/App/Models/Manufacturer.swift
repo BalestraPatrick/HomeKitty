@@ -33,10 +33,10 @@ final class Manufacturer: PostgreSQLModel {
 extension Manufacturer: Migration {
     static func prepare(on connection: PostgreSQLConnection) -> Future<Void> {
         return Database.create(self, on: connection, closure: { builder in
-            try! builder.field(type: Database.fieldType(for: Int.self), for: \Manufacturer.id, isOptional: false, isIdentifier: true)
-            try! builder.field(for: \Manufacturer.name)
-            try! builder.field(for: \Manufacturer.websiteLink)
-            try! builder.field(for: \Manufacturer.approved)
+            builder.field(for: \Manufacturer.id, isIdentifier: true)
+            builder.field(for: \Manufacturer.name)
+            builder.field(for: \Manufacturer.websiteLink)
+            builder.field(for: \Manufacturer.approved)
         })
     }
 

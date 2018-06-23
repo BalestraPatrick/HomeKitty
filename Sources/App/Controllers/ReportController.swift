@@ -19,7 +19,7 @@ final class ReportController {
     }
 
         func report(_ req: Request) throws -> Future<View> {
-            let accessories = try Accessory.query(on: req).filter(\Accessory.approved == true).sort(\Accessory.name, .ascending).all()
+            let accessories = Accessory.query(on: req).filter(\Accessory.approved == true).sort(\Accessory.name, .ascending).all()
 
             return accessories.flatMap(to: View.self) { accessories in
                 let leaf = try req.make(LeafRenderer.self)

@@ -111,8 +111,8 @@ final class Accessory: PostgreSQLModel {
     }
 
     func updateCounterCache(_ connection: PostgreSQLConnection, willDelete: Bool = false) throws {
-        _ = try category.get(on: connection).flatMap(to: Category.self, { category in
-            return try Category
+        _ = category.get(on: connection).flatMap(to: Category.self, { category in
+            return Category
                 .query(on: connection)
                 .filter(\Category.id == self.categoryId)
                 .count()
@@ -188,20 +188,20 @@ final class Accessory: PostgreSQLModel {
 extension Accessory: Migration {
     static func prepare(on connection: PostgreSQLConnection) -> Future<Void> {
         return Database.create(self, on: connection, closure: { builder in
-            try! builder.field(type: Database.fieldType(for: Int.self), for: \Accessory.id, isOptional: false, isIdentifier: true)
-            try! builder.field(for: \Accessory.categoryId, referencing: \Category.id, actions: ReferentialActions.default)
-            try! builder.field(for: \Accessory.manufacturerId, referencing: \Manufacturer.id, actions: ReferentialActions.default)
-            try! builder.field(for: \Accessory.name)
-            try! builder.field(for: \Accessory.image)
-            try! builder.field(for: \Accessory.price)
-            try! builder.field(for: \Accessory.productLink)
-            try! builder.field(for: \Accessory.amazonLink)
-            try! builder.field(for: \Accessory.approved)
-            try! builder.field(for: \Accessory.released)
-            try! builder.field(for: \Accessory.date)
-            try! builder.field(for: \Accessory.requiresHub)
-            try! builder.field(for: \Accessory.featured)
-            try! builder.field(for: \Accessory.requiredHubId, referencing: \Accessory.id, actions: ReferentialActions.default)
+            builder.field(for: \Accessory.id, isIdentifier: true)
+            builder.reference(from: \Accessory.categoryId, to: \Category.id)
+            builder.reference(from: \Accessory.manufacturerId, to: \Manufacturer.id)
+            builder.field(for: \Accessory.name)
+            builder.field(for: \Accessory.image)
+            builder.field(for: \Accessory.price)
+            builder.field(for: \Accessory.productLink)
+            builder.field(for: \Accessory.amazonLink)
+            builder.field(for: \Accessory.approved)
+            builder.field(for: \Accessory.released)
+            builder.field(for: \Accessory.date)
+            builder.field(for: \Accessory.requiresHub)
+            builder.field(for: \Accessory.featured)
+            builder.reference(from: \Accessory.requiredHubId, to: \Accessory.id)
         })
     }
 
