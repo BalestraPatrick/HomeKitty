@@ -15,8 +15,8 @@
         "repositoryURL": "https://github.com/vapor/core.git",
         "state": {
           "branch": null,
-          "revision": "174f909bc048a6aff27d6cb4c31810971f912cca",
-          "version": "3.2.2"
+          "revision": "7f56a09995bf3c8df562be456bdcda405d9d0678",
+          "version": "3.4.1"
         }
       },
       {
@@ -33,8 +33,8 @@
         "repositoryURL": "https://github.com/vapor/database-kit.git",
         "state": {
           "branch": null,
-          "revision": "0db303439e5ef8b6df50a2b6c4029edddee90cb0",
-          "version": "1.0.1"
+          "revision": "acdd4d3384ec0122dcfcca8d23d9054a2860ffba",
+          "version": "1.2.0"
         }
       },
       {
@@ -42,8 +42,8 @@
         "repositoryURL": "https://github.com/vapor/fluent.git",
         "state": {
           "branch": null,
-          "revision": "8f22ef2dfeb278179a2d6e91769a5c1ceccf31ef",
-          "version": "3.0.0-rc.2.4.1"
+          "revision": "058b4579aea61dd05012f121fa9fa9042488c57b",
+          "version": "3.0.0-rc.4.0.2"
         }
       },
       {
@@ -51,8 +51,17 @@
         "repositoryURL": "https://github.com/vapor/fluent-postgresql.git",
         "state": {
           "branch": null,
-          "revision": "8324bf0fc1437701f8963fb340c199c66079c90e",
-          "version": "1.0.0-rc.2.3"
+          "revision": "2a5b8d147d6937d3cca0951864fcf000590e099e",
+          "version": "1.0.0-rc.4.0.2"
+        }
+      },
+      {
+        "package": "FluentQuery",
+        "repositoryURL": "https://github.com/MihaelIsaev/FluentQuery.git",
+        "state": {
+          "branch": null,
+          "revision": "5de36d7e69a9615794feb5edf1d604212ffcb4a5",
+          "version": "0.4.14"
         }
       },
       {
@@ -87,8 +96,8 @@
         "repositoryURL": "https://github.com/vapor/postgresql.git",
         "state": {
           "branch": null,
-          "revision": "a89177748b28afbd882cf8f892837b626f9f46b2",
-          "version": "1.0.0-rc.2.2.3"
+          "revision": "c34533ebf7ae34cff1430a2803c83a02bb98557a",
+          "version": "1.0.0-rc.4.2.1"
         }
       },
       {
@@ -105,8 +114,8 @@
         "repositoryURL": "https://github.com/vapor-community/sendgrid-provider.git",
         "state": {
           "branch": null,
-          "revision": "f57087a5da4e9cdd8fc61855ffb95b4150d15709",
-          "version": "3.0.4"
+          "revision": "3b71cae7ed953a128a7bb0381b80b31bc7f1d8e5",
+          "version": "3.0.5"
         }
       },
       {
@@ -123,8 +132,8 @@
         "repositoryURL": "https://github.com/vapor/sql.git",
         "state": {
           "branch": null,
-          "revision": "1bb94271d8645b6d6983721080ad642aa35d749c",
-          "version": "1.0.0"
+          "revision": "f89155dbf3dd48c838f79d28a636bbe32ad38693",
+          "version": "2.0.0-beta.3"
         }
       },
       {
@@ -132,8 +141,8 @@
         "repositoryURL": "https://github.com/vapor-community/stripe-provider.git",
         "state": {
           "branch": null,
-          "revision": "a08d75efa1a9f4cfb33427d6827fea6683ab805e",
-          "version": "2.0.9"
+          "revision": "b44c55e3698b9f0e5a223ce9791af6f32f077336",
+          "version": "2.1.0"
         }
       },
       {
@@ -204,8 +213,8 @@
         "repositoryURL": "https://github.com/vapor/vapor.git",
         "state": {
           "branch": null,
-          "revision": "09faa90db7ca49d7f75d5f8e385abce93bc7afb3",
-          "version": "3.0.4"
+          "revision": "74a46ecacca51d326a1e8cf4b7967827765f05bf",
+          "version": "3.0.5"
         }
       },
       {
