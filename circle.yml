@@ -6,7 +6,7 @@ jobs:
       - image: swift:latest
       - image: circleci/postgres:latest
         environment:
-          POSTGRES_USER: root
+          POSTGRES_USER: postgres
           POSTGRES_PASSWORD: ''
           POSTGRES_DB: test
 
