@@ -7,12 +7,11 @@ jobs:
       - image: circleci/postgres:latest
         environment:
           POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: secret
           POSTGRES_DB: test
 
     steps:
       - checkout
-      - run: eval "$(curl -sL https://apt.vapor.sh)"
-      - run: apt-get install -yq libpq-dev ctls
       - run: 
           name: Run Swift test
           command: swift test
@@ -21,4 +20,5 @@ jobs:
             STRIPE_API_KEY: none
             DB_HOSTNAME: localhost
             DB_USER: postgres
+            DB_PASSWORD: secret
             DB_DATABASE: test
