@@ -7,7 +7,7 @@ jobs:
       - image: circleci/postgres:latest
         environment:
           POSTGRES_USER: postgres
-          POSTGRES_PASSWORD: secret
+          POSTGRES_PASSWORD: ''
           POSTGRES_DB: test
 
     steps:
@@ -20,5 +20,5 @@ jobs:
             STRIPE_API_KEY: none
             DB_HOSTNAME: localhost
             DB_USER: postgres
-            DB_PASSWORD: secret
+            DB_PASSWORD: ''
             DB_DATABASE: test
