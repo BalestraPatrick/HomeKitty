@@ -7,8 +7,6 @@ jobs:
       - image: circleci/postgres:latest
         environment:
           POSTGRES_USER: postgres
-          POSTGRES_PASSWORD: test
-          POSTGRES_DB: test
 
     steps:
       - checkout
