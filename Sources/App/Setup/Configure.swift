@@ -20,7 +20,7 @@ public func configure(_ config: inout Config, env: inout Environment, services: 
     let db = Environment.get("DB_DATABASE") ?? "test"
     let dbPort = Int(Environment.get("DB_PORT") ?? "5432") ?? 5432
     let dbPassword = (Environment.get("DB_PASSWORD") ?? "").isEmpty ? nil : Environment.get("DB_PASSWORD")
-    print("DB PASSWORD: \(dbPassword)")
+    
     // Register providers first
     try services.register(FluentPostgreSQLProvider())
     try services.register(LeafProvider())

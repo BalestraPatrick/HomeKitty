@@ -18,6 +18,5 @@ jobs:
             SENDGRID_API_KEY: none
             STRIPE_API_KEY: none
             DB_HOSTNAME: localhost
-            DB_PORT: 5432
             DB_USER: postgres
             DB_DATABASE: homekitty
