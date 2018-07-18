@@ -19,4 +19,5 @@ jobs:
             STRIPE_API_KEY: none
             DB_HOSTNAME: localhost
             DB_USER: postgres
+            DB_PASSWORD: ""
             DB_DATABASE: homekitty
