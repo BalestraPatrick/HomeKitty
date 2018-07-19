@@ -189,19 +189,22 @@ extension Accessory: Migration {
     static func prepare(on connection: PostgreSQLConnection) -> Future<Void> {
         return Database.create(self, on: connection, closure: { builder in
             builder.field(for: \Accessory.id, isIdentifier: true)
-            builder.reference(from: \Accessory.categoryId, to: \Category.id)
-            builder.reference(from: \Accessory.manufacturerId, to: \Manufacturer.id)
             builder.field(for: \Accessory.name)
             builder.field(for: \Accessory.image)
             builder.field(for: \Accessory.price)
             builder.field(for: \Accessory.productLink)
+            builder.field(for: \Accessory.categoryId)
             builder.field(for: \Accessory.amazonLink)
             builder.field(for: \Accessory.approved)
             builder.field(for: \Accessory.released)
             builder.field(for: \Accessory.date)
             builder.field(for: \Accessory.requiresHub)
+            builder.field(for: \Accessory.requiredHubId)
             builder.field(for: \Accessory.featured)
+            builder.field(for: \Accessory.manufacturerId)
             builder.reference(from: \Accessory.requiredHubId, to: \Accessory.id)
+            builder.reference(from: \Accessory.categoryId, to: \Category.id)
+            builder.reference(from: \Accessory.manufacturerId, to: \Manufacturer.id)
         })
     }
 
