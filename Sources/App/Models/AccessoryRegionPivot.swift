@@ -4,9 +4,11 @@
 
 import FluentPostgreSQL
 
-final class AccessoryRegionPivot: PostgreSQLPivot, Migration {
+final class AccessoryRegionPivot: PostgreSQLPivot {
     typealias Left = Accessory
     typealias Right = Region
+
+    static var entity = "accessory_region"
 
     var id: Int?
     var accessoryId: Int

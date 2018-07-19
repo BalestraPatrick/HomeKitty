@@ -41,7 +41,7 @@ public func configure(_ config: inout Config, env: inout Environment, services: 
     config.prefer(LeafRenderer.self, for: TemplateRenderer.self)
 
     services.register { worker in
-        return try LeafErrorMiddleware(environment: worker.environment)
+        return LeafErrorMiddleware(environment: worker.environment)
     }
 
     // Register middleware
@@ -63,7 +63,8 @@ public func configure(_ config: inout Config, env: inout Environment, services: 
     migrations.add(model: Manufacturer.self, database: .psql)
     migrations.add(model: Accessory.self, database: .psql)
     migrations.add(model: Region.self, database: .psql)
-    migrations.add(model: AccessoryRegionPivot.self, database: .psql)
+    // FIXME: removed migration of this table because of a crash
+    // migrations.add(model: AccessoryRegionPivot.self, database: .psql)
 
     services.register(migrations)
 }
