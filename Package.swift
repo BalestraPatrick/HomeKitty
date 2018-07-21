@@ -19,7 +19,7 @@ let package = Package(
         .package(url: "https://github.com/vapor-community/sendgrid-provider.git", from: "3.0.4"),
 
         // More advanced postgres queries. Might be implemented PostgresFluent later
-        .package(url: "https://github.com/MihaelIsaev/FluentQuery.git", from: "0.4.2")
+        .package(url: "https://github.com/BalestraPatrick/FluentQuery.git", .branch("date-formatter-fix"))
     ],
     targets: [
         .target(name: "App",

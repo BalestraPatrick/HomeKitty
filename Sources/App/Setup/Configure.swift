@@ -13,7 +13,7 @@ let databaseLogger = DatabaseLogger(database: .psql, handler: PrintLogHandler())
 
 public func configure(_ config: inout Config, env: inout Environment, services: inout Services) throws {
     let sendGridKey = Environment.get("SENDGRID_API_KEY") ?? "SENDGRID_API_KEY"
-    let stripeKey = Environment.get("STRIPE_API_KEY") ?? "STRIPE_API_KEY"
+    _ = Environment.get("STRIPE_API_KEY") ?? "STRIPE_API_KEY"
 
     let dbHostname = Environment.get("DB_HOSTNAME") ?? "localhost"
     let dbUsername = Environment.get("DB_USER") ?? "test"

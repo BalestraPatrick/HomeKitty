@@ -31,16 +31,12 @@ final class SearchController {
                 .select(all: Accessory.self)
                 .select(.row(Accessory.self), as: "accessory")
                 .select(.row(Manufacturer.self), as: "manufacturer")
-                .where(FQWhere(\Accessory.name %% search).and(\Accessory.approved == true).or(\Manufacturer.name %% search).and(\Accessory.approved == true))
+                .where(FQWhere(\Accessory.name %% search).and(\Accessory.approved == true).or(\Manufacturer.name %% search).and(\Manufacturer.approved == true))
                 .join(FQJoinMode.left, Manufacturer.self, where: FQWhere(\Accessory.manufacturerId == \Manufacturer.id))
                 .from(Accessory.self)
                 .execute(on: connection)
                 .decode(Result.self)
-                .map { result in
-                    result.forEach { print($0.accessory.name) }
-
-                    return result.map { Accessory.AccessoryResponse(accessory: $0.accessory, manufacturer: $0.manufacturer) }
-            }
+                .map { $0.map { Accessory.AccessoryResponse(accessory: $0.accessory, manufacturer: $0.manufacturer) } }
         }
 
         return flatMap(to: View.self, manufacturerCount, accessoryCount, categories, accessories, { (manufacturerCount, accessoryCount, categories, accessories) in

@@ -57,11 +57,11 @@
       },
       {
         "package": "FluentQuery",
-        "repositoryURL": "https://github.com/MihaelIsaev/FluentQuery.git",
+        "repositoryURL": "https://github.com/BalestraPatrick/FluentQuery.git",
         "state": {
-          "branch": null,
-          "revision": "9d011aa164d1183f531ac4304b73563bc34108f6",
-          "version": "0.4.21"
+          "branch": "date-formatter-fix",
+          "revision": "db2a73d2c406170194f7acd8da16ca9c6aec5c04",
+          "version": null
         }
       },
       {
