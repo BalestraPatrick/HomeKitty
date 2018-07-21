@@ -127,6 +127,12 @@ final class Accessory: PostgreSQLModel {
         })
     }
 
+    struct FeaturedResponse: Codable {
+        let name: String
+        let externalLink: String
+        let bannerImage: String
+    }
+
     struct AccessoryResponse: Codable {
         let id: Int?
         let name: String

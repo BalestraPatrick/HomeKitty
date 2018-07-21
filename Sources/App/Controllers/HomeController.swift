@@ -19,7 +19,7 @@ final class HomeController {
         let visibleAccessoriesLimit = 18
 
         // Fetch featured accessory
-        let featuredAccessory = try QueryHelper.featuredAccessories(request: req).all()
+        let featuredAccessories = try QueryHelper.featuredAccessories(request: req).all()
         let categories = try QueryHelper.categories(request: req)
         let manufacturersCount = try QueryHelper.manufacturerCount(request: req)
         let accessoryCount = try QueryHelper.accessoriesCount(request: req)
@@ -27,8 +27,10 @@ final class HomeController {
             .range(lower: 0, upper: visibleAccessoriesLimit)
             .all()
 
-        return flatMap(to: View.self, featuredAccessory, categories, manufacturersCount, accessoryCount, accessories, { (featuredAccessory, categories, manufacturersCount, accessoryCount, accessories) in
-            let data = HomeResponse(featuredAccessory: featuredAccessory.first.map { Accessory.AccessoryResponse(accessory: $0.0, manufacturer: $0.1) },
+        return flatMap(to: View.self, featuredAccessories, categories, manufacturersCount, accessoryCount, accessories, { featuredAccessories, categories, manufacturersCount, accessoryCount, accessories in
+            let featuredAccessory = featuredAccessories.first.map { Accessory.FeaturedResponse(name: $0.0.name, externalLink: "https://www.xxter.com/pairot/homekitty", bannerImage: "/images/featured.jpg") }
+
+            let data = HomeResponse(featuredAccessory: featuredAccessory,
                                     categories: categories,
                                     accessories: accessories.map { Accessory.AccessoryResponse(accessory: $0.0, manufacturer: $0.1) },
                                     accessoryCount: accessoryCount,
@@ -39,7 +41,7 @@ final class HomeController {
     }
 
     private struct HomeResponse: Codable {
-        let featuredAccessory: Accessory.AccessoryResponse?
+        let featuredAccessory: Accessory.FeaturedResponse?
         let categories: [Category]
         let accessories: [Accessory.AccessoryResponse]
         let accessoryCount: Int

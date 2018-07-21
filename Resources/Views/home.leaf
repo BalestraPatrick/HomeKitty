@@ -20,8 +20,8 @@
                 #if(featuredAccessory) {
                 <div class="flex-item" style="margin-top: 10px;">
                     <p class="lead">Featured Accessory</p>
-                    <a href="/accessories/#(featuredAccessory.id)">
-                    <img src="#(featuredAccessory.image)" width="100%" style="height:200px" >
+                    <a href="#(featuredAccessory.externalLink)" target="_blank">
+                    <img src="#(featuredAccessory.bannerImage)" width="100%">
                     </a>
                 </div>
                 }
