@@ -37,7 +37,7 @@ final class Category: PostgreSQLModel {
 extension Category: Migration {
     static func prepare(on connection: PostgreSQLConnection) -> Future<Void> {
         return Database.create(self, on: connection, closure: { builder in
-            builder.field(for: \Category.id, isIdentifier: false)
+            builder.field(for: \Category.id, type: .integer, .primaryKey())
             builder.field(for: \Category.name)
             builder.field(for: \Category.image)
             builder.field(for: \Category.accessoriesCount)

@@ -6,6 +6,7 @@ import Vapor
 import FluentPostgreSQL
 
 final class Manufacturer: PostgreSQLModel {
+    typealias ID = Int
 
     static var entity = "manufacturer"
 
@@ -33,7 +34,7 @@ final class Manufacturer: PostgreSQLModel {
 extension Manufacturer: Migration {
     static func prepare(on connection: PostgreSQLConnection) -> Future<Void> {
         return Database.create(self, on: connection, closure: { builder in
-            builder.field(for: \Manufacturer.id, isIdentifier: false)
+            builder.field(for: \Manufacturer.id, type: .integer, .primaryKey())
             builder.field(for: \Manufacturer.name)
             builder.field(for: \Manufacturer.websiteLink)
             builder.field(for: \Manufacturer.approved)
@@ -43,6 +44,4 @@ extension Manufacturer: Migration {
     static func revert(on connection: PostgreSQLConnection) -> Future<Void> {
         return Database.delete(self, on: connection)
     }
-
-
 }
