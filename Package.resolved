@@ -11,8 +11,8 @@
         }
       },
       {
-        "package": "Core",
-        "repositoryURL": "https://github.com/vapor/core.git",
+        "package": "Crypto",
+        "repositoryURL": "https://github.com/vapor/crypto.git",
         "state": {
           "branch": null,
           "revision": "7f56a09995bf3c8df562be456bdcda405d9d0678",
@@ -20,8 +20,8 @@
         }
       },
       {
-        "package": "Crypto",
-        "repositoryURL": "https://github.com/vapor/crypto.git",
+        "package": "CTLS",
+        "repositoryURL": "https://github.com/vapor/ctls.git",
         "state": {
           "branch": null,
           "revision": "4b85405430df1892ee3aa1554bdb477e96cf46ad",
