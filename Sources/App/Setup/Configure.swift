@@ -50,7 +50,7 @@ public func configure(_ config: inout Config, env: inout Environment, services: 
     middlewares.use(LeafErrorMiddleware.self)
     services.register(middlewares)
 
-    // Configure a SQLite database
+    // Configure a PostgreSQL database
     var databases = DatabasesConfig()
     let dbConfig = PostgreSQLDatabaseConfig(hostname: dbHostname, port: dbPort, username: dbUsername, database: db, password: dbPassword)
     databases.add(database: PostgreSQLDatabase(config: dbConfig), as: .psql)
@@ -63,8 +63,7 @@ public func configure(_ config: inout Config, env: inout Environment, services: 
     migrations.add(model: Manufacturer.self, database: .psql)
     migrations.add(model: Accessory.self, database: .psql)
     migrations.add(model: Region.self, database: .psql)
-    // FIXME: removed migration of this table because of a crash
-    // migrations.add(model: AccessoryRegionPivot.self, database: .psql)
+    migrations.add(model: AccessoryRegionPivot.self, database: .psql)
 
     services.register(migrations)
 }

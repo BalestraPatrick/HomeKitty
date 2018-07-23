@@ -60,7 +60,7 @@
         "repositoryURL": "https://github.com/MihaelIsaev/FluentQuery.git",
         "state": {
           "branch": "dev",
-          "revision": "5c8afd67cfb60d4ce293830ad04119685cb53ffb",
+          "revision": "0b5885b0fca6322c0635f08c11b18b073f2ba06a",
           "version": null
         }
       },
@@ -96,8 +96,8 @@
         "repositoryURL": "https://github.com/vapor/multipart.git",
         "state": {
           "branch": null,
-          "revision": "7778dcb62f3efa845e8e2808937bb347575ba7ce",
-          "version": "3.0.1"
+          "revision": "e57007c23a52b68e44ebdfc70cbe882a7c4f1ec3",
+          "version": "3.0.2"
         }
       },
       {

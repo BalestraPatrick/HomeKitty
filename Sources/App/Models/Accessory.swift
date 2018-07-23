@@ -194,7 +194,7 @@ final class Accessory: PostgreSQLModel {
 extension Accessory: Migration {
     static func prepare(on connection: PostgreSQLConnection) -> Future<Void> {
         return Database.create(self, on: connection, closure: { builder in
-            builder.field(for: \Accessory.id, type: .integer, .primaryKey())
+            builder.field(for: \Accessory.id, type: .int, .primaryKey())
             builder.field(for: \Accessory.name)
             builder.field(for: \Accessory.image)
             builder.field(for: \Accessory.price)
