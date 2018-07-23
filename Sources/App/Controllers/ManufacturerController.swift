@@ -1,63 +1,86 @@
 //
-//  Copyright © 2017 Patrick Balestra. All rights reserved.
+//  Copyright © 2018 Kim de Vos. All rights reserved.
 //
 
 import Vapor
 import HTTP
+import FluentPostgreSQL
+import Leaf
 
 final class ManufacturerController {
-
-    var droplet: Droplet!
-
-    func addRoutes(droplet: Droplet) {
-        self.droplet = droplet
-        let group = droplet.grouped("manufacturer")
-        group.get(handler: manufacturer)
+    
+    init(router: Router) {
+        router.get("manufacturers", use: manufacturers)
+        router.get("manufacturers", Int.parameter, use: manufacturer)
+        router.get("manufacturer", use: oldManufacturer)
+    }
+    
+    func manufacturer(_ req: Request) throws -> Future<View> {
+        let param: Int = try req.parameters.next()
+        
+        let manufacturer = try QueryHelper.manufacturer(request: req, id: param)
+        let categories = try QueryHelper.categories(request: req)
+        let manufacturersCount = try QueryHelper.manufacturerCount(request: req)
+        let accessories = try QueryHelper.accessories(request: req, manufacturerId: param).all()
+        
+        return manufacturer.flatMap(to: View.self) { manufacturer in
+            guard let manufacturer = manufacturer else { throw Abort(.notFound) }
+            
+            return flatMap(to: View.self, categories, manufacturersCount, accessories, { (categories, manufacturersCount, accessories) in
+                let leaf = try req.make(LeafRenderer.self)
+                let responseData = ManufacturerResponse(manufacturer: manufacturer,
+                                                        pageIcon: "",
+                                                        accessoryCount: accessories.count,
+                                                        manufacturerCount: manufacturersCount,
+                                                        categories: categories,
+                                                        accessories: accessories.map { Accessory.AccessoryResponse(accessory: $0.0, manufacturer: $0.1) })
+                
+                return leaf.render("manufacturer", responseData)
+            })
+        }
+    }
+    
+    func manufacturers(_ req: Request) throws -> Future<View> {
+        let manufacturers = try QueryHelper.manufacturers(request: req)
+        let categories = try QueryHelper.categories(request: req)
+        let accessoryCount = try QueryHelper.accessoriesCount(request: req)
+        
+        return flatMap(to: View.self, manufacturers, categories, accessoryCount, { (manufacturers, categories, accessoryCount) in
+            let leaf = try req.make(LeafRenderer.self)
+            let responseData = ManufacturersResponse(pageTitle: "All Manufacturers",
+                                                     pageIcon: "",
+                                                     accessoryCount: accessoryCount,
+                                                     manufacturerCount: manufacturers.count,
+                                                     categories: categories,
+                                                     manufacturers: manufacturers)
+            
+            return leaf.render("manufacturers", responseData)
+        })
     }
 
-    func manufacturer(request: Request) throws -> ResponseRepresentable {
-        let queryManufacturer = request.query?["name"]?.string ?? ""
-        let manufacturer = try Manufacturer.makeQuery().filter("approved", true).filter("name", queryManufacturer).first()
-        let categories = try Category.all()
-        let accessoryCount = try Accessory.makeQuery().filter("approved", true).count()
+    func oldManufacturer(_ req: Request) throws -> Future<Response> {
+        let paramName: String = try req.query.get(at: "name")
 
-        let node: Node
-        let manufacturerCount: Int
-
-        if let manufacturer = manufacturer {
-            let accessories = try manufacturer.accessories.filter("approved", true).all()
-            manufacturerCount = try Manufacturer.makeQuery().filter("approved", true).count()
-            let pageTitle = manufacturer.name
-            let pageIcon = ""
-            let currentRoute = "manufacturer-search"
-            node = try Node(node: [
-                "manufacturerSelected": true,
-                "categories": categories.makeNode(in: nil),
-                "accessories": accessories.makeNode(in: nil),
-                "pageTitle": pageTitle.makeNode(in: nil),
-                "pageIcon": pageIcon.makeNode(in: nil),
-                "manufacturerLink": accessories.first?.manufacturer.get()?.websiteLink ?? "",
-                "accessoryCount": accessoryCount.makeNode(in: nil),
-                "manufacturerCount": manufacturerCount.makeNode(in: nil),
-                "currentRoute": currentRoute.makeNode(in: nil)
-            ])
-        } else {
-            let manufacturers = try Manufacturer.makeQuery().filter("approved", true).all()
-            manufacturerCount = manufacturers.count
-            let pageTitle = "All Manufacturers"
-            let pageIcon = ""
-            let currentRoute = "manufacturer"
-            node = try Node(node: [
-                "manufacturerSelected": false,
-                "categories": categories.makeNode(in: nil),
-                "manufacturers": manufacturers.makeNode(in: nil),
-                "pageTitle": pageTitle.makeNode(in: nil),
-                "pageIcon": pageIcon.makeNode(in: nil),
-                "accessoryCount": accessoryCount.makeNode(in: nil),
-                "manufacturerCount": manufacturerCount.makeNode(in: nil),
-                "currentRoute": currentRoute.makeNode(in: nil)
-            ])
+        return Manufacturer.query(on: req).filter(\Manufacturer.name == paramName).first().map { manufacturer in
+            return req.redirect(to: "manufacturers/\(manufacturer?.id ?? -1)")
         }
-        return try droplet.view.make("manufacturer", node)
+    }
+    
+    struct ManufacturersResponse: Codable {
+        let pageTitle: String
+        let pageIcon: String
+        let accessoryCount: Int
+        let manufacturerCount: Int
+        let categories: [Category]
+        let manufacturers: [Manufacturer]
+    }
+    
+    struct ManufacturerResponse: Codable {
+        let manufacturer: Manufacturer
+        let pageIcon: String
+        let accessoryCount: Int
+        let manufacturerCount: Int
+        let categories: [Category]
+        let accessories: [Accessory.AccessoryResponse]
     }
 }

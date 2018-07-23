@@ -1,61 +1,48 @@
 //
-//  Copyright © 2017 Patrick Balestra. All rights reserved.
+//  Copyright © 2018 Kim de Vos. All rights reserved.
 //
 
 import Vapor
 import HTTP
+import Leaf
+import FluentPostgreSQL
 
 final class HomeController {
-    
-    var droplet: Droplet!
-    
-    func addRoutes(droplet: Droplet) {
-        self.droplet = droplet
-        droplet.get(handler: self.home)
-        let home = droplet.grouped("home")
-        home.get(handler: self.home)
+
+    init(router: Router) {
+        router.get(use: home)
     }
-    
-    func home(request: Request) throws -> ResponseRepresentable {
-        // Get all categories to display in sidebar
-        let categories = try Category.all()
-        
-        let accessories: [Accessory]
-        var accessoriesDateString: [String]
-        let featuredAccessoryImage: String
-        let featuredAccessoryLink: String
-        
-        // Limit of fetched items for accessories query
+
+    func home(_ req: Request) throws -> Future<View> {
+
+        // Fetch featured accessory
+        let featuredAccessories = try QueryHelper.featuredAccessories(request: req).all()
+        let categories = try QueryHelper.categories(request: req)
+        let manufacturersCount = try QueryHelper.manufacturerCount(request: req)
+        let accessoryCount = try QueryHelper.accessoriesCount(request: req)
         let visibleAccessoriesLimit = 18
+        let accessories = try QueryHelper.accessories(request: req)
+            .range(lower: 0, upper: visibleAccessoriesLimit)
+            .all()
 
-        // Get limited amout of accessories sorted by date
-        accessories = try Accessory.makeQuery().filter("approved", true).sort("date", .descending).limit(visibleAccessoriesLimit).all()
+        return flatMap(to: View.self, featuredAccessories, categories, manufacturersCount, accessoryCount, accessories, { featuredAccessories, categories, manufacturersCount, accessoryCount, accessories in
+            let featuredAccessory = featuredAccessories.first.map { Accessory.FeaturedResponse(name: $0.0.name, externalLink: "https://www.xxter.com/pairot/homekitty", bannerImage: "/images/featured.jpg") }
 
-        // Creates a time ago string from the date of each accessory and stores it in a new array
-        accessoriesDateString = accessories.map { $0.date.timeAgoString() }
+            let data = HomeResponse(featuredAccessory: featuredAccessory,
+                                    categories: categories,
+                                    accessories: accessories.map { Accessory.AccessoryResponse(accessory: $0.0, manufacturer: $0.1) },
+                                    accessoryCount: accessoryCount,
+                                    manufacturerCount: manufacturersCount)
+            let leaf = try req.make(LeafRenderer.self)
+            return leaf.render("home", data)
+        })
+    }
 
-        // Path to the banner image of the featured image
-        featuredAccessoryImage = "/images/featured.jpg"
-
-        featuredAccessoryLink = "https://www.xxter.com/pairot/homekitty"
-
-        // Creates a time ago string from the date of each accessory and stores it in a new array
-        accessoriesDateString = accessories.map { $0.date.timeAgoString() }
-
-        let accessoryCount = try Accessory.makeQuery().filter("approved", true).count()
-        let manufacturerCount = try Manufacturer.makeQuery().filter("approved", true).count()
-
-        let nodes = try Node(node: [
-            "categories": categories.makeNode(in: nil),
-            "accessories": accessories.makeNode(in: nil),
-            "featuredImage": featuredAccessoryImage.makeNode(in: nil),
-            "featuredAccessory": featuredAccessoryLink,
-            "accessoriesDateString": accessoriesDateString.makeNode(in: nil),
-            "noAccessories": accessories.count == 0,
-            "accessoryCount": accessoryCount.makeNode(in: nil),
-            "manufacturerCount": manufacturerCount.makeNode(in: nil),
-        ])
-        return try droplet.view.make("home", nodes)
+    private struct HomeResponse: Codable {
+        let featuredAccessory: Accessory.FeaturedResponse?
+        let categories: [Category]
+        let accessories: [Accessory.AccessoryResponse]
+        let accessoryCount: Int
+        let manufacturerCount: Int
     }
 }
-

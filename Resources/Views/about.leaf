@@ -1,21 +1,16 @@
-#extend("base")
+#set("head") {
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script type="text/javascript" src="https://js.stripe.com/v2/"></script>
+<script async defer src="https://buttons.github.io/buttons.js"></script>
+<script async defer src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
+<script src="/js/jquery.js"></script>
+<title>HomeKitty - About</title>
+} 
 
-    #export("head") {
-        <meta charset="utf-8">
-        <meta http-equiv="X-UA-Compatible" content="IE=edge">
-        <meta name="viewport" content="width=device-width, initial-scale=1">
-        <script type="text/javascript" src="https://js.stripe.com/v2/"></script>
-        <script async defer src="https://buttons.github.io/buttons.js"></script>
-        <script async defer src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
-        <script src="/js/jquery.js"></script>
-        <title>HomeKitty - About</title>
-    }
-
-    #export("body") {
-
-    #embed("navigation")
-
-    <div class="container">
+#set("body") {
+<div class="container">
         <div class="row">
             <div class="header-brand">
                 <div id="header-content-brand">
@@ -87,11 +82,7 @@
             </div>
         </div>
     </div>
-    <script>
-        $(".dropdown-menu li:not(.disabled) a").click(function () {
-          $(this).closest(".dropdown").find(".btn").html('<span id="donation-amount">' + $(this).text() + '</span> <span class="caret"></span>');
-        });
-    </script>
+    <script type="text/javascript" src="/js/about.js"></script>
     <script type="text/javascript" src="/js/product.js"></script>
-    #embed("footer")
 }
+#embed("base")

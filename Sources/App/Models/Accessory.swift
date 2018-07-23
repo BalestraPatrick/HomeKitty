@@ -2,19 +2,18 @@
 //  Copyright © 2017 Patrick Balestra. All rights reserved.
 //
 
+import Foundation
 import Vapor
-import FluentProvider
+import FluentPostgreSQL
 
-final class Accessory: Model {
+final class Accessory: PostgreSQLModel {
 
     static var entity = "accessories"
 
-    let storage = Storage()
-    
-    var id: Node?
-    var categoryId: Identifier
-    var manufacturerId: Identifier
-    var requiredHubId: Identifier?
+    var id: Int?
+    var categoryId: Int
+    var manufacturerId: Int
+    var requiredHubId: Int?
 
     var name: String
     var image: String
@@ -25,6 +24,7 @@ final class Accessory: Model {
     var released: Bool
     var date: Date
     var requiresHub: Bool
+    var featured: Bool
 
     init(
         name: String,
@@ -32,14 +32,11 @@ final class Accessory: Model {
         price: String,
         productLink: String,
         amazonLink: String?,
-        categoryId: Identifier,
-        manufacturerId: Identifier,
-        released: Bool = true,
-        approved: Bool = false,
-        date: Date = Date(),
-        requiresHub: Bool = false,
-        requiredHubId: Identifier?
-    ) {
+        categoryId: Int,
+        manufacturerId: Int,
+        released: Bool,
+        requiresHub: Bool,
+        requiredHubId: Int?) {
         self.name = name
         self.categoryId = categoryId
         self.manufacturerId = manufacturerId
@@ -47,151 +44,177 @@ final class Accessory: Model {
         self.price = price
         self.productLink = productLink
         self.amazonLink = amazonLink
-        self.approved = approved
+        self.approved = false
         self.released = released
-        self.date = date
+        self.date = Date()
         self.requiresHub = requiresHub
         self.requiredHubId = requiredHubId
+        self.featured = false
     }
 
-    init(row: Row) throws {
-        id = try row.get("id")
-        name = try row.get("name")
-        categoryId = try row.get("category_id")
-        manufacturerId = try row.get("manufacturer_id")
-        image = try row.get("image")
-        price = try row.get("price")
-        productLink = try row.get("product_link")
-        amazonLink = try row.get("amazon_link")
-        approved = try row.get("approved")
-        released = try row.get("released")
-        date = try row.get("date")
-        requiresHub = try row.get("requires_hub")
-        requiredHubId = try row.get("required_hub_id")
-    }
+    enum CodingKeys: String, CodingKey {
+        case id
+        case categoryId = "category_id"
+        case manufacturerId = "manufacturer_id"
+        case requiredHubId = "required_hub_id"
 
-    func makeRow() throws -> Row {
-        var row = Row()
-        try row.set("id", id)
-        try row.set("name", name)
-        try row.set("category_id", categoryId)
-        try row.set("manufacturer_id", manufacturerId)
-        try row.set("image", image)
-        try row.set("price", price)
-        try row.set("product_link", productLink)
-        try row.set("amazon_link", amazonLink)
-        try row.set("approved", approved)
-        try row.set("released", released)
-        try row.set("date", date)
-        try row.set("requires_hub", requiresHub)
-        try row.set("required_hub_id", requiredHubId)
-        return row
+        case name
+        case image
+        case price
+        case productLink = "product_link"
+        case amazonLink = "amazon_link"
+        case approved
+        case released
+        case date
+        case requiresHub = "requires_hub"
+        case featured
     }
-}
-
-extension Accessory {
 
     var category: Parent<Accessory, Category> {
-        return parent(id: categoryId)
+        return parent(\Accessory.categoryId)
     }
 
     var manufacturer: Parent<Accessory, Manufacturer> {
-        return parent(id: manufacturerId)
+        return parent(\Accessory.manufacturerId)
     }
 
     var requiredHub: Parent<Accessory, Accessory>? {
-        return parent(id: requiredHubId)
+        return parent(\Accessory.requiredHubId)
     }
-
-    var regions: Siblings<Accessory, Region, Pivot<Accessory, Region>> {
+    
+    var regions: Siblings<Accessory, Region, AccessoryRegionPivot> {
         return siblings()
     }
 
-    var regionCompatibility: String? {
-        let regionNames = try? regions.all().map { $0.name }
-        if let regions = regionNames, !regions.isEmpty {
-            return regions.joined(separator: ", ")
+    func regionCompatibility(_ req: Request) throws -> Future<String> {
+        return try regions.query(on: req).all().flatMap(to: String.self) { regions in
+            let promise = req.eventLoop.newPromise(String.self)
+
+            promise.succeed(result: regions.map { $0.name }.joined(separator: ", "))
+
+            return promise.futureResult
         }
-        return nil
+    }
+
+    func didCreate(on connection: PostgreSQLConnection) throws -> EventLoopFuture<Accessory> {
+        try updateCounterCache(connection)
+        return Future.map(on: connection, { self })
+    }
+
+    func didUpdate(on connection: PostgreSQLConnection) throws -> EventLoopFuture<Accessory> {
+        try updateCounterCache(connection)
+        return Future.map(on: connection, { self })
+    }
+    func willDelete(on connection: PostgreSQLConnection) throws -> EventLoopFuture<Accessory> {
+        try updateCounterCache(connection, willDelete: true)
+        return Future.map(on: connection, { self })
+    }
+
+    func updateCounterCache(_ connection: PostgreSQLConnection, willDelete: Bool = false) throws {
+        _ = category.get(on: connection).flatMap(to: Category.self, { category in
+            return Category
+                .query(on: connection)
+                .filter(\Category.id == self.categoryId)
+                .count()
+                .flatMap(to: Category.self, { participationCount in
+                    if !willDelete {
+                        category.accessoriesCount = participationCount
+                    } else {
+                        category.accessoriesCount = participationCount - 1
+                    }
+                    return category.save(on: connection)
+                })
+        })
+    }
+
+    struct FeaturedResponse: Codable {
+        let name: String
+        let externalLink: String
+        let bannerImage: String
+    }
+
+    struct AccessoryResponse: Codable {
+        let id: Int?
+        let name: String
+        let image: String
+        let price: String
+        let productLink: String
+        let categoryId: Int
+        let amazonLink: String?
+        let approved: Bool
+        let released: Bool
+        let date: Date
+        let requiresHub: Bool
+        let featured: Bool
+        let manufacturerId: Int?
+        let manufacturerName: String?
+        let manufacturerWebsite: String?
+        let timeAgo: String?
+
+        init(accessory: Accessory, manufacturer: Manufacturer) {
+            id = accessory.id
+            name = accessory.name
+            image = accessory.image
+            price = accessory.price
+            productLink = accessory.productLink
+            categoryId = accessory.categoryId
+            amazonLink = accessory.amazonLink
+            approved = accessory.approved
+            released = accessory.released
+            date = accessory.date
+            requiresHub = accessory.requiresHub
+            featured = accessory.featured
+            manufacturerId = accessory.manufacturerId
+            manufacturerName = manufacturer.name
+            manufacturerWebsite = manufacturer.websiteLink
+            timeAgo = accessory.date.timeAgoString()
+        }
+
+        enum CodingKeys: String, CodingKey {
+            case id
+            case name
+            case image
+            case price
+            case productLink = "product_link"
+            case amazonLink = "amazon_link"
+            case approved
+            case released
+            case date
+            case requiresHub = "requires_hub"
+            case featured
+            case manufacturerId = "manufacturer_id"
+            case manufacturerName = "manufacturer_name"
+            case timeAgo = "time_ago"
+            case manufacturerWebsite = "manufacturer_website"
+            case categoryId = "category_id"
+        }
     }
 }
 
-extension Accessory: NodeRepresentable {
-
-    func makeNode(in context: Context?) throws -> Node {
-        var node = try Node(node: [
-            "name": name,
-            "category_id": categoryId.string!,
-            "image": image,
-            "price": price,
-            "product_link": productLink,
-            "released": released,
-            "date": date,
-            "requires_hub": requiresHub,
-            "page_link": "/accessory?name=\(name)"
-        ])
-
-        if let manufacturer = try manufacturer.get() {
-            node["manufacturer"] = manufacturer.name.makeNode(in: nil)
-            node["manufacturer_link"] = manufacturer.directLink.makeNode(in: nil)
-            node["manufacturer_website"] = manufacturer.websiteLink.makeNode(in: nil)
-        }
-        if let hub = try requiredHub?.get(), let hubId = hub.id {
-            node["required_hub_id"] = hubId.string?.makeNode(in: nil)
-            node["required_hub_page_link"] = "/accessory?name=\(hub.name)".makeNode(in: nil)
-        }
-        if let region = regionCompatibility {
-            node["region_compatibility"] = region.makeNode(in: nil)
-        }
-        if let amazon = amazonLink {
-            node["amazon_link"] = amazon.makeNode(in: nil)
-        }
-        return node
-    }
-}
-
-extension Accessory: ResponseRepresentable {
-
-    func makeResponse() throws -> Response {
-        var json = JSON()
-        try json.set("id", id)
-        try json.set("name", name)
-        try json.set("category_id", categoryId)
-        try json.set("manufacturer_id", manufacturerId)
-        try json.set("image", image)
-        try json.set("price", price)
-        try json.set("product_link", productLink)
-        try json.set("amazon_link", amazonLink)
-        try json.set("released", released)
-        try json.set("approved", approved)
-        try json.set("date", date)
-        try json.set("requires_hub", requiresHub)
-        try json.set("required_hub_id", requiredHubId)
-        return try json.makeResponse()
-    }
-}
-
-extension Accessory: Preparation {
-
-    static func prepare(_ database: Database) throws {
-        try database.create(self) { builder in
-            builder.id()
-            builder.parent(Category.self)
-            builder.parent(Manufacturer.self)
-            builder.string("name")
-            builder.string("image")
-            builder.string("price")
-            builder.string("product_link")
-            builder.string("amazon_link")
-            builder.bool("approved")
-            builder.bool("released")
-            builder.date("date")
-            builder.bool("requires_hub")
-            builder.parent(Accessory.self, optional: true, unique: false, foreignIdKey: "required_hub_id")
-        }
+extension Accessory: Migration {
+    static func prepare(on connection: PostgreSQLConnection) -> Future<Void> {
+        return Database.create(self, on: connection, closure: { builder in
+            builder.field(for: \Accessory.id, type: .int, .primaryKey())
+            builder.field(for: \Accessory.name)
+            builder.field(for: \Accessory.image)
+            builder.field(for: \Accessory.price)
+            builder.field(for: \Accessory.productLink)
+            builder.field(for: \Accessory.categoryId)
+            builder.field(for: \Accessory.amazonLink)
+            builder.field(for: \Accessory.approved)
+            builder.field(for: \Accessory.released)
+            builder.field(for: \Accessory.date)
+            builder.field(for: \Accessory.requiresHub)
+            builder.field(for: \Accessory.requiredHubId)
+            builder.field(for: \Accessory.featured)
+            builder.field(for: \Accessory.manufacturerId)
+            builder.reference(from: \Accessory.requiredHubId, to: \Accessory.id)
+            builder.reference(from: \Accessory.categoryId, to: \Category.id)
+            builder.reference(from: \Accessory.manufacturerId, to: \Manufacturer.id)
+        })
     }
 
-    static func revert(_ database: Database) throws {
-        try database.delete(Accessory.self)
+    static func revert(on connection: PostgreSQLConnection) -> Future<Void> {
+        return Database.delete(self, on: connection)
     }
 }

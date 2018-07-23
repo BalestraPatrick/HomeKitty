@@ -3,85 +3,48 @@
 //
 
 import Vapor
-import FluentProvider
+import Fluent
+import FluentPostgreSQL
 
-final class Category: Model {
-    
+final class Category: PostgreSQLModel {
+
     static var entity = "category"
 
-    let storage = Storage()
-
-    var id: Node?
+    var id: Int?
     var name: String
     var image: String
-    var selected = false
+    var accessoriesCount: Int = 0
+
+    enum CodingKeys: String, CodingKey {
+        case id
+        case name
+        case image
+        case accessoriesCount = "accessories_count"
+    }
 
     var accessories: Children<Category, Accessory> {
-        return children()
-    }
-    var accessoriesCount: Int {
-        return (try? accessories.makeQuery().filter("approved", true).all().count) ?? 0
+        return children(\Accessory.categoryId)
     }
 
     init(name: String, image: String) {
         self.name = name
         self.image = image
     }
-
-    init(row: Row) throws {
-        id = try row.get("id")
-        name = try row.get("name")
-        image = try row.get("image")
-    }
-
-    func makeRow() throws -> Row {
-        var row = Row()
-        try row.set("id", id)
-        try row.set("name", name)
-        try row.set("image", image)
-        try row.set("accessoriesCount", accessoriesCount)
-        try row.set("selected", selected)
-        return row
-    }
-}
-
-extension Category: NodeRepresentable {
-
-    func makeNode(in context: Context?) throws -> Node {
-        return try Node(node: [
-            "name": name,
-            "image": image,
-            "accessoriesCount": accessoriesCount,
-            "selected": selected,
-        ])
-    }
 }
 
 // MARK: - Database Preparation
 
-extension Category: Preparation {
-
-    static func prepare(_ database: Database) throws {
-        try database.create(Category.self) { builder in
-            builder.id()
-            builder.string("name")
-            builder.string("image")
-        }
+extension Category: Migration {
+    static func prepare(on connection: PostgreSQLConnection) -> Future<Void> {
+        return Database.create(self, on: connection, closure: { builder in
+            builder.field(for: \Category.id, type: .int, .primaryKey())
+            builder.field(for: \Category.name)
+            builder.field(for: \Category.image)
+            builder.field(for: \Category.accessoriesCount)
+        })
     }
 
-    static func revert(_ database: Database) throws {
-        try database.delete(self)
-    }
-}
-
-extension Array where Element: Category {
-
-    func select(selected: String?) -> [Element] {
-        forEach { category in
-            if let selected = selected, selected == category.name {
-                category.selected = true
-            }
-        }
-        return self
+    static func revert(on connection: PostgreSQLConnection) -> Future<Void> {
+        return Database.delete(self, on: connection)
     }
 }

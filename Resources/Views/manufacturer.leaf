@@ -1,6 +1,4 @@
-#extend("base")
-
-#export("head") {
+#set("head") {
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -9,121 +7,29 @@
 }
 
 
-#export("body") {
-    #embed("navigation")
+#set("body") {
     <div class="container container-content">
         <div class="row">
 
             <!-- Side Menu -->
-            <div class="col-md-3">
-                <p class="lead">Search</p>
-                <div class="input-group" style="display: block;">
-                    <form action="/explore/search" style="display: flex;">
-                        <input type="text" class="form-control" placeholder="Search" name="term">
-                        <span class="input-group-btn" style="margin-right: 35px;">
-                            <button type="submit" class="btn btn-default" type="button"><span class="glyphicon glyphicon-search"></span></button>
-                        </span>
-                    </form>
-                </div>
-                <br>
-                <p class="lead">Categories</p>
-                <div class="list-group">
-                    <a href="/explore" class="list-group-item">All Accessories<span class="badge">#(accessoryCount)</span></a>
-                    <a href="/manufacturer" class="list-group-item">All Manufacturers<span class="badge">#(manufacturerCount)</span></a>
-                </div>
-                <div class="btn-group btn-block visible-sm visible-xs">
-                    <button type="button" class="btn btn-default btn-block dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">Choose Category <span class="caret"></span></button>
-                    <ul class="dropdown-menu btn-block">
-                        #loop(categories, "category") {
-                            <li>
-                                <a href="/explore?category=#(category.name)" class="dropdown-item btn-block #if(category.selected) { selected }"><img src="#(category.image)" width="30px">
-                                    #(category.name)<span class="badge badge-important pull-right">#(category.accessoriesCount)</span>
-                                </a>
-                            </li>
-                            <li role="separator" class="divider"></li>
-                        }
-                    </ul>
-                </div>
-                <div class="list-group hidden-sm hidden-xs">
-                    #loop(categories, "category") {
-                    <a href="/explore?category=#(category.name)" class="list-group-item #if(category.selected) { selected }"><img src="#(category.image)" width="30px"> #(category.name)<span class="badge">#(category.accessoriesCount)</span></a>
-                    }
-                </div>
-                <div id="email-subscription">
-                    <p class="lead" style="margin-bottom: 10px;">Keep up to date</p>
-                    <p>Receive new accessories in your inbox once per month.</p>
-                    <div class="input-group" style="display: block;">
-                        <form action="https://world.us16.list-manage.com/subscribe/post?u=87ff0444f06c586f363e15184&amp;id=e5c558d68d" method="post" id="mc-embedded-subscribe-form" name="mc-embedded-subscribe-form" class="validate" target="_blank" style="display: flex;" novalidate>
-                            <input type="email" value="" class="require email form-control" id="mce-EMAIL" name="EMAIL" placeholder="info@homekitty.world">
-                            <span class="input-group-btn" style="margin-right: 35px;">
-                                <button type="submit" value="Subscribe" name="subscribe" id="" class="button btn btn-default" type="button"><span class="glyphicon glyphicon-send"></span></button>
-                            </span>
-                        </form>
-                        <div id="mce-responses" class="clear" style="padding: 5px;">
-                            <div class="response" id="mce-error-response" style="display: none"></div>
-                            <div class="response" id="mce-success-response" style="display: none"></div>
-                        </div>
-                    </div>
-                </div>
-            </div>
+            #embed("sidemenu")
 
             <!-- Content -->
             <div class="col-md-9">
                 <div class="flex-item" style="margin-top: 10px;">
-                    <img src="#raw(pageIcon)" width="50px">
-                    <p class="lead">#(pageTitle)</p>
-                    <p><a href="#(manufacturerLink)" target="_blank">#(manufacturerLink)</a></p>
+                    <img src="#get(pageIcon)" width="50px">
+                    <p class="lead">#(manufacturer.name)</p>
+                    <p><a href="#(manufacturer.website_link)" target="_blank">#(manufacturer.website_link)</a></p>
                 </div>
                 <div class="row">
-                    #if(manufacturerSelected) {
-                        #loop(accessories, "accessory") {
-                        <div class="col-sm-4 col-lg-4 col-md-4">
-                            <div class="thumbnail" style="display: flex;justify-content: space-between; flex-grow: 1; flex-direction: column;">
-                                <a href="#(accessory.page_link)">
-                                    <img src="#(accessory.image)" alt="#(accessory.name)" style="height:200px" class="accessory-image">
-                                </a>
-                                <a href="#(accessory.page_link)" class="accessory-name"><h4>#(accessory.name)</h4></a>
-                                <div class="accessory-information-container">
-                                    <div>
-                                        <h4 class="accessory-price">#(accessory.price)</h4>
-                                        <div class="accessory-information">
-                                            <div class="accessory-manufacturer-container">
-                                                <p class="accessory-manufacturer">By <a href="/#(accessory.manufacturer_link)">#(accessory.manufacturer)</a></p>
-                                            </div>
-                                            #if(accessory.released) { }
-                                            ##else() {
-                                            <a data-toggle="popover" data-content="Accessory or HomeKit support will be released soon." data-placement="top" data-trigger="hover">
-                                                <img src="/images/coming-soon.png" class="coming-soon-icon" style="height: 25px; width: 25px;">
-                                            </a>
-                                            }
-                                            #if(accessory.requires_hub) {
- +                                            <img src="/images/bridge.png" class="bridge-icon" style="height: 25px; width: 25px;" data-toggle="popover" data-content="This accessory requires a proprietary bridge." data-placement="top" data-trigger="hover">
-    +                                        }
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
+                        #for(accessory in accessories) {
+                            #embed("accessoryItem")
                         }
-                    } ##else() {
-                        #loop(manufacturers, "manufacturer") {
-                        <div class="col-sm-4 col-lg-4 col-md-4">
-                            <div class="thumbnail" style="height: auto;">
-                                <a href="/manufacturer?name=#(manufacturer.name)"></a>
-                                <div class="caption">
-                                    <div><h4><a href="/manufacturer?name=#(manufacturer.name)">#(manufacturer.name)</a></h4></div>
-                                    <div style="display: flex; justify-content: center; align-items: center;">
-                                        <p><a href="#(manufacturer.website_link)" target="_blank">#(manufacturer.website_link)</a></p>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        }
-                    }
                 </div>
             </div>
         </div>
     </div>
-    #embed("footer")
     <script type="text/javascript" src="/js/explore.js"></script>
 }
+
+#embed("base")

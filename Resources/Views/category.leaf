@@ -7,9 +7,7 @@
     <title>HomeKitty - Browse HomeKit Accessories</title>
 }
 
-
 #set("body") {
-    #embed("navigation")
     <div class="container container-content">
         <div class="row">
             <!-- Side Menu -->
@@ -17,16 +15,9 @@
 
             <!-- Content -->
             <div class="col-md-9">
-                #if(featuredAccessory) {
                 <div class="flex-item" style="margin-top: 10px;">
-                    <p class="lead">Featured Accessory</p>
-                    <a href="#(featuredAccessory.externalLink)" target="_blank">
-                    <img src="#(featuredAccessory.bannerImage)" width="100%">
-                    </a>
-                </div>
-                }
-                <div class="flex-item" style="margin-top: 10px;">
-                    <p class="lead">Latest Accessories</p>
+                    <img src="#get(pageIcon)" width="50px">
+                    <p class="lead">#(pageTitle)</p>
                 </div>
                 <div class="row">
                     #if(noAccessories) {
@@ -36,7 +27,7 @@
                         <h5 class="lead">Why not <a href="/contribute">contribute</a> with one yourself?<h5>
                     </div>
                     }
-                    #for(accessory in accessories) {
+                    #loop(accessories, "accessory") {
                         #embed("accessoryItem")
                     }
                 </div>
@@ -45,7 +36,6 @@
     </div>
     <script type="text/javascript" src="/js/explore.js"></script>
     <script type='text/javascript' src='//s3.amazonaws.com/downloads.mailchimp.com/js/mc-validate.js'></script>
-    <script type='text/javascript' src="/js/home.js"></script>
 }
 
 #embed("base")
