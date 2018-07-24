@@ -39,6 +39,7 @@ public func configure(_ config: inout Config, env: inout Environment, services: 
 
     // Must set the preferred renderer:
     config.prefer(LeafRenderer.self, for: TemplateRenderer.self)
+    config.prefer(LeafRenderer.self, for: ViewRenderer.self)
 
     services.register { worker in
         return LeafErrorMiddleware(environment: worker.environment)
