@@ -1,5 +1,5 @@
 //
-//  Created by Kim de Vos on 24/03/2018.
+//  Copyright © 2018 HomeKitty. All rights reserved.
 //
 
 import Foundation

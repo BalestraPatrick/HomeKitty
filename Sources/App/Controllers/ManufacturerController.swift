@@ -1,5 +1,5 @@
 //
-//  Copyright © 2018 Kim de Vos. All rights reserved.
+//  Copyright © 2018 HomeKitty. All rights reserved.
 //
 
 import Vapor

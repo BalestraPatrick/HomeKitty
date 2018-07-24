@@ -1,5 +1,5 @@
 //
-//  Copyright © 2018 Kim de Vos. All rights reserved.
+//  Copyright © HomeKitty. All rights reserved.
 //
 
 import Foundation
