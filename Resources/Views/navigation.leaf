@@ -2,11 +2,11 @@
     <div class="container">
         <div class="navbar-header">
             <div>
-                <img src="/mstile-70x70.png" width="70" style="float:left; padding: 10px;">
+                <img src="/mstile-70x70.png" width="70" height="70" style="float:left; padding: 10px;">
                 <a class="navbar-brand" href="/">HomeKitty</a>
             </div>
             <div class="navbar-toggle-wrapper">
-<button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
+                <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
                     <span class="sr-only">Toggle navigation</span>
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>

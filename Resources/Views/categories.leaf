@@ -53,7 +53,7 @@
 <div class="list-group hidden-sm hidden-xs">
 #for(category in categories) {
 <a href="/categories/#(category.id)" class="list-group-item #if(index == selectedCategory) { selected }">
-<img src="#(category.image)" width="30px"> #(category.name)
+<img src="#(category.image)" width="30px" height="30px"> #(category.name)
 <span class="badge">#(category.accessories_count)</span>
 </a>
 }
