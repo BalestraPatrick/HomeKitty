@@ -1,16 +1,17 @@
 #set("head") {
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="stylesheet" href="/css/content.css">
-    <link href="//cdn-images.mailchimp.com/embedcode/classic-10_7.css" rel="stylesheet" type="text/css">
-    <title>HomeKitty - Browse HomeKit Accessories</title>
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>HomeKitty - Browse HomeKit Accessories</title>
+<link rel="stylesheet" href="/css/content.css">
 }
 
+
 #set("body") {
-    <div class="container container-content">
-        <div class="row">
-            <!-- Side Menu -->
+<div class="container container-content">
+<div class="row">
+
+<!-- Side Menu -->
 <div class="col-md-3">
 <p class="lead">Search</p>
 <div class="input-group" style="display: block;">
@@ -40,7 +41,7 @@
 <ul class="dropdown-menu btn-block">
 #for(category in categories) {
 <li>
-<a href="/categories/#(category.id)" class="dropdown-item btn-block #if(category.selected) { selected }">
+<a href="/categories/#(category.id)" class="dropdown-item btn-block #if(index == selectedCategory) { selected }">
 <img src="#(category.image)" width="30px"> #(category.name)
 <span class="badge badge-important pull-right">#(category.accessories_count)</span>
 </a>
@@ -51,7 +52,7 @@
 </div>
 <div class="list-group hidden-sm hidden-xs">
 #for(category in categories) {
-<a href="/categories/#(category.id)" class="list-group-item #if(category.selected) { selected }">
+<a href="/categories/#(category.id)" class="list-group-item #if(index == selectedCategory) { selected }">
 <img src="#(category.image)" width="30px"> #(category.name)
 <span class="badge">#(category.accessories_count)</span>
 </a>
@@ -79,29 +80,21 @@ novalidate>
 </div>
 </div>
 
-            <!-- Content -->
-            <div class="col-md-9">
-                <div class="flex-item" style="margin-top: 10px;">
-                    <img src="#get(pageIcon)" width="50px">
-                    <p class="lead">#(pageTitle)</p>
-                </div>
-                <div class="row">
-                    #if(noAccessories) {
-                    <div style="text-align:center; padding-top:50px;">
-                        <h1>🔍</h1>
-                        <h4 class="lead">No accessory found here.</h4>
-                        <h5 class="lead">Why not <a href="/contribute">contribute</a> with one yourself?<h5>
-                    </div>
-                    }
-                    #for(accessory in accessories) {
-                        #embed("accessoryItem")
-                    }
-                </div>
-            </div>
-        </div>
-    </div>
-    <script type="text/javascript" src="/js/explore.js"></script>
-    <script type='text/javascript' src='//s3.amazonaws.com/downloads.mailchimp.com/js/mc-validate.js'></script><script type='text/javascript'>(function($) {window.fnames = new Array(); window.ftypes = new Array();fnames[0]='EMAIL';ftypes[0]='email';fnames[1]='FNAME';ftypes[1]='text';fnames[2]='LNAME';ftypes[2]='text';fnames[3]='BIRTHDAY';ftypes[3]='birthday';}(jQuery));var $mcj = jQuery.noConflict(true);</script>
+<!-- Content -->
+<div class="col-md-9">
+<div class="flex-item" style="margin-top: 10px;">
+<img src="#get(pageIcon)" width="50px">
+<p class="lead">#(category.name)</p>
+</div>
+<div class="row">
+#for(accessory in accessories) {
+#embed("accessoryItem")
+}
+</div>
+</div>
+</div>
+</div>
+<script type="text/javascript" src="/js/explore.js"></script>
 <script type='text/javascript' src="/js/sidemenu.js"></script>
 }
 

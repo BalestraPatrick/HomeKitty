@@ -24,7 +24,6 @@ final class ReportController {
             return accessories.flatMap(to: View.self) { accessories in
                 let leaf = try req.make(LeafRenderer.self)
                 let responseData = ReportResponse(accessories: accessories)
-
                 return leaf.render("report", responseData)
             }
         }
@@ -43,7 +42,6 @@ final class ReportController {
 
                 return try sendgrid.send([sendGridEmail], on: req.eventLoop).flatMap(to: View.self, {
                     let leaf = try req.make(LeafRenderer.self)
-
                     return leaf.render("report", ["success": true])
                 })
             })

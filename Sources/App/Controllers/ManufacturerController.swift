@@ -52,8 +52,8 @@ final class ManufacturerController {
                                                      accessoryCount: accessoryCount,
                                                      manufacturerCount: manufacturers.count,
                                                      categories: categories,
-                                                     manufacturers: manufacturers)
-            
+                                                     manufacturers: manufacturers,
+                                                     manufacturersSelected: true)
             return leaf.render("manufacturers", responseData)
         })
     }
@@ -73,6 +73,7 @@ final class ManufacturerController {
         let manufacturerCount: Int
         let categories: [Category]
         let manufacturers: [Manufacturer]
+        let manufacturersSelected: Bool
     }
     
     struct ManufacturerResponse: Codable {

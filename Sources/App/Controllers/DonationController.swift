@@ -10,7 +10,7 @@ import Leaf
 final class DonationController {
     
     init(router: Router) {
-        router.get("donation", "thanks" , use: thanks)
+        router.get("donation", "thanks", use: thanks)
         router.get("donation", use: donation)
     }
     
