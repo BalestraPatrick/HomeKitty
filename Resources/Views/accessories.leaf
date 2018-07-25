@@ -79,7 +79,6 @@ novalidate>
 </div>
 </div>
 </div>
-
             <!-- Content -->
             <div class="col-md-9">
                 <div class="flex-item" style="margin-top: 10px;">
@@ -100,9 +99,6 @@ novalidate>
             </div>
         </div>
     </div>
-    <script type='text/javascript' src="/js/sidemenu.js"></script>
-    <script type="text/javascript" src="/js/explore.js"></script>
-    <script type='text/javascript' src='//s3.amazonaws.com/downloads.mailchimp.com/js/mc-validate.js'></script>
 }
 
 #embed("base")
