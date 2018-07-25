@@ -1,5 +1,5 @@
 //
-//  Copyright © 2018 Kim de Vos. All rights reserved.
+//  Copyright © 2018 HomeKitty. All rights reserved.
 //
 
 import Vapor
@@ -52,8 +52,8 @@ final class ManufacturerController {
                                                      accessoryCount: accessoryCount,
                                                      manufacturerCount: manufacturers.count,
                                                      categories: categories,
-                                                     manufacturers: manufacturers)
-            
+                                                     manufacturers: manufacturers,
+                                                     manufacturersSelected: true)
             return leaf.render("manufacturers", responseData)
         })
     }
@@ -73,6 +73,7 @@ final class ManufacturerController {
         let manufacturerCount: Int
         let categories: [Category]
         let manufacturers: [Manufacturer]
+        let manufacturersSelected: Bool
     }
     
     struct ManufacturerResponse: Codable {

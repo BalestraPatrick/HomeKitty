@@ -1,5 +1,5 @@
 //
-//  Copyright © 2018 Kim de Vos. All rights reserved.
+//  Copyright © HomeKitty. All rights reserved.
 //
 
 import Foundation
@@ -26,7 +26,7 @@ final class AccessoryController {
             let data = AccessoriesResponse(accessories: accessories.map { Accessory.AccessoryResponse(accessory: $0.0, manufacturer: $0.1) },
                                            categories: categories,
                                            accessoryCount: accessories.count,
-                                           manufacturerCount: manufacturersCount)
+                                           manufacturerCount: manufacturersCount, accessoriesSelected: true)
             let leaf = try req.make(LeafRenderer.self)
             return leaf.render("accessories", data)
         }
@@ -78,5 +78,6 @@ final class AccessoryController {
         let categories: [Category]
         let accessoryCount: Int
         let manufacturerCount: Int
+        let accessoriesSelected: Bool
     }
 }

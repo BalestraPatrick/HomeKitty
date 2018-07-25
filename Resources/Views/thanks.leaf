@@ -5,7 +5,6 @@
     <script type="text/javascript" src="https://js.stripe.com/v2/"></script>
     <script async defer src="https://buttons.github.io/buttons.js"></script>
     <script async defer src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
-    <script src="/js/jquery.js"></script>
     <title>HomeKitty - About</title>
 }
 
