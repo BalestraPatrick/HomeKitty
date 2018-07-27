@@ -1,6 +1,4 @@
-#extend("base")
-
-#export("head") {
+#set("head") {
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -8,7 +6,7 @@
     <title>HomeKitty - Browse HomeKit Accessories</title>
 }
 
-#export("body") {
+#set("body") {
     #embed("navigation")
     <div class="container container-content">
         <div class="row">
@@ -17,7 +15,7 @@
                     <h1>👍👍👍</h1>
                     <p class="lead">Thanks for your message. We'll answer as soon as possible.</p>
                 </div>
-            } ##else() {
+            } else {
                 <div class="col-md-6" id="contribute-column">
                 <h1>Contact / Report Issue</h1>
                 <p>The goal of HomeKitty is to be the central place of discovery for all HomeKit accessories. By helping to improve our database, you can make sure many more people can browse accurate and up to date information.</p>
@@ -38,7 +36,7 @@
                         <label>Accessory related to your question</label>
                         <div class="form-group">
                             <select name="accessory" style="max-width:100%;">
-                                #loop(accessories, "accessory") {
+                                #for(accessory in accessories) {
                                 <option value="#(accessory.name)">#(accessory.name)</option>
                                 }
                             </select>
@@ -69,15 +67,7 @@
             }
         </div>
     </div>
-    <script>
-        function topicChanged(selected) {
-            var accessoryIssue = document.getElementById('accessory-issue');
-            if (selected == 'issue') {
-                accessoryIssue.style.display = 'block';
-            } else {
-                accessoryIssue.style.display = 'none';
-            }
-        }
-    </script>
-    #embed("footer")
+    <script type="text/javascript" src="/js/report.js"></script>
 }
+
+#embed("base")

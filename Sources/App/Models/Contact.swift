@@ -4,7 +4,7 @@
 
 import Foundation
 
-enum ContactTopic: String {
+enum ContactTopic: String, Codable {
     case issue
     case feature
     case partnership

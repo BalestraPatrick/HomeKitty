@@ -4,13 +4,17 @@
     <footer>
         <div class="row">
             <div class="col-lg-12">
-                <p><a href="https://twitter.com/homekittyworld" target="_blank">Twitter</a> − <a href="https://homekitty.world/rss.xml" target="_blank">RSS</a> − <a href="https://homekitty-slack.herokuapp.com" target="_blank">Slack</a> − <a href="/report">Report Issue</a> − <a href="/report">Contact</a></p>
-                <p>Copyright &copy; HomeKitty <script>document.write(new Date().getFullYear())</script></p>
+                <p>
+                    <a href="https://twitter.com/homekittyworld" target="_blank">Twitter</a> −
+                    <a href="https://homekitty.world/rss.xml" target="_blank">RSS</a> −
+                    <a href="https://homekitty-slack.herokuapp.com" target="_blank">Slack</a> −
+                    <a href="/report">Report Issue</a> −
+                    <a href="/report">Contact</a>
+                </p>
+                <p>Copyright &copy; HomeKitty
+                    <script>document.write(new Date().getFullYear())</script>
+                </p>
             </div>
         </div>
     </footer>
 </div>
-<script src="/js/jquery.js"></script>
-<script src="/js/bootstrap.min.js"></script>
-<script src="/js/bootstrap-select.js"></script>
-<script type="text/javascript" src="//s.skimresources.com/js/113104X1571791.skimlinks.js"></script>

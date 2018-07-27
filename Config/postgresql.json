@@ -1,7 +1,0 @@
-{
-    "hostname": "$DB_HOSTNAME",
-    "user": "$DB_USER",
-    "password": "$DB_PASSWORD",
-    "database": "$DB_DATABASE",
-    "port": "$DB_PORT"
-}

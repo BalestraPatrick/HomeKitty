@@ -3,7 +3,6 @@
 //
 
 import XCTest
-import Testing
 @testable import Vapor
 @testable import App
 
@@ -15,11 +14,11 @@ class AboutControllerTests: TestCase {
         ]
     }
 
-    let drop = try! Droplet.testable()
-
     func testAbout() throws {
-        try drop
-            .testResponse(to: .get, at: "/about")
-            .assertStatus(is: .ok)
+        let responder = try app.make(Responder.self)
+        let wrappedRequest = Request(http: HTTPRequest(url: URL(string: "/about")!), using: app)
+        let response = try responder.respond(to: wrappedRequest).wait()
+
+        XCTAssert(response.http.status == .ok)
     }
 }

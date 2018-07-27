@@ -1,21 +1,15 @@
-#extend("base")
+#set("head") {
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script type="text/javascript" src="https://js.stripe.com/v2/"></script>
+<script async defer src="https://buttons.github.io/buttons.js"></script>
+<script async defer src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
+<title>HomeKitty - About</title>
+} 
 
-    #export("head") {
-        <meta charset="utf-8">
-        <meta http-equiv="X-UA-Compatible" content="IE=edge">
-        <meta name="viewport" content="width=device-width, initial-scale=1">
-        <script type="text/javascript" src="https://js.stripe.com/v2/"></script>
-        <script async defer src="https://buttons.github.io/buttons.js"></script>
-        <script async defer src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
-        <script src="/js/jquery.js"></script>
-        <title>HomeKitty - About</title>
-    }
-
-    #export("body") {
-
-    #embed("navigation")
-
-    <div class="container">
+#set("body") {
+<div class="container">
         <div class="row">
             <div class="header-brand">
                 <div id="header-content-brand">
@@ -35,7 +29,7 @@
             <p>Did you find a cool new accessory that has been released officially? Submit it in the <a href="/contribute">Contribute</a> page and it will be reviewed and added as soon as possible to the public database of accessories.</p>
             <hr>
             <h2>🤓 Team</h2>
-            <p>My name is <a href="https://patrickbalestra.com" target="_blank">Patrick Balestra</a>, a 🇨🇭 software engineer currently living in Berlin. I created HomeKitty in my free time during the last few months.</p>
+            <p>My name is <a href="https://patrickbalestra.com" target="_blank">Patrick Balestra</a>, a 🇨🇭 software engineer currently living in Stockholm, Sweden. I created HomeKitty in my free time during the last few months.</p>
             <p> Interested in following the development?</p>
             <div class="centered">
                 <a href="https://twitter.com/HomeKittyWorld" class="twitter-follow-button" data-size="large" data-show-count="false">Follow @HomeKittyWorld</a><br>
@@ -87,11 +81,7 @@
             </div>
         </div>
     </div>
-    <script>
-        $(".dropdown-menu li:not(.disabled) a").click(function () {
-          $(this).closest(".dropdown").find(".btn").html('<span id="donation-amount">' + $(this).text() + '</span> <span class="caret"></span>');
-        });
-    </script>
+    <script type="text/javascript" src="/js/about.js"></script>
     <script type="text/javascript" src="/js/product.js"></script>
-    #embed("footer")
 }
+#embed("base")
