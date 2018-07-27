@@ -15,14 +15,12 @@ final class HomeController {
 
     func home(_ req: Request) throws -> Future<View> {
 
-        // Path to the banner image of the featured image
-        let visibleAccessoriesLimit = 18
-
         // Fetch featured accessory
         let featuredAccessories = try QueryHelper.featuredAccessories(request: req).all()
         let categories = try QueryHelper.categories(request: req)
         let manufacturersCount = try QueryHelper.manufacturerCount(request: req)
         let accessoryCount = try QueryHelper.accessoriesCount(request: req)
+        let visibleAccessoriesLimit = 18
         let accessories = try QueryHelper.accessories(request: req)
             .range(lower: 0, upper: visibleAccessoriesLimit)
             .all()

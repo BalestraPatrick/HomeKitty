@@ -4,7 +4,7 @@
 
 import FluentPostgreSQL
 
-final class AccessoryRegionPivot: PostgreSQLPivot {
+final class AccessoryRegionPivot: PostgreSQLPivot, Migration {
     typealias Left = Accessory
     typealias Right = Region
 
