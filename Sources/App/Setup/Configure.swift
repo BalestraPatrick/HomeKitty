@@ -62,7 +62,7 @@ public func configure(_ config: inout Config, env: inout Environment, services: 
     services.register(poolConfig)
 
     let nioServerConfig = NIOServerConfig.default(hostname: "0.0.0.0",
-                                                  port: Int(Environment.get("PORT") ?? "") ?? 8080,
+                                                  port: dbPort,
                                                   workerCount: 2)
     services.register(nioServerConfig)
 
