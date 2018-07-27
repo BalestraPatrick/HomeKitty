@@ -2,6 +2,10 @@
 <html lang="en">
     <head>
         #get(head)
+        <link async defer href="https://fonts.googleapis.com/css?family=Quicksand:400,700,300" rel="stylesheet">
+        <link rel="stylesheet" href="/css/bootstrap.min.css">
+        <link rel="stylesheet" href="/css/main.css">
+        <link rel="stylesheet" href="/css/bootstrap-select.css">
         <link rel="apple-touch-icon-precomposed" sizes="57x57" href="apple-touch-icon-57x57.png" />
         <link rel="apple-touch-icon-precomposed" sizes="114x114" href="apple-touch-icon-114x114.png" />
         <link rel="apple-touch-icon-precomposed" sizes="72x72" href="apple-touch-icon-72x72.png" />
@@ -42,11 +46,8 @@
     </body>
     #embed("footer")
     <script src="/js/jquery.js"></script>
-    <link async defer href="https://fonts.googleapis.com/css?family=Quicksand:400,700,300" rel="stylesheet">
+
     <script src="/js/bootstrap.min.js"></script>
-    <link rel="stylesheet" href="/css/bootstrap.min.css">
-    <link rel="stylesheet" href="/css/main.css">
-    <link rel="stylesheet" href="/css/bootstrap-select.css">
     <script type="text/javascript" src="//s.skimresources.com/js/113104X1571791.skimlinks.js"></script>
     <script type="text/javascript" src="/js/explore.js"></script>
 </html>
