@@ -58,12 +58,12 @@ public func configure(_ config: inout Config, env: inout Environment, services: 
     databases.enableLogging(on: .psql)
     services.register(databases)
 
-    let poolConfig = DatabaseConnectionPoolConfig(maxConnections: 8)
+    let poolConfig = DatabaseConnectionPoolConfig(maxConnections: 18)
     services.register(poolConfig)
 
     let nioServerConfig = NIOServerConfig.default(hostname: "0.0.0.0",
                                                   port: Int(Environment.get("PORT") ?? "") ?? 8080,
-                                                  workerCount: 2)
+                                                  workerCount: 1)
     services.register(nioServerConfig)
 
     // Configure migrations
