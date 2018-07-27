@@ -58,6 +58,9 @@ public func configure(_ config: inout Config, env: inout Environment, services: 
     databases.enableLogging(on: .psql)
     services.register(databases)
 
+    let poolConfig = DatabaseConnectionPoolConfig(maxConnections: 15)
+    services.register(poolConfig)
+
     // Configure migrations
     var migrations = MigrationConfig()
     migrations.add(model: Category.self, database: .psql)

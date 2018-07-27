@@ -83,10 +83,8 @@ final class QueryHelper {
     static func regions(request req: Request) throws -> Future<[Region]> {
         return Region.query(on: req).sort(\Region.fullName, .ascending).all()
     }
-    
+
     static func region(request req: Request, id: Int) throws -> Future<Region?> {
         return Region.query(on: req).sort(\Region.fullName, .ascending).filter(\Region.id == id).first()
     }
 }
-
-
