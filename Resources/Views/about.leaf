@@ -13,7 +13,7 @@
         <div class="row">
             <div class="header-brand">
                 <div id="header-content-brand">
-                    <img id="image-brand" src="mstile-150x150.png">
+                    <img id="image-brand" src="https://homekitty.world/mstile-150x150.png">
                     <h1 id="title-brand">About</h1>
                     <p id="subtitle-brand">All HomeKit accessories in a single place.</p>
                 </div>
