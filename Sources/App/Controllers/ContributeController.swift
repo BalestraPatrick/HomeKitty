@@ -65,35 +65,36 @@ final class ContributeController {
                          manufacturerId: manufacturerId,
                          released: contributeData.released ?? false,
                          requiresHub: contributeData.requiresBridge ?? false,
-                         requiredHubId: contributeData.requiredBridge).create(on: req).flatMap(to: View.self) { newAccessory in
+                         requiredHubId: contributeData.requiredBridge)
+            .create(on: req)
+            .flatMap(to: View.self) { newAccessory in
+                if let regions = contributeData.regions {
+                    var futures = [Future<AccessoryRegionPivot>]()
 
-                            if let regions = contributeData.regions {
-                                var futures = [Future<AccessoryRegionPivot>]()
+                    try regions.forEach { regionId in
+                        let future = try QueryHelper.region(request: req, id: regionId).flatMap(to: AccessoryRegionPivot.self, { region in
+                            guard let region = region,
+                                let accessoryId = newAccessory.id,
+                                let regionId = region.id else { throw Abort(.internalServerError) }
+                            let pivot = AccessoryRegionPivot()
 
-                                try regions.forEach { regionId in
-                                    let future = try QueryHelper.region(request: req, id: regionId).flatMap(to: AccessoryRegionPivot.self, { region in
-                                        guard let region = region,
-                                            let accessoryId = newAccessory.id,
-                                            let regionId = region.id else { throw Abort(.internalServerError) }
-                                        let pivot = AccessoryRegionPivot()
+                            pivot.accessoryId = accessoryId
+                            pivot.regionId = regionId
 
-                                        pivot.accessoryId = accessoryId
-                                        pivot.regionId = regionId
+                            return pivot.create(on: req)
+                        })
 
-                                        return pivot.create(on: req)
-                                    })
+                        futures.append(future)
+                    }
 
-                                    futures.append(future)
-                                }
-
-                                return futures.flatMap(to: View.self, on: req, { _ in
-                                    let leaf = try req.make(LeafRenderer.self)
-                                    return leaf.render("contribute", ["success": true])
-                                })
-                            } else {
-                                let leaf = try req.make(LeafRenderer.self)
-                                return leaf.render("contribute", ["success": true])
-                            }
+                    return futures.flatMap(to: View.self, on: req, { _ in
+                        let leaf = try req.make(LeafRenderer.self)
+                        return leaf.render("contribute", ["success": true])
+                    })
+                } else {
+                    let leaf = try req.make(LeafRenderer.self)
+                    return leaf.render("contribute", ["success": true])
+                }
         }
     }
 
