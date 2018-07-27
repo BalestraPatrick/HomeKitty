@@ -7,7 +7,6 @@ import HTTP
 import FluentPostgreSQL
 import Leaf
 import FluentSQL
-import FluentQuery
 
 final class SearchController {
 
@@ -26,17 +25,13 @@ final class SearchController {
         let manufacturerCount = try QueryHelper.manufacturerCount(request: req)
         let accessoryCount = try QueryHelper.accessoriesCount(request: req)
 
-        let accessories = req.databaseConnection(to: .psql).flatMap { connection -> Future<[Accessory.AccessoryResponse]> in
-            return try FluentQuery()
-                .select(all: Accessory.self)
-                .select(.row(Accessory.self), as: "accessory")
-                .select(.row(Manufacturer.self), as: "manufacturer")
-                .where(FQWhere(\Accessory.name %% search).and(\Accessory.approved == true).or(\Manufacturer.name %% search).and(\Manufacturer.approved == true))
-                .join(FQJoinMode.left, Manufacturer.self, where: FQWhere(\Accessory.manufacturerId == \Manufacturer.id))
-                .from(Accessory.self)
-                .execute(on: connection)
-                .decode(Result.self)
-                .map { $0.map { Accessory.AccessoryResponse(accessory: $0.accessory, manufacturer: $0.manufacturer) } }
+        let accessories = try QueryHelper.accessories(request: req)
+            .group(PostgreSQLBinaryOperator.or, closure: { builder in
+                builder.filter(PostgreSQLColumnIdentifier.keyPath(\Accessory.name), .ilike, "%\(search)%")
+                builder.filter(PostgreSQLColumnIdentifier.keyPath(\Manufacturer.name), .ilike, "%\(search)%")
+            })
+            .all().map { accessories in
+            return accessories.map { Accessory.AccessoryResponse(accessory: $0.0, manufacturer: $0.1) }
         }
 
         return flatMap(to: View.self, manufacturerCount, accessoryCount, categories, accessories, { (manufacturerCount, accessoryCount, categories, accessories) in
