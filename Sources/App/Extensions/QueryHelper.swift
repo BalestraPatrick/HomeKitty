@@ -89,7 +89,7 @@ final class QueryHelper {
                 .filter(\Category.name == "Bridges").first()
                 .flatMap(to: [(Accessory, Manufacturer)].self, { category  in
                     guard let category = category else { throw Abort(.internalServerError) }
-                    return try QueryHelper.accessories(request: db, categoryId: category.id).all()
+                    return try QueryHelper.accessories(request: req, categoryId: category.id).all()
                 })
         }
     }
