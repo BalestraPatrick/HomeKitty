@@ -6,7 +6,6 @@ import Vapor
 import HTTP
 import FluentPostgreSQL
 import Leaf
-//import SMTP
 import SendGrid
 
 final class ReportController {
@@ -14,37 +13,34 @@ final class ReportController {
     init(router: Router) {
         router.get("report", use: report)
         router.post("report","submit", use: submit)
-        // group.get(handler: report)
-        // group.post("submit", handler: submit)
     }
 
-        func report(_ req: Request) throws -> Future<View> {
-            let accessories = Accessory.query(on: req).filter(\Accessory.approved == true).sort(\Accessory.name, .ascending).all()
+    func report(_ req: Request) throws -> Future<View> {
+        let accessories = Accessory.query(on: req).filter(\Accessory.approved == true).sort(\Accessory.name, .ascending).all()
 
-            return accessories.flatMap(to: View.self) { accessories in
-                let leaf = try req.make(LeafRenderer.self)
-                let responseData = ReportResponse(accessories: accessories)
-                return leaf.render("report", responseData)
-            }
+        return accessories.flatMap(to: View.self) { accessories in
+            let leaf = try req.make(LeafRenderer.self)
+            let responseData = ReportResponse(accessories: accessories)
+            return leaf.render("report", responseData)
         }
+    }
 
-        func submit(_ req: Request) throws -> Future<View> {
-            return try req.content.decode(ReportRequest.self).flatMap(to: View.self, { reportRequest in
-                // Create and send email.
+    func submit(_ req: Request) throws -> Future<View> {
+        return try req.content.decode(ReportRequest.self).flatMap(to: View.self, { reportRequest in
+            // Create and send email.
+            let myEmail = EmailAddress(email: "info@homekitty.world", name: reportRequest.name)
+            let contactMessage = self.contactMessage(for: reportRequest.topic, message: reportRequest.message, accessory: reportRequest.accessory)
+            var sendGridEmail = SendGridEmail(from: EmailAddress(email: reportRequest.email, name: reportRequest.name), subject: contactMessage.topic.subject, content: [["type": "text/plain", "value": contactMessage.body]])
 
-                let myEmail = EmailAddress(email: "info@homekitty.world", name: reportRequest.name)
-                let contactMessage = self.contactMessage(for: reportRequest.topic, message: reportRequest.message, accessory: reportRequest.accessory)
-                var sendGridEmail = SendGridEmail(from: EmailAddress(email: reportRequest.email, name: reportRequest.name), subject: contactMessage.topic.subject) // , body: contactMessage.body)
+            sendGridEmail.personalizations = [Personalization(to: [myEmail])]
 
-                sendGridEmail.personalizations = [Personalization(to: [myEmail])]
+            let sendgrid = try req.make(SendGridClient.self)
 
-                let sendgrid = try req.make(SendGridClient.self)
-
-                return try sendgrid.send([sendGridEmail], on: req.eventLoop).flatMap(to: View.self, {
-                    let leaf = try req.make(LeafRenderer.self)
-                    return leaf.render("report", ["success": true])
-                })
+            return try sendgrid.send([sendGridEmail], on: req.eventLoop).flatMap(to: View.self, {
+                let leaf = try req.make(LeafRenderer.self)
+                return leaf.render("report", ["success": true])
             })
+        })
     }
     
     private func contactMessage(for topic: ContactTopic, message: String, accessory: String? = nil) -> ContactMessage {

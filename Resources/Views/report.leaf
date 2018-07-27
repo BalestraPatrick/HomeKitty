@@ -68,7 +68,6 @@
         </div>
     </div>
     <script type="text/javascript" src="/js/report.js"></script>
-    #embed("footer")
 }
 
 #embed("base")
