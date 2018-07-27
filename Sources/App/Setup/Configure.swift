@@ -61,9 +61,7 @@ public func configure(_ config: inout Config, env: inout Environment, services: 
     let poolConfig = DatabaseConnectionPoolConfig(maxConnections: 18)
     services.register(poolConfig)
 
-    let nioServerConfig = NIOServerConfig.default(hostname: "0.0.0.0",
-                                                  port: Int(Environment.get("PORT") ?? "") ?? 8080,
-                                                  workerCount: 1)
+    let nioServerConfig = NIOServerConfig.default(hostname: "0.0.0.0", port: Int(Environment.get("PORT") ?? "") ?? 8080, workerCount: 1)
     services.register(nioServerConfig)
 
     // Configure migrations
