@@ -33,10 +33,15 @@ final class ContributeController {
     
     func submit(_ req: Request) throws -> Future<View> {
         return try req.content.decode(ContributeRequest.self).flatMap(to: View.self, { contributionData in
-            if let manufacturerId = contributionData.manufacturerId {
-                return self.newAccessory(req, manufacturerId: manufacturerId, contributeData: contributionData)
-            } else {
-                return try self.newManufacturer(req, contributeData: contributionData)
+            return try RecaptchaManager.verify(with: req, recaptchaResponse: contributionData.recaptchaResponse).flatMap { result in
+                // Recaptcha failed, simply redirect to the contribute page.
+                guard result else { return try self.contribute(req) }
+                // Create new accessory and manufacturer if needed.
+                if let manufacturerId = contributionData.manufacturerId {
+                    return self.newAccessory(req, manufacturerId: manufacturerId, contributeData: contributionData)
+                } else {
+                    return try self.newManufacturer(req, contributeData: contributionData)
+                }
             }
         })
     }
@@ -55,7 +60,6 @@ final class ContributeController {
     }
 
     private func newAccessory(_ req: Request, manufacturerId: Int, contributeData: ContributeRequest) -> Future<View> {
-
         return Accessory(name: contributeData.name,
                          image: contributeData.image,
                          price: contributeData.price.normalizedPrice,
@@ -65,7 +69,8 @@ final class ContributeController {
                          manufacturerId: manufacturerId,
                          released: contributeData.released ?? false,
                          requiresHub: contributeData.requiresBridge ?? false,
-                         requiredHubId: contributeData.requiredBridge)
+                         requiredHubId: contributeData.requiredBridge,
+                         supportsAirplay2: contributeData.supportsAirplay2 ?? false)
             .create(on: req)
             .flatMap(to: View.self) { newAccessory in
                 if let regions = contributeData.regions {
@@ -98,19 +103,19 @@ final class ContributeController {
         }
     }
 
-    struct ContributeResponse: Content {
+    private struct ContributeResponse: Content {
         let categories: [Category]
         let manufacturers: [Manufacturer]
         let bridges: [Accessory.AccessoryResponse]
         let regions: [Region]
     }
 
-    struct ContributeManufactorerRequest: Content {
+    private struct ContributeManufactorerRequest: Content {
         let manufacturerName: String
         let manufacturerWebsite: String
     }
 
-    struct ContributeRequest: Content {
+    private struct ContributeRequest: Content {
         let manufacturerId: Int?
         let name: String
         let image: String
@@ -121,5 +126,22 @@ final class ContributeController {
         let requiresBridge: Bool?
         let requiredBridge: Int?
         let regions: [Int]?
+        let supportsAirplay2: Bool?
+        let recaptchaResponse: String
+
+        enum CodingKeys: String, CodingKey {
+            case manufacturerId
+            case name
+            case image
+            case price
+            case link
+            case category
+            case released
+            case requiresBridge
+            case requiredBridge
+            case regions
+            case supportsAirplay2
+            case recaptchaResponse = "g-recaptcha-response"
+        }
     }
 }

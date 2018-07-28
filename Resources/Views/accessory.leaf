@@ -52,6 +52,12 @@
                                 <p>This accessory requires a proprietary <a href="/accessories/#(accessory.id)">bridge</a>.</p>
                             </div>
                         }
+                        #if(accessory.supports_airplay_2) {
+                            <div id="accessory-page-feature">
+                                <img src="/images/airplay.png">
+                                <p>This accessory supports AirPlay 2.</p>
+                            </div>
+                        }
                         #if(accessory.region_compatibility) {
                             <div id="accessory-page-feature">
                                 <img src="/images/world.png">

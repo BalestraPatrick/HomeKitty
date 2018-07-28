@@ -4,6 +4,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" href="/css/content.css">
     <script src="/js/jquery.js"></script>
+    <script src="https://www.google.com/recaptcha/api.js" async defer></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.12.4/js/bootstrap-select.min.js"></script>
     <title>HomeKitty - Browse HomeKit Accessories</title>
 }
@@ -65,6 +66,11 @@
                         <input type="checkbox" name="released" value="true"> Available on the market
                     </div>
                     <div class="form-group">
+                        <label for="link">AirPlay 2</label>
+                        <p>If the accessory supports AirPlay 2, select the checkbox.</p>
+                        <input type="checkbox" name="supportsAirplay2" value="true"> Supports AirPlay 2
+                    </div>
+                    <div class="form-group">
                         <label for="link">Required Bridge</label>
                         <p>If the accessory requires a proprietary bridge to work with HomeKit, select the checkbox.</p>
                         <input type="checkbox" name="requiresBridge" onchange="toggleBridgesSelectionAppearance()" value="true"> Requires proprietary bridge
@@ -118,7 +124,8 @@
                     <hr>
                     <div>
                         <p style="float: left;">Ready to submit? 👍</p>
-                        <button type="submit" class="btn btn-primary" style="float: right;">Submit</button>
+                        <div class="g-recaptcha" data-sitekey="6LebSWQUAAAAAIMMNE4xTkZYP2aX0726QeKugsFv" data-callback="enableSubmit"></div>
+                        <button type="submit" disabled class="btn btn-primary" id="submit-button" style="float: right;">Submit</button>
                     </div>
                 </form>
             </div>
@@ -129,49 +136,49 @@
 #embed("base")
 <script>
 function toggleBridgesSelectionAppearance() {
-var bridgeOptionsList = document.getElementById('required-bridge-selection');
-if (bridgeOptionsList.style.display !== 'none') {
-bridgeOptionsList.style.display = 'none';
-} else {
-bridgeOptionsList.style.display = 'block';
-}
+    var bridgeOptionsList = document.getElementById('required-bridge-selection');
+    if (bridgeOptionsList.style.display !== 'none') {
+        bridgeOptionsList.style.display = 'none';
+    } else {
+        bridgeOptionsList.style.display = 'block';
+    }
 }
 
 function showHide() {
-var addNewButton = document.getElementById('add-new-button');
-var form = document.getElementById('add-manufacturer-form');
-var optionList = document.getElementById('manufacturer-selection');
-if (form.style.display !== 'none') {
-form.style.display = 'none';
-addNewButton.innerHTML = 'Add New Manufacturer';
-optionList.required = true;
-optionList.disabled = false;
-document.getElementById('manufacturer-name-input').required = false;
-document.getElementById('manufacturer-name-input').disabled = true;
-document.getElementById('manufacturer-logo-input').required = false;
-document.getElementById('manufacturer-logo-input').disabled = true;
-document.getElementById('manufacturer-website-input').required = false;
-document.getElementById('manufacturer-website-input').disabled = true;
-} else {
-form.style.display = 'block';
-addNewButton.innerHTML = 'Choose Existing';
-optionList.required = false;
-optionList.disabled = true;
-document.getElementById('manufacturer-name-input').required = true;
-document.getElementById('manufacturer-name-input').disabled = false;
-document.getElementById('manufacturer-logo-input').required = true;
-document.getElementById('manufacturer-logo-input').disabled = false;
-document.getElementById('manufacturer-website-input').required = true;
-document.getElementById('manufacturer-website-input').disabled = false;
-}
+    var addNewButton = document.getElementById('add-new-button');
+    var form = document.getElementById('add-manufacturer-form');
+    var optionList = document.getElementById('manufacturer-selection');
+    if (form.style.display !== 'none') {
+        form.style.display = 'none';
+        addNewButton.innerHTML = 'Add New Manufacturer';
+        optionList.required = true;
+        optionList.disabled = false;
+        document.getElementById('manufacturer-name-input').required = false;
+        document.getElementById('manufacturer-name-input').disabled = true;
+        document.getElementById('manufacturer-logo-input').required = false;
+        document.getElementById('manufacturer-logo-input').disabled = true;
+        document.getElementById('manufacturer-website-input').required = false;
+        document.getElementById('manufacturer-website-input').disabled = true;
+    } else {
+        form.style.display = 'block';
+        addNewButton.innerHTML = 'Choose Existing';
+        optionList.required = false;
+        optionList.disabled = true;
+        document.getElementById('manufacturer-name-input').required = true;
+        document.getElementById('manufacturer-name-input').disabled = false;
+        document.getElementById('manufacturer-logo-input').required = true;
+        document.getElementById('manufacturer-logo-input').disabled = false;
+        document.getElementById('manufacturer-website-input').required = true;
+        document.getElementById('manufacturer-website-input').disabled = false;
+    }
 }
 
 function formatPriceInput() {
-var priceInput = document.getElementById('price-input');
-if (priceInput) {
-var formattedPrice = Number(priceInput.value).toFixed(2);
-priceInput.value = isNaN(formattedPrice) ? "" : formattedPrice;
-}
+    var priceInput = document.getElementById('price-input');
+    if (priceInput) {
+        var formattedPrice = Number(priceInput.value).toFixed(2);
+        priceInput.value = isNaN(formattedPrice) ? "" : formattedPrice;
+    }
 }
 </script>
-
+<script type="text/javascript" src="/js/submit-button.js"></script>
