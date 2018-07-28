@@ -20,14 +20,14 @@
                     <img src="#get(pageIcon)" width="50px">
                     <p class="lead">#(pageTitle)</p>
                 </div>
-                <div class="row">
-                    #if(noAccessories) {
+                #if(noAccessories) {
                     <div style="text-align:center; padding-top:50px;">
                         <h1>🔍</h1>
                         <h4 class="lead">No accessory found here.</h4>
                         <h5 class="lead">Why not <a href="/contribute">contribute</a> with one yourself?<h5>
                     </div>
-                    }
+                }
+                <div class="row">
                     #loop(accessories, "accessory") {
                         #embed("accessoryItem")
                     }

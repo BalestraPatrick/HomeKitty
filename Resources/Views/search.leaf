@@ -22,11 +22,11 @@
                 </div>
                 <div class="row">
                     #if(noAccessories) {
-                    <div style="text-align:center; padding-top:50px;">
-                        <h1>🔍</h1>
-                        <h4 class="lead">No accessory found here.</h4>
-                        <h5 class="lead">Why not <a href="/contribute">contribute</a> with one yourself?<h5>
-                    </div>
+                        <div style="text-align:center; padding-top:50px;">
+                            <h1>🔍</h1>
+                            <h4 class="lead">No accessory found here.</h4>
+                            <h5 class="lead">Why not <a href="/contribute">contribute</a> with one yourself?<h5>
+                        </div>
                     }
                     #for(accessory in accessories) {
                         #embed("accessoryItem")
