@@ -33,7 +33,7 @@ CREATE OR REPLACE FUNCTION "public"."update_count"()
 END
 $BODY$
   LANGUAGE plpgsql VOLATILE
-  COST 100
+  COST 100;
 
 -- Trigger
 CREATE TRIGGER "update_count_trigger" AFTER UPDATE OF "category_id", "approved" ON "public"."accessories"
