@@ -74,7 +74,8 @@ final class ContributeController {
                          manufacturerId: manufacturerId,
                          released: contributeData.released ?? false,
                          requiresHub: contributeData.requiresBridge ?? false,
-                         requiredHubId: contributeData.requiredBridge)
+                         requiredHubId: contributeData.requiredBridge,
+                         supportsAirplay2: contributeData.supportsAirplay2 ?? false)
             .create(on: req)
             .flatMap(to: View.self) { newAccessory in
                 if let regions = contributeData.regions {
@@ -130,6 +131,7 @@ final class ContributeController {
         let requiresBridge: Bool?
         let requiredBridge: Int?
         let regions: [Int]?
+        let supportsAirplay2: Bool?
         let recaptchaResponse: String
 
         enum CodingKeys: String, CodingKey {
@@ -143,6 +145,7 @@ final class ContributeController {
             case requiresBridge
             case requiredBridge
             case regions
+            case supportsAirplay2
             case recaptchaResponse = "g-recaptcha-response"
         }
     }
