@@ -13,20 +13,18 @@ struct HomekitApp: PostgreSQLModel {
 
     var id: Int?
     var name: String
-    var description: String
-    var developer: String
-    var developerWebsite: String
-    var appStoreLink: String
-    var appIcon: String
+    var appStoreId: String
+    var appStoreIcon: String
+    var approved: Bool
+    var date: Date
 
     enum CodingKeys: String, CodingKey {
         case id
         case name
-        case description
-        case developer
-        case developerWebsite = "developer_website"
-        case appStoreLink = "app_store_link"
-        case appIcon = "app_icon"
+        case appStoreId = "app_store_id"
+        case appStoreIcon = "app_store_icon"
+        case approved
+        case date
     }
 }
 
