@@ -65,6 +65,11 @@
                         <input type="checkbox" name="released" value="true"> Available on the market
                     </div>
                     <div class="form-group">
+                        <label for="link">AirPlay 2</label>
+                        <p>If the accessory supports AirPlay 2, select the checkbox.</p>
+                        <input type="checkbox" name="supportsAirplay2" value="true"> Supports AirPlay 2
+                    </div>
+                    <div class="form-group">
                         <label for="link">Required Bridge</label>
                         <p>If the accessory requires a proprietary bridge to work with HomeKit, select the checkbox.</p>
                         <input type="checkbox" name="requiresBridge" onchange="toggleBridgesSelectionAppearance()" value="true"> Requires proprietary bridge
