@@ -21,8 +21,10 @@
                         </a>
                     }
                     #if(accessory.requires_hub) {
-                        <img src="/images/bridge.png" class="bridge-icon" style="height: 25px; width: 25px;" data-toggle="popover" data-content="This accessory requires a proprietary bridge."
-                        data-placement="top" data-trigger="hover">
+                        <img src="/images/bridge.png" class="bridge-icon" style="height: 25px; width: 25px;" data-toggle="popover" data-content="This accessory requires a proprietary bridge." data-placement="top" data-trigger="hover">
+                    }
+                    #if(accessory.supports_airplay_2) {
+                        <img src="/images/airplay.png" class="bridge-icon" style="height: 25px; width: 25px;" data-toggle="popover" data-content="This accessory supports AirPlay 2." data-placement="top" data-trigger="hover">
                     }
                 </div>
                 <p>#(accessory.time_ago)</p>
