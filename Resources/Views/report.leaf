@@ -3,6 +3,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" href="/css/content.css">
+    <script src="https://www.google.com/recaptcha/api.js" async defer></script>
     <title>HomeKitty - Browse HomeKit Accessories</title>
 }
 
@@ -60,7 +61,8 @@
                     <hr>
                     <div>
                         <p style="float: left;">Ready to send? 👍</p>
-                        <button type="submit" class="btn btn-primary" style="float: right;">Send</button>
+                        <div class="g-recaptcha" data-sitekey="6LebSWQUAAAAAIMMNE4xTkZYP2aX0726QeKugsFv" data-callback="enableSubmit"></div>
+                        <button type="submit" class="btn btn-primary" id="submit-button" disabled style="float: right;">Send</button>
                     </div>
                 </form>
             </div>
@@ -68,6 +70,7 @@
         </div>
     </div>
     <script type="text/javascript" src="/js/report.js"></script>
+    <script type="text/javascript" src="/js/submit-button.js"></script>
 }
 
 #embed("base")
