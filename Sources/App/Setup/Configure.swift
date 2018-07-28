@@ -65,6 +65,7 @@ public func configure(_ config: inout Config, env: inout Environment, services: 
     migrations.add(model: Accessory.self, database: .psql)
     migrations.add(model: Region.self, database: .psql)
     migrations.add(model: AccessoryRegionPivot.self, database: .psql)
+    migrations.add(migration: AddAccessoryAirplaySupport.self, database: .psql)
 
     services.register(migrations)
 }

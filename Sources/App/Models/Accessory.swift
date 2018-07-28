@@ -25,6 +25,7 @@ final class Accessory: PostgreSQLModel {
     var date: Date
     var requiresHub: Bool
     var featured: Bool
+    var supportsAirplay2: Bool
 
     init(
         name: String,
@@ -36,7 +37,8 @@ final class Accessory: PostgreSQLModel {
         manufacturerId: Int,
         released: Bool,
         requiresHub: Bool,
-        requiredHubId: Int?) {
+        requiredHubId: Int?,
+        supportsAirplay2: Bool) {
         self.name = name
         self.categoryId = categoryId
         self.manufacturerId = manufacturerId
@@ -50,6 +52,7 @@ final class Accessory: PostgreSQLModel {
         self.requiresHub = requiresHub
         self.requiredHubId = requiredHubId
         self.featured = false
+        self.supportsAirplay2 = supportsAirplay2
     }
 
     enum CodingKeys: String, CodingKey {
@@ -68,6 +71,7 @@ final class Accessory: PostgreSQLModel {
         case date
         case requiresHub = "requires_hub"
         case featured
+        case supportsAirplay2 = "supports_airplay_2"
     }
 
     var category: Parent<Accessory, Category> {
@@ -150,6 +154,7 @@ final class Accessory: PostgreSQLModel {
         let manufacturerName: String?
         let manufacturerWebsite: String?
         let timeAgo: String?
+        let supportsAirplay2: Bool
 
         init(accessory: Accessory, manufacturer: Manufacturer) {
             id = accessory.id
@@ -168,6 +173,7 @@ final class Accessory: PostgreSQLModel {
             manufacturerName = manufacturer.name
             manufacturerWebsite = manufacturer.websiteLink
             timeAgo = accessory.date.timeAgoString()
+            supportsAirplay2 = accessory.supportsAirplay2
         }
 
         enum CodingKeys: String, CodingKey {
@@ -187,6 +193,7 @@ final class Accessory: PostgreSQLModel {
             case timeAgo = "time_ago"
             case manufacturerWebsite = "manufacturer_website"
             case categoryId = "category_id"
+            case supportsAirplay2 = "supports_airplay_2"
         }
     }
 }
