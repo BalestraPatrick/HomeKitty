@@ -215,6 +215,7 @@ extension Accessory: Migration {
             builder.field(for: \Accessory.requiredHubId)
             builder.field(for: \Accessory.featured)
             builder.field(for: \Accessory.manufacturerId)
+            builder.field(for: \Accessory.supportsAirplay2)
             builder.reference(from: \Accessory.requiredHubId, to: \Accessory.id)
             builder.reference(from: \Accessory.categoryId, to: \Category.id)
             builder.reference(from: \Accessory.manufacturerId, to: \Manufacturer.id)
