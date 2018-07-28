@@ -32,8 +32,7 @@ final class ContributeController {
     }
     
     func submit(_ req: Request) throws -> Future<View> {
-        guard let recaptchaSecret = Environment.get("recaptcha_secret") else { fatalError("Missing recaptcha secret") }
-
+        guard let recaptchaSecret = Environment.get("RECAPTCHA_SECRET") else { throw Abort(.badRequest, reason: "RECAPTCHA_SECRET not found") }
         return try req.content.decode(ContributeRequest.self).flatMap(to: View.self, { contributionData in
             let client = try req.client()
             return client.post("https://www.google.com/recaptcha/api/siteverify?secret=\(recaptchaSecret)&response=\(contributionData.recaptchaResponse)")
