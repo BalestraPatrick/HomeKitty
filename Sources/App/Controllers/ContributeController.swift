@@ -32,11 +32,20 @@ final class ContributeController {
     }
     
     func submit(_ req: Request) throws -> Future<View> {
+        guard let recaptchaSecret = Environment.get("RECAPTCHA_SECRET") else { throw Abort(.badRequest, reason: "RECAPTCHA_SECRET not found") }
         return try req.content.decode(ContributeRequest.self).flatMap(to: View.self, { contributionData in
-            if let manufacturerId = contributionData.manufacturerId {
-                return self.newAccessory(req, manufacturerId: manufacturerId, contributeData: contributionData)
-            } else {
-                return try self.newManufacturer(req, contributeData: contributionData)
+            let client = try req.client()
+            return client.post("https://www.google.com/recaptcha/api/siteverify?secret=\(recaptchaSecret)&response=\(contributionData.recaptchaResponse)")
+                .flatMap { response in
+                    return try response.content.decode(RecaptchaResponse.self)
+                        .flatMap { recaptchaResponse in
+                            guard recaptchaResponse.success else { throw Abort(.badRequest) }
+                            if let manufacturerId = contributionData.manufacturerId {
+                                return self.newAccessory(req, manufacturerId: manufacturerId, contributeData: contributionData)
+                            } else {
+                                return try self.newManufacturer(req, contributeData: contributionData)
+                            }
+                    }
             }
         })
     }
@@ -121,5 +130,24 @@ final class ContributeController {
         let requiresBridge: Bool?
         let requiredBridge: Int?
         let regions: [Int]?
+        let recaptchaResponse: String
+
+        enum CodingKeys: String, CodingKey {
+            case manufacturerId
+            case name
+            case image
+            case price
+            case link
+            case category
+            case released
+            case requiresBridge
+            case requiredBridge
+            case regions
+            case recaptchaResponse = "g-recaptcha-response"
+        }
+    }
+
+    struct RecaptchaResponse: Content {
+        let success: Bool
     }
 }

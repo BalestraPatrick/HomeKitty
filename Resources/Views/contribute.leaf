@@ -4,6 +4,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" href="/css/content.css">
     <script src="/js/jquery.js"></script>
+    <script src="https://www.google.com/recaptcha/api.js" async defer></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.12.4/js/bootstrap-select.min.js"></script>
     <title>HomeKitty - Browse HomeKit Accessories</title>
 }
@@ -118,6 +119,7 @@
                     <hr>
                     <div>
                         <p style="float: left;">Ready to submit? 👍</p>
+                        <div class="g-recaptcha" data-sitekey="6LebSWQUAAAAAIMMNE4xTkZYP2aX0726QeKugsFv"></div>
                         <button type="submit" class="btn btn-primary" style="float: right;">Submit</button>
                     </div>
                 </form>
