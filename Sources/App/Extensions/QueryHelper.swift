@@ -87,4 +87,12 @@ final class QueryHelper {
     static func region(request req: Request, id: Int) throws -> Future<Region?> {
         return Region.query(on: req).sort(\Region.fullName, .ascending).filter(\Region.id == id).first()
     }
+
+    // MARK: - Homekit apps
+    static func apps(request req: Request) throws -> Future<[HomekitApp]> {
+        return HomekitApp.query(on: req)
+            .filter(\HomekitApp.approved == true)
+            .sort(\HomekitApp.name)
+            .all()
+    }
 }
