@@ -1,0 +1,13 @@
+<div class="col-sm-4 col-lg-4 col-md-4">
+    <div class="thumbnail" style="height: auto;">
+        <a href="/apps/#(app.id)">
+            <img src="#(app.app_store_icon)" alt="#(app.name)" style="height:200px" class="accessory-image">
+        </a>
+        <a href="/apps/#(app.id)"></a>
+            <div class="caption">
+                <div><h4><a href="/apps/#(app.id)">#(app.name)</a></h4></div>
+                <div style="display: flex; justify-content: center; align-items: center;">
+            </div>
+        </div>
+    </div>
+</div>

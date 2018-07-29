@@ -1,0 +1,40 @@
+#set("head") {
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="/css/content.css">
+    <link href="//cdn-images.mailchimp.com/embedcode/classic-10_7.css" rel="stylesheet" type="text/css">
+    <title>HomeKitty - HomeKit Accessories</title>
+}
+
+
+#set("body") {
+    <div class="container container-content">
+        <div class="row">
+            
+            <!-- Side Menu -->
+            #embed("sidemenu")
+
+            <!-- Content -->
+            <div class="col-md-9">
+                <div class="flex-item" style="margin-top: 10px;">
+                    <p class="lead">Latest Apps</p>
+                </div>
+                #if(noAccessories) {
+                    <div style="text-align:center; padding-top:50px;">
+                        <h1>🔍</h1>
+                        <h4 class="lead">No app found here.</h4>
+                        <h5 class="lead">Why not <a href="/contribute">contribute</a> with one yourself?<h5>
+                    </div>
+                }
+                <div class="row">
+                    #for(app in apps) {
+                        #embed("appItem")
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+}
+
+#embed("base")
