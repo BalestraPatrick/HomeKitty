@@ -95,4 +95,12 @@ final class QueryHelper {
             .sort(\HomekitApp.name)
             .all()
     }
+
+    static func app(request req: Request, id: Int) throws -> Future<HomekitApp?> {
+        return HomekitApp.query(on: req)
+            .filter(\HomekitApp.id == id)
+            .filter(\HomekitApp.approved == true)
+            .sort(\HomekitApp.name)
+            .first()
+    }
 }

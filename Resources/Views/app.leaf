@@ -1,0 +1,47 @@
+#set("head") {
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>HomeKitty - Browse HomeKit Accessories</title>
+    <link rel="stylesheet" href="/css/content.css">
+}
+
+
+#set("body") {
+    <div class="container container-content">
+        <div class="row">
+
+            <!-- Side Menu -->
+            #embed("sidemenu")
+
+            <!-- Content -->
+            <div class="col-md-9">
+                <div class="flex-item" style="margin-top: 10px;">
+                    <p class="lead">#(pageTitle)</p>
+                    <p><a href="#(manufacturerLink)" target="_blank">#(manufacturerLink)</a></p>
+                </div>
+                <div class="row col-md-12">
+                    <div class="col-md-6" id="accessory-page-information-container">
+                        <div id="accessory-page-information">
+                            <h1 id="accessory-title">#(app.name)</h1><br/>
+                            <h4>By <a href="/#(accessory.manufacturer_link)">#(app.developer)</a></h4>
+                            <h3>#(accessory.price)</h3>
+                        </div>
+                    </div>
+                    <div class="col-md-6" id="accessory-page-image-container">
+                        <img src="#(app.artwork)" alt="#(app.name)" class="accessory-image" id="accessory-page-image">
+                    </div>
+                    <div class="row col-md-12" style="white-space: pre-wrap;">
+                        <p>#(app.description)</p>
+                    </div>
+                    <div id="accessory-page-buttons">
+                        <a href="#(app.appStoreUrl)" target="_blank"><button class="btn btn-primary">View on AppStore</button></a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+}
+
+#embed("base")
+

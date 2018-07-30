@@ -7,6 +7,7 @@
 
 import Foundation
 import FluentPostgreSQL
+import Vapor
 
 struct HomekitApp: PostgreSQLModel {
     static var entity = "homekit_apps"
@@ -25,6 +26,22 @@ struct HomekitApp: PostgreSQLModel {
         case appStoreIcon = "app_store_icon"
         case approved
         case date
+    }
+
+    struct HomekitAppResponse: Codable {
+        let name: String
+        let artwork: String
+        let developer: String
+        let appStoreUrl: String
+        let description: String
+
+        init(itunesApp: ItunesApp) {
+            self.name = itunesApp.trackName
+            self.artwork = itunesApp.artworkUrl512 ?? itunesApp.artworkUrl100 ?? itunesApp.artworkUrl60 ?? ""
+            self.developer = itunesApp.artistName ?? itunesApp.sellerName
+            self.appStoreUrl = itunesApp.trackViewUrl
+            self.description = itunesApp.description
+        }
     }
 }
 
