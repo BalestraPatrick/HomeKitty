@@ -14,10 +14,20 @@ struct HomekitApp: PostgreSQLModel {
 
     var id: Int?
     var name: String
-    var appStoreId: String
-    var appStoreIcon: String
+    let appStoreId: String
+    var appStoreIcon: String?
     var approved: Bool
-    var date: Date
+    let createdAt: Date
+    var updatedAt: Date
+
+    init(name: String, appStoreId: String, appStoreIcon: String?) {
+        self.name = name
+        self.appStoreId = appStoreId
+        self.appStoreIcon = appStoreIcon
+        self.approved = false
+        self.createdAt = Date()
+        self.updatedAt = Date()
+    }
 
     enum CodingKeys: String, CodingKey {
         case id
@@ -25,7 +35,8 @@ struct HomekitApp: PostgreSQLModel {
         case appStoreId = "app_store_id"
         case appStoreIcon = "app_store_icon"
         case approved
-        case date
+        case createdAt
+        case updatedAt
     }
 
     struct HomekitAppResponse: Codable {

@@ -88,12 +88,12 @@ final class ContributeController {
                     }
 
                     return futures.flatMap(to: View.self, on: req, { _ in
-                        let leaf = try req.make(LeafRenderer.self)
-                        return leaf.render("contribute", ["success": true])
+                        let leaf = try req.make(TemplateRenderer.self)
+                        return leaf.render("contributeSuccess")
                     })
                 } else {
-                    let leaf = try req.make(LeafRenderer.self)
-                    return leaf.render("contribute", ["success": true])
+                    let leaf = try req.make(TemplateRenderer.self)
+                    return leaf.render("contributeSuccess")
                 }
         }
     }

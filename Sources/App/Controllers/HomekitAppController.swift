@@ -17,6 +17,8 @@ final class HomekitAppController {
     init(router: Router) {
         router.get("apps", use: apps)
         router.get("apps", Int.parameter, use: app)
+        router.get("apps","contribute", use: contribute)
+        router.post("apps","contribute", use: submit)
     }
 
     func apps(_ req: Request) throws -> Future<View> {
@@ -30,8 +32,8 @@ final class HomekitAppController {
                                     categories: categories,
                                     accessoryCount: accessoryCount,
                                     manufacturerCount: manufacturersCount)
-            let leaf = try req.make(LeafRenderer.self)
-            return leaf.render("apps", data)
+            let leaf = try req.view()
+            return leaf.render("Apps/apps", data)
         }
     }
 
@@ -53,11 +55,64 @@ final class HomekitAppController {
                                            categories: categories,
                                            accessoryCount: accessoryCount,
                                            manufacturerCount: manufacturersCount)
-                    let leaf = try req.make(LeafRenderer.self)
-                    return leaf.render("app", data)
+                    let leaf = try req.view()
+                    return leaf.render("Apps/app", data)
                 }
             }
         }
+    }
+
+    func contribute(_ req: Request) throws -> Future<View> {
+        let manufacturers = try QueryHelper.manufacturers(request: req)
+        let categories = try QueryHelper.categories(request: req)
+        let bridges = try QueryHelper.bridges(request: req)
+        let regions = try QueryHelper.regions(request: req)
+
+        return flatMap(to: View.self, manufacturers, categories, bridges, regions, { (manufacturers, categories, bridges, regions) in
+            let data = ContributeResponse(categories: categories,
+                                          manufacturers: manufacturers,
+                                          bridges: bridges.map { Accessory.AccessoryResponse(accessory: $0.0, manufacturer: $0.1) },
+                                          regions: regions)
+
+            let leaf = try req.view()
+            return leaf.render("Apps/contribute", data)
+        })
+    }
+
+    func submit(_ req: Request) throws -> Future<View> {
+        return try req.content.decode(ContributionRequest.self).flatMap { contributionRequest in
+            guard contributionRequest.appStoreId.starts(with: "id") else { throw Abort(.badRequest, reason: "App id does not contain 'id'") }
+
+            return HomekitApp.query(on: req).filter(\HomekitApp.appStoreId == contributionRequest.appStoreId).first().flatMap{ app in
+                let leaf = try req.make(TemplateRenderer.self)
+
+                if app?.approved == false {
+                    return leaf.render("contributeSuccess")
+                }
+
+                if app?.id != nil {
+                    throw Abort(.badRequest, reason: "This app alrealy excist")
+                }
+
+                return try ItunesApp.fetchItunesApp(req: req, appStoreId: contributionRequest.appStoreId).flatMap{ itunesApp in
+                    guard let itunesApp = itunesApp else { throw Abort(.badRequest, reason: "No app with id: \(contributionRequest.appStoreId) was found") }
+                    return HomekitApp(name: itunesApp.trackName,
+                                      appStoreId: contributionRequest.appStoreId,
+                                      appStoreIcon: itunesApp.artworkUrl512 ?? itunesApp.artworkUrl100 ?? itunesApp.artworkUrl60)
+                        .create(on: req)
+                        .flatMap { _ in
+                            return leaf.render("contributeSuccess")
+                        }
+                }
+            }
+        }
+    }
+
+    struct ContributeResponse: Content {
+        let categories: [Category]
+        let manufacturers: [Manufacturer]
+        let bridges: [Accessory.AccessoryResponse]
+        let regions: [Region]
     }
 
     private struct AppsResponse: Codable {
@@ -73,5 +128,9 @@ final class HomekitAppController {
         let categories: [Category]
         let accessoryCount: Int
         let manufacturerCount: Int
+    }
+
+    private struct ContributionRequest: Content {
+        let appStoreId: String
     }
 }

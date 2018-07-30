@@ -1,0 +1,39 @@
+#set("head") {
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="/css/content.css">
+    <script src="/js/jquery.js"></script>
+    <title>HomeKitty - Browse HomeKit Accessories</title>
+}
+
+#set("body") {
+    <div class="container container-content">
+        <div class="row">
+                <div class="col-md-6" id="contribute-column">
+                <h1>Submit an HomeKit app</h1>
+                <p>The goal of HomeKitty is to be the central place of discovery for all HomeKit accessories. By contributing to our database, you can help many more people discover new, incredible possibilities. Do you want to report an issue with an existing accessory? Report it <a href="/report">here</a>.</p>
+                <p>Simply fill out the following form with the required details, and we will add it to the website as soon as we have double-checked all the information. 🎉</p>
+                <hr>
+                <p>Are you an accessory manufacturer and you would like to feature your newest accessory in the homepage to maximize visibility? <a href="mailto:info@homekitty.world?subject=HomeKitty Sponsorship Information">Contact us</a>.</p>
+                <hr>
+                <form action="/apps/contribute" method="POST">
+                    <!-- Accessory -->
+                    <h4>Accessory</h4>
+                    <div class="form-group">
+                        <label for="appStoreId">AppStore id</label>
+                        <p>Please provide the AppStore id (ex: id121212121).</p>
+                        <input type="text" class="form-control" name="appStoreId" placeholder="Name" required maxlength="255">
+                    </div>
+                    <!-- Submit -->
+                    <hr>
+                    <div>
+                        <p style="float: left;">Ready to submit? 👍</p>
+                        <button type="submit" class="btn btn-primary" style="float: right;">Submit</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+}
+#embed("base")

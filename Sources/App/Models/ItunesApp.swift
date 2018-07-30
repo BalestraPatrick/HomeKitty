@@ -29,7 +29,7 @@ struct ItunesApp: Content {
     static func fetchItunesApp(req: Request, appStoreId: String) throws -> Future<ItunesApp?> {
         let client = try req.client()
 
-        return client.get("https://itunes.apple.com/lookup?id=\(appStoreId)")
+        return client.get("https://itunes.apple.com/lookup?id=\(appStoreId.replacingOccurrences(of: "id", with: ""))")
             .map { response in
                 guard let data = response.http.body.data else { throw Abort(.badRequest) }
                 let jsonDecoder = JSONDecoder()

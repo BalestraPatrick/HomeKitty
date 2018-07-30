@@ -29,7 +29,7 @@
                 }
                 <div class="row">
                     #for(app in apps) {
-                        #embed("appItem")
+                        #embed("Apps/appItem")
                     }
                 </div>
             </div>

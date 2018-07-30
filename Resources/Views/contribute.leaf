@@ -11,12 +11,6 @@
 #set("body") {
     <div class="container container-content">
         <div class="row">
-            #if(success) {
-                <div class="centered">
-                    <h1>👏👏👏</h1>
-                    <p class="lead">Thanks for you contribution. We'll review it as soon as possible and publicly make it available.</p>
-                </div>
-            } else {
                 <div class="col-md-6" id="contribute-column">
                 <h1>Submit an accessory</h1>
                 <p>The goal of HomeKitty is to be the central place of discovery for all HomeKit accessories. By contributing to our database, you can help many more people discover new, incredible possibilities. Do you want to report an issue with an existing accessory? Report it <a href="/report">here</a>.</p>
@@ -122,7 +116,6 @@
                     </div>
                 </form>
             </div>
-            }
         </div>
     </div>
 }
