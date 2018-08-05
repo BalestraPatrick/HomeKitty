@@ -34,7 +34,7 @@ final class Category: PostgreSQLModel {
 
 // MARK: - Database Preparation
 
-extension Category: Migration {
+extension Category: PostgreSQLMigration {
     static func prepare(on connection: PostgreSQLConnection) -> Future<Void> {
         return Database.create(self, on: connection, closure: { builder in
             builder.field(for: \Category.id, type: .int, .primaryKey())
@@ -42,9 +42,5 @@ extension Category: Migration {
             builder.field(for: \Category.image)
             builder.field(for: \Category.accessoriesCount)
         })
-    }
-
-    static func revert(on connection: PostgreSQLConnection) -> Future<Void> {
-        return Database.delete(self, on: connection)
     }
 }

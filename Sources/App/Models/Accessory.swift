@@ -167,7 +167,7 @@ final class Accessory: PostgreSQLModel {
     }
 }
 
-extension Accessory: Migration {
+extension Accessory: PostgreSQLMigration {
     static func prepare(on connection: PostgreSQLConnection) -> Future<Void> {
         return Database.create(self, on: connection, closure: { builder in
             builder.field(for: \Accessory.id, type: .int, .primaryKey())
@@ -189,9 +189,5 @@ extension Accessory: Migration {
             builder.reference(from: \Accessory.categoryId, to: \Category.id)
             builder.reference(from: \Accessory.manufacturerId, to: \Manufacturer.id)
         })
-    }
-
-    static func revert(on connection: PostgreSQLConnection) -> Future<Void> {
-        return Database.delete(self, on: connection)
     }
 }

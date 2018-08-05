@@ -34,14 +34,4 @@ final class Region: PostgreSQLModel {
 }
 
 // MARK: - Database Migration
-extension Region: Migration {
-    static func revert(on connection: PostgreSQLConnection) -> Future<Void> {
-        return Database.delete(self, on: connection)
-    }
-}
-
-//extension Region {
-//    var accessories: Siblings<Region, Accessory, Pivot<Region, Accessory>> {
-//        return siblings()
-//    }
-//}
+extension Region: PostgreSQLMigration { }
