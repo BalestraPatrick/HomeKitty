@@ -21,16 +21,13 @@
                     <p class="lead">Latest Accessories</p>
                 </div>
                 #if(noAccessories) {
-                    <div style="text-align:center; padding-top:50px;">
-                        <h1>🔍</h1>
-                        <h4 class="lead">No accessory found here.</h4>
-                        <h5 class="lead">Why not <a href="/contribute">contribute</a> with one yourself?<h5>
-                    </div>
+                    #embed("noAccessoryFound")
+                } else {
+                    <div class="row">
+                        #for(accessory in accessories) {
+                            #embed("accessoryItem")
+                        }
                 }
-                <div class="row">
-                    #for(accessory in accessories) {
-                        #embed("accessoryItem")
-                    }
                 </div>
             </div>
         </div>

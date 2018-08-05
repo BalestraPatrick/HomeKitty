@@ -26,9 +26,10 @@ final class CategoryController {
             
             let accessories = try QueryHelper.accessories(request: req, categoryId: category.id).all()
             return flatMap(to: View.self, manufacturersCount, accessories, accessoriesCount, { (manufacturersCount, accessories, accessoriesCount) in
-                let leaf = try req.make(LeafRenderer.self)
+                let leaf = try req.view()
                 let selectedCategoryIndex = categories.index { $0.id == category.id } ?? -1
-                let responseData = CategoryResponse(selectedCategory: selectedCategoryIndex,
+                let responseData = CategoryResponse(noAccessoryFound: accessories.isEmpty,
+                                                    selectedCategory: selectedCategoryIndex,
                                                     category: category,
                                                     pageIcon: category.image,
                                                     accessoryCount: accessoriesCount,
@@ -48,6 +49,7 @@ final class CategoryController {
     }
 
     struct CategoryResponse: Codable {
+        let noAccessoryFound: Bool
         let selectedCategory: Int
         let category: Category
         let pageIcon: String

@@ -26,7 +26,7 @@ final class ContributeController {
                                           bridges: bridges.map { Accessory.AccessoryResponse(accessory: $0.0, manufacturer: $0.1) },
                                           regions: regions)
 
-            let leaf = try req.make(LeafRenderer.self)
+            let leaf = try req.view()
             return leaf.render("contribute", data)
         })
     }
@@ -73,6 +73,8 @@ final class ContributeController {
                          supportsAirplay2: contributeData.supportsAirplay2 ?? false)
             .create(on: req)
             .flatMap(to: View.self) { newAccessory in
+                let leaf = try req.view()
+
                 if let regions = contributeData.regions {
                     var futures = [Future<AccessoryRegionPivot>]()
 
@@ -93,11 +95,9 @@ final class ContributeController {
                     }
 
                     return futures.flatMap(to: View.self, on: req, { _ in
-                        let leaf = try req.make(LeafRenderer.self)
                         return leaf.render("contribute", ["success": true])
                     })
                 } else {
-                    let leaf = try req.make(LeafRenderer.self)
                     return leaf.render("contribute", ["success": true])
                 }
         }

@@ -27,7 +27,7 @@ final class ManufacturerController {
             guard let manufacturer = manufacturer else { throw Abort(.notFound) }
             
             return flatMap(to: View.self, categories, manufacturersCount, accessories, { (categories, manufacturersCount, accessories) in
-                let leaf = try req.make(LeafRenderer.self)
+                let leaf = try req.view()
                 let responseData = ManufacturerResponse(manufacturer: manufacturer,
                                                         pageIcon: "",
                                                         accessoryCount: accessories.count,
@@ -46,7 +46,7 @@ final class ManufacturerController {
         let accessoryCount = try QueryHelper.accessoriesCount(request: req)
         
         return flatMap(to: View.self, manufacturers, categories, accessoryCount, { (manufacturers, categories, accessoryCount) in
-            let leaf = try req.make(LeafRenderer.self)
+            let leaf = try req.view()
             let responseData = ManufacturersResponse(pageTitle: "All Manufacturers",
                                                      pageIcon: "",
                                                      accessoryCount: accessoryCount,

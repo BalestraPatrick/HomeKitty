@@ -19,7 +19,7 @@ final class ReportController {
         let accessories = Accessory.query(on: req).filter(\Accessory.approved == true).sort(\Accessory.name, .ascending).all()
 
         return accessories.flatMap(to: View.self) { accessories in
-            let leaf = try req.make(LeafRenderer.self)
+            let leaf = try req.view()
             let responseData = ReportResponse(accessories: accessories)
             return leaf.render("report", responseData)
         }
@@ -40,7 +40,7 @@ final class ReportController {
                 let sendgrid = try req.make(SendGridClient.self)
 
                 return try sendgrid.send([sendGridEmail], on: req.eventLoop).flatMap(to: View.self, {
-                    let leaf = try req.make(LeafRenderer.self)
+                    let leaf = try req.view()
                     return leaf.render("report", ["success": true])
                 })
             }
