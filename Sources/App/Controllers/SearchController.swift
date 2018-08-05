@@ -42,7 +42,7 @@ final class SearchController {
                 accessoryCount: accessoryCount,
                 manufacturerCount: manufacturerCount)
 
-            let leaf = try req.make(LeafRenderer.self)
+            let leaf = try req.view()
             return leaf.render("search", data)
         })
     }

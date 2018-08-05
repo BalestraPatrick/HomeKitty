@@ -100,37 +100,6 @@ final class Accessory: PostgreSQLModel {
         }
     }
 
-    func didCreate(on connection: PostgreSQLConnection) throws -> EventLoopFuture<Accessory> {
-        try updateCounterCache(connection)
-        return Future.map(on: connection, { self })
-    }
-
-    func didUpdate(on connection: PostgreSQLConnection) throws -> EventLoopFuture<Accessory> {
-        try updateCounterCache(connection)
-        return Future.map(on: connection, { self })
-    }
-    func willDelete(on connection: PostgreSQLConnection) throws -> EventLoopFuture<Accessory> {
-        try updateCounterCache(connection, willDelete: true)
-        return Future.map(on: connection, { self })
-    }
-
-    func updateCounterCache(_ connection: PostgreSQLConnection, willDelete: Bool = false) throws {
-        _ = category.get(on: connection).flatMap(to: Category.self, { category in
-            return Category
-                .query(on: connection)
-                .filter(\Category.id == self.categoryId)
-                .count()
-                .flatMap(to: Category.self, { participationCount in
-                    if !willDelete {
-                        category.accessoriesCount = participationCount
-                    } else {
-                        category.accessoriesCount = participationCount - 1
-                    }
-                    return category.save(on: connection)
-                })
-        })
-    }
-
     struct FeaturedResponse: Codable {
         let name: String
         let externalLink: String
@@ -198,7 +167,7 @@ final class Accessory: PostgreSQLModel {
     }
 }
 
-extension Accessory: Migration {
+extension Accessory: PostgreSQLMigration {
     static func prepare(on connection: PostgreSQLConnection) -> Future<Void> {
         return Database.create(self, on: connection, closure: { builder in
             builder.field(for: \Accessory.id, type: .int, .primaryKey())
@@ -220,9 +189,5 @@ extension Accessory: Migration {
             builder.reference(from: \Accessory.categoryId, to: \Category.id)
             builder.reference(from: \Accessory.manufacturerId, to: \Manufacturer.id)
         })
-    }
-
-    static func revert(on connection: PostgreSQLConnection) -> Future<Void> {
-        return Database.delete(self, on: connection)
     }
 }

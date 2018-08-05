@@ -23,11 +23,12 @@ final class AccessoryController {
         let accessories = try QueryHelper.accessories(request: req).all()
 
         return flatMap(to: View.self, categories, manufacturerCount, accessories) { categories, manufacturersCount, accessories in
-            let data = AccessoriesResponse(accessories: accessories.map { Accessory.AccessoryResponse(accessory: $0.0, manufacturer: $0.1) },
+            let data = AccessoriesResponse(noAccessories: accessories.isEmpty,
+                accessories: accessories.map { Accessory.AccessoryResponse(accessory: $0.0, manufacturer: $0.1) },
                                            categories: categories,
                                            accessoryCount: accessories.count,
                                            manufacturerCount: manufacturersCount, accessoriesSelected: true)
-            let leaf = try req.make(LeafRenderer.self)
+            let leaf = try req.view()
             return leaf.render("accessories", data)
         }
     }
@@ -50,7 +51,7 @@ final class AccessoryController {
                                              accessoryCount: accessoryCount,
                                              manufacturerCount: manufacturersCount)
 
-                let leaf = try req.make(LeafRenderer.self)
+                let leaf = try req.view()
                 return leaf.render("accessory", data)
             }
         }
@@ -74,6 +75,7 @@ final class AccessoryController {
     }
     
     private struct AccessoriesResponse: Codable {
+        let noAccessories: Bool
         let accessories: [Accessory.AccessoryResponse]
         let categories: [Category]
         let accessoryCount: Int
