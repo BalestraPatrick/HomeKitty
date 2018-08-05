@@ -20,6 +20,9 @@
                 <div class="flex-item" style="margin-top: 10px;">
                     <p class="lead">Latest Apps</p>
                 </div>
+                <div id="accessory-page-buttons">
+                    <a href="/apps/contribute" ><button class="btn btn-primary">Contribute</button></a>
+                </div>
                 #if(noAccessories) {
                     <div style="text-align:center; padding-top:50px;">
                         <h1>🔍</h1>
