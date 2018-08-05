@@ -47,17 +47,14 @@ final class HomekitAppController {
 
         return app.flatMap{ app in
             guard let app = app else { throw Abort(.badRequest) }
-            return try ItunesApp.fetchItunesApp(req: req, appStoreId: app.appStoreId).flatMap { itunesApp in
-                guard let itunesApp = itunesApp else { throw Abort(.badRequest) }
 
-                return flatMap(to: View.self, categories, manufacturerCount, accessoryCount) { categories, manufacturersCount, accessoryCount in
-                    let data = AppResponse(app: HomekitApp.HomekitAppResponse(itunesApp: itunesApp),
-                                           categories: categories,
-                                           accessoryCount: accessoryCount,
-                                           manufacturerCount: manufacturersCount)
-                    let leaf = try req.view()
-                    return leaf.render("Apps/app", data)
-                }
+            return flatMap(to: View.self, categories, manufacturerCount, accessoryCount) { categories, manufacturersCount, accessoryCount in
+                let data = AppResponse(app: app,
+                                       categories: categories,
+                                       accessoryCount: accessoryCount,
+                                       manufacturerCount: manufacturersCount)
+                let leaf = try req.view()
+                return leaf.render("Apps/app", data)
             }
         }
     }
@@ -94,15 +91,13 @@ final class HomekitAppController {
                     throw Abort(.badRequest, reason: "This app alrealy excist")
                 }
 
-                return try ItunesApp.fetchItunesApp(req: req, appStoreId: contributionRequest.appStoreId).flatMap{ itunesApp in
-                    guard let itunesApp = itunesApp else { throw Abort(.badRequest, reason: "No app with id: \(contributionRequest.appStoreId) was found") }
-                    return HomekitApp(name: itunesApp.trackName,
-                                      appStoreId: contributionRequest.appStoreId,
-                                      appStoreIcon: itunesApp.artworkUrl512 ?? itunesApp.artworkUrl100 ?? itunesApp.artworkUrl60)
-                        .create(on: req)
-                        .flatMap { _ in
-                            return leaf.render("contributeSuccess")
-                        }
+                return HomekitApp(name: contributionRequest.name,
+                                  subtitle: contributionRequest.subtitle,
+                                  appStoreId: contributionRequest.appStoreId,
+                                  appStoreIcon: contributionRequest.appIcon)
+                    .create(on: req)
+                    .flatMap { _ in
+                        return leaf.render("contributeSuccess")
                 }
             }
         }
@@ -124,13 +119,17 @@ final class HomekitAppController {
 
     private struct AppResponse: Codable {
         let pageTitle = "App Details"
-        let app: HomekitApp.HomekitAppResponse
+        let app: HomekitApp
         let categories: [Category]
         let accessoryCount: Int
         let manufacturerCount: Int
     }
 
     private struct ContributionRequest: Content {
+        let name: String
+        let subtitle: String?
+        let price: String?
+        let appIcon: String
         let appStoreId: String
     }
 }
