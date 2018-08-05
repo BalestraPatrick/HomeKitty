@@ -15,15 +15,33 @@
                 <p>The goal of HomeKitty is to be the central place of discovery for all HomeKit accessories. By contributing to our database, you can help many more people discover new, incredible possibilities. Do you want to report an issue with an existing accessory? Report it <a href="/report">here</a>.</p>
                 <p>Simply fill out the following form with the required details, and we will add it to the website as soon as we have double-checked all the information. 🎉</p>
                 <hr>
-                <p>Are you an accessory manufacturer and you would like to feature your newest accessory in the homepage to maximize visibility? <a href="mailto:info@homekitty.world?subject=HomeKitty Sponsorship Information">Contact us</a>.</p>
-                <hr>
                 <form action="/apps/contribute" method="POST">
-                    <!-- Accessory -->
-                    <h4>Accessory</h4>
+                    <!-- App -->
+                    <h4>App</h4>
+                    <div class="form-group">
+                        <label for="name">App name</label>
+                        <p>Please provide the full app name (ex: HomeKitty).</p>
+                        <input type="text" class="form-control" name="name" placeholder="App name" required maxlength="255">
+                    </div>
+                    <div class="form-group">
+                        <label for="name">Subtitle</label>
+                        <p>Please provide the subtitle name(ex: The world of HomeKit).</p>
+                        <input type="text" class="form-control" name="subtitle" placeholder="Subtitle (optional)" required maxlength="255">
+                    </div>
+                    <div class="form-group">
+                        <label for="name">App icon</label>
+                        <p>Please provide the subtitle name(ex: The world of HomeKit).</p>
+                        <input type="text" class="form-control" name="appIcon" placeholder="URL" required maxlength="255">
+                    </div>
+                    <div class="form-group">
+                        <label for="name">Price</label>
+                        <p>Please provide the price(ex: $0.99). If no price is provided, it is marked as free</p>
+                        <input type="text" class="form-control" name="price" placeholder="$0.99" maxlength="255">
+                    </div>
                     <div class="form-group">
                         <label for="appStoreId">AppStore id</label>
                         <p>Please provide the AppStore id (ex: id121212121).</p>
-                        <input type="text" class="form-control" name="appStoreId" placeholder="Name" required maxlength="255">
+                        <input type="text" class="form-control" name="appStoreId" placeholder="Appstore id" required maxlength="255">
                     </div>
                     <!-- Submit -->
                     <hr>

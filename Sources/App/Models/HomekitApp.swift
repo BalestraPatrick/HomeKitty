@@ -15,15 +15,17 @@ struct HomekitApp: PostgreSQLModel {
     var id: Int?
     let name: String
     let subtitle: String?
+    let price: Double?
     let appStoreId: String
-    let appStoreIcon: String?
+    let appStoreIcon: String
     let approved: Bool
     let createdAt: Date
     let updatedAt: Date
 
-    init(name: String, subtitle: String?, appStoreId: String, appStoreIcon: String?) {
+    init(name: String, subtitle: String?, price: Double?, appStoreId: String, appStoreIcon: String) {
         self.name = name
         self.subtitle = subtitle
+        self.price = price
         self.appStoreId = appStoreId
         self.appStoreIcon = appStoreIcon
         self.approved = false
@@ -35,6 +37,7 @@ struct HomekitApp: PostgreSQLModel {
         case id
         case name
         case subtitle
+        case price
         case appStoreId = "app_store_id"
         case appStoreIcon = "app_store_icon"
         case approved

@@ -80,25 +80,28 @@ final class HomekitAppController {
         return try req.content.decode(ContributionRequest.self).flatMap { contributionRequest in
             guard contributionRequest.appStoreId.starts(with: "id") else { throw Abort(.badRequest, reason: "App id does not contain 'id'") }
 
-            return HomekitApp.query(on: req).filter(\HomekitApp.appStoreId == contributionRequest.appStoreId).first().flatMap{ app in
-                let leaf = try req.make(TemplateRenderer.self)
+            return HomekitApp.query(on: req)
+                .filter(\HomekitApp.appStoreId == contributionRequest.appStoreId).first()
+                .flatMap{ app in
+                    let leaf = try req.make(TemplateRenderer.self)
 
-                if app?.approved == false {
-                    return leaf.render("contributeSuccess")
-                }
-
-                if app?.id != nil {
-                    throw Abort(.badRequest, reason: "This app alrealy excist")
-                }
-
-                return HomekitApp(name: contributionRequest.name,
-                                  subtitle: contributionRequest.subtitle,
-                                  appStoreId: contributionRequest.appStoreId,
-                                  appStoreIcon: contributionRequest.appIcon)
-                    .create(on: req)
-                    .flatMap { _ in
+                    if app?.approved == false {
                         return leaf.render("contributeSuccess")
-                }
+                    }
+
+                    if app?.id != nil {
+                        throw Abort(.badRequest, reason: "This app alrealy excist")
+                    }
+
+                    return HomekitApp(name: contributionRequest.name,
+                                      subtitle: contributionRequest.subtitle,
+                                      price: Double(contributionRequest.price?.replacingOccurrences(of: "$", with: "").replacingOccurrences(of: ",", with: ".") ?? ""),
+                                      appStoreId: contributionRequest.appStoreId,
+                                      appStoreIcon: contributionRequest.appIcon)
+                        .create(on: req)
+                        .flatMap { _ in
+                            return leaf.render("contributeSuccess")
+                    }
             }
         }
     }
