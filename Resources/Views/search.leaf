@@ -21,7 +21,7 @@
                     <p class="lead">#(pageTitle)</p>
                 </div>
                 <div class="row">
-                    #if("noAccessories") {
+                    #if(noAccessoriesFound) {
                         #embed("noAccessoryFound")
                     }
                     #for(accessory in accessories) {

@@ -17,7 +17,7 @@
                 <img src="#get(pageIcon)" width="50px">
                 <p class="lead">#(category.name)</p>
             </div>
-            #if("noAccessories") { #embed("noAccessoryFound") } else {
+            #if(noAccessoryFound) { #embed("noAccessoryFound") } else {
             <div class="row">
                 #for(accessory in accessories) { #embed("accessoryItem") } }
             </div>

@@ -38,7 +38,7 @@ final class SearchController {
             let data = SearchResponse(categories: categories,
                                       accessories: accessories,
                                       pageTitle: "Results for \"\(search)\"",
-                noAccessories: accessories.isEmpty,
+                noAccessoriesFound: accessories.isEmpty,
                 accessoryCount: accessoryCount,
                 manufacturerCount: manufacturerCount)
 
@@ -51,7 +51,7 @@ final class SearchController {
         let categories: [Category]
         let accessories: [Accessory.AccessoryResponse]
         let pageTitle: String
-        let noAccessories: Bool
+        let noAccessoriesFound: Bool
         let accessoryCount: Int
         let manufacturerCount: Int
     }
