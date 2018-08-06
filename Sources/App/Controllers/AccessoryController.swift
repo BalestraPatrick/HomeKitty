@@ -23,7 +23,7 @@ final class AccessoryController {
         let accessories = try QueryHelper.accessories(request: req).all()
 
         return flatMap(to: View.self, categories, manufacturerCount, accessories) { categories, manufacturersCount, accessories in
-            let data = AccessoriesResponse(noAccessories: accessories.isEmpty,
+            let data = AccessoriesResponse(noAccessoriesFound: accessories.isEmpty,
                 accessories: accessories.map { Accessory.AccessoryResponse(accessory: $0.0, manufacturer: $0.1) },
                                            categories: categories,
                                            accessoryCount: accessories.count,
@@ -75,7 +75,7 @@ final class AccessoryController {
     }
     
     private struct AccessoriesResponse: Codable {
-        let noAccessories: Bool
+        let noAccessoriesFound: Bool
         let accessories: [Accessory.AccessoryResponse]
         let categories: [Category]
         let accessoryCount: Int

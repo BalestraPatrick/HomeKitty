@@ -20,7 +20,7 @@
                 <div class="flex-item" style="margin-top: 10px;">
                     <p class="lead">Latest Accessories</p>
                 </div>
-                #if(noAccessories) {
+                #if(noAccessoriesFound) {
                     #embed("noAccessoryFound")
                 } else {
                     <div class="row">
