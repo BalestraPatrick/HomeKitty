@@ -31,7 +31,7 @@ final class Manufacturer: PostgreSQLModel {
 
 // MARK: - Database Migration
 
-extension Manufacturer: Migration {
+extension Manufacturer: PostgreSQLMigration {
     static func prepare(on connection: PostgreSQLConnection) -> Future<Void> {
         return Database.create(self, on: connection, closure: { builder in
             builder.field(for: \Manufacturer.id, type: .int, .primaryKey())
@@ -39,9 +39,5 @@ extension Manufacturer: Migration {
             builder.field(for: \Manufacturer.websiteLink)
             builder.field(for: \Manufacturer.approved)
         })
-    }
-
-    static func revert(on connection: PostgreSQLConnection) -> Future<Void> {
-        return Database.delete(self, on: connection)
     }
 }

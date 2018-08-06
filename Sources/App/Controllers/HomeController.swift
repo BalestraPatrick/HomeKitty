@@ -33,7 +33,7 @@ final class HomeController {
                                     accessories: accessories.map { Accessory.AccessoryResponse(accessory: $0.0, manufacturer: $0.1) },
                                     accessoryCount: accessoryCount,
                                     manufacturerCount: manufacturersCount)
-            let leaf = try req.make(LeafRenderer.self)
+            let leaf = try req.view()
             return leaf.render("home", data)
         })
     }
