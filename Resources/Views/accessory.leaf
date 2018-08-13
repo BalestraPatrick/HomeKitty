@@ -33,7 +33,7 @@
                         <img src="#(accessory.image)" alt="#(accessory.name)" class="accessory-image" id="accessory-page-image">
                     </div>
                     <div id="accessory-page-buttons">
-                        <a href="#(accessory.product_link)" target="_blank"><button class="btn btn-primary">View on #(accessory.manufacturer) website</button></a>
+                        <a href="#(accessory.product_link)" target="_blank"><button class="btn btn-primary">View on #(accessory.manufacturer) Website</button></a>
                         #if(accessory.amazon_link) {
                             <a href="#(accessory.amazon_link)" target="_blank"><button class="btn btn-primary" style="margin:15px;">View on Amazon</button></a>
                         }
@@ -69,6 +69,7 @@
             </div>
         </div>
     </div>
+    <a href="#(accessory.id)/report" style="float: right; margin-right: 50px;">Report Issue</a>
 }
 
 #embed("base")
