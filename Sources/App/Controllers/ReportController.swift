@@ -41,7 +41,7 @@ final class ReportController {
 
                 return try sendgrid.send([sendGridEmail], on: req.eventLoop).flatMap(to: View.self, {
                     let leaf = try req.view()
-                    return leaf.render("report", ["success": true])
+                    return leaf.render("reportSuccess")
                 })
             }
         })
