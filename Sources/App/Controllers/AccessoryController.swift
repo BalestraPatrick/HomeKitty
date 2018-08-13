@@ -62,22 +62,21 @@ final class AccessoryController {
 
     func oldAccessory(_ req: Request) throws -> Future<Response> {
         let paramName: String = try req.query.get(at: "name")
-
         return Accessory.query(on: req).filter(\Accessory.name == paramName).first().map { accessory in
             return req.redirect(to: "accessories/\(accessory?.id ?? -1)")
         }
     }
 
     // MARK: - Report
+
     func report(_ req: Request) throws -> Future<View> {
         let accessoryId: Int = try req.parameters.next()
-        let accessory = try QueryHelper.accessory(request: req, id: accessoryId)
-
-        return accessory.flatMap(to: View.self) { accessory in
-            guard let accessory = accessory else { throw Abort(.badRequest) }
+        let accessories = try QueryHelper.accessories(request: req).all()
+        return accessories.flatMap(to: View.self) { accessories in
+            guard let accessory = accessories.filter({ $0.0.id == accessoryId }).first else { throw Abort(.badRequest) }
             let leaf = try req.view()
-            let responseData = ReportResponse(accessory: Accessory.AccessoryResponse(accessory: accessory.0, manufacturer: accessory.1) )
-            return leaf.render("accessory/accessoryReport", responseData)
+            let responseData = ReportResponse(accessories: accessories.map { $0.0 }, accessoryToReport: Accessory.AccessoryResponse(accessory: accessory.0, manufacturer: accessory.1) )
+            return leaf.render("report", responseData)
         }
     }
 
@@ -89,26 +88,7 @@ final class AccessoryController {
                     // Recaptcha failed, simply redirect to the report page.
                     guard result else { return try self.report(req) }
                     // Create and send email.
-                    let myEmail = EmailAddress(email: "info@homekitty.world", name: reportRequest.name)
-
-                    let body = """
-                    AccessoryId: \(accessoryId)
-                    Accessory: \( accessory?.name ?? "null")
-
-                    
-                    \(reportRequest.message)
-                    """
-
-                    var sendGridEmail = SendGridEmail(from: EmailAddress(email: reportRequest.email, name: reportRequest.name), subject: ContactTopic.issue.subject, content: [["type": "text/plain", "value": body]])
-
-                    sendGridEmail.personalizations = [Personalization(to: [myEmail])]
-
-                    let sendgrid = try req.make(SendGridClient.self)
-
-                    return try sendgrid.send([sendGridEmail], on: req.eventLoop).flatMap(to: View.self, {
-                        let leaf = try req.view()
-                        return leaf.render("reportSuccess")
-                    })
+                    return try EmailManager.sendEmail(with: reportRequest, req: req)
                 }
             }
         })
@@ -117,21 +97,8 @@ final class AccessoryController {
     // MARK: - Private
 
     private struct ReportResponse: Codable {
-        let accessory: Accessory.AccessoryResponse
-    }
-
-    private struct ReportRequest: Codable {
-        let name: String
-        let email: String
-        let message: String
-        let recaptchaResponse: String
-
-        enum CodingKeys: String, CodingKey {
-            case name
-            case email
-            case message
-            case recaptchaResponse = "g-recaptcha-response"
-        }
+        let accessories: [Accessory]
+        let accessoryToReport: Accessory.AccessoryResponse
     }
 
     private struct AccessoryResponse: Codable {
