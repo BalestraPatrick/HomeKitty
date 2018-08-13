@@ -15,13 +15,17 @@ final class ReportController {
     }
 
     func report(_ req: Request) throws -> Future<View> {
-        let accessories = Accessory.query(on: req).filter(\Accessory.approved == true).sort(\Accessory.name, .ascending).all()
+        let accessories = try QueryHelper.accessories(request: req).all()
+        let apps = try QueryHelper.apps(request: req)
 
-        return accessories.flatMap(to: View.self) { accessories in
+        return flatMap(to: View.self, accessories, apps, { (accessories, apps) in
             let leaf = try req.view()
-            let responseData = ReportResponse(accessories: accessories)
+            let responseData = ReportResponse(accessories: accessories.map { $0.0 },
+                                              apps: apps,
+                                              accessoryToReport: nil,
+                                              appToReport: nil)
             return leaf.render("report", responseData)
-        }
+        })
     }
 
     func submit(_ req: Request) throws -> Future<View> {
@@ -32,9 +36,5 @@ final class ReportController {
                 return try EmailManager.sendEmail(with: reportRequest, req: req)
             }
         })
-    }
-
-    private struct ReportResponse: Codable {
-        let accessories: [Accessory]
     }
 }

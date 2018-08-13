@@ -21,7 +21,8 @@
                     <label>Topic of your question</label>
                     <div class="form-group">
                         <select name="topic" style="max-width:100%;" onchange="topicChanged(this.value);">
-                            <option value="issue">Accessory / Manufacturer Issue</option>
+                            <option value="accessory-issue">Accessory / Manufacturer Issue</option>
+                            <option value="app-issue">HomeKit App Issue</option>
                             <option value="feature">Feature Request</option>
                             <option value="partnership">Partnership</option>
                             <option value="other">Other</option>
@@ -37,6 +38,17 @@
                             </select>
                         </div>
                     </div>
+                    <div id="app-issue" style="display:none;">
+                        <label>HomeKit app related to your question:</label>
+                        <div class="form-group">
+                            <select name="accessory" style="max-width:100%;">
+                                #for(app in apps) {
+                                    <option value="#(app.name)" #if(app.id == appToReport.id) { selected }>#(app.name)</option>
+                                }
+                            </select>
+                        </div>
+                    </div>
+
                     <!-- Real Form -->
                     <div class="form-group">
                         <label>Name</label>

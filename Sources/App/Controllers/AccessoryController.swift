@@ -75,10 +75,15 @@ final class AccessoryController {
     func report(_ req: Request) throws -> Future<View> {
         let accessoryId: Int = try req.parameters.next()
         let accessories = try QueryHelper.accessories(request: req).all()
-        return accessories.flatMap(to: View.self) { accessories in
+        let apps = try QueryHelper.apps(request: req)
+
+        return flatMap(to: View.self, accessories, apps) { (accessories, apps) in
             guard let accessory = accessories.filter({ $0.0.id == accessoryId }).first else { throw Abort(.badRequest) }
             let leaf = try req.view()
-            let responseData = ReportResponse(accessories: accessories.map { $0.0 }, accessoryToReport: Accessory.AccessoryResponse(accessory: accessory.0, manufacturer: accessory.1) )
+            let responseData = ReportResponse(accessories: accessories.map { $0.0 },
+                                              apps: apps,
+                                              accessoryToReport: Accessory.AccessoryResponse(accessory: accessory.0, manufacturer: accessory.1),
+                                              appToReport: nil)
             return leaf.render("report", responseData)
         }
     }
@@ -98,11 +103,6 @@ final class AccessoryController {
     }
 
     // MARK: - Private
-
-    private struct ReportResponse: Codable {
-        let accessories: [Accessory]
-        let accessoryToReport: Accessory.AccessoryResponse
-    }
 
     private struct AccessoryResponse: Codable {
         let pageTitle = "Accessory Details"
