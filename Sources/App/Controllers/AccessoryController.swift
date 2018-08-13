@@ -8,11 +8,14 @@ import HTTP
 import FluentPostgreSQL
 import Leaf
 import Fluent
+import SendGrid
 
 final class AccessoryController {
     
     init(router: Router) {
         router.get("accessories", Int.parameter, use: accessory)
+        router.get("accessories", Int.parameter, "report", use: report)
+        router.post("accessories", Int.parameter, "report", use: submitReport)
         router.get("accessories", use: accessories)
         router.get("accessory", use: oldAccessory)
     }
@@ -62,6 +65,72 @@ final class AccessoryController {
 
         return Accessory.query(on: req).filter(\Accessory.name == paramName).first().map { accessory in
             return req.redirect(to: "accessories/\(accessory?.id ?? -1)")
+        }
+    }
+
+    // MARK: - Report
+    func report(_ req: Request) throws -> Future<View> {
+        let accessoryId: Int = try req.parameters.next()
+        let accessory = try QueryHelper.accessory(request: req, id: accessoryId)
+
+        return accessory.flatMap(to: View.self) { accessory in
+            guard let accessory = accessory else { throw Abort(.badRequest) }
+            let leaf = try req.view()
+            let responseData = ReportResponse(accessory: Accessory.AccessoryResponse(accessory: accessory.0, manufacturer: accessory.1) )
+            return leaf.render("accessory/accessoryReport", responseData)
+        }
+    }
+
+    func submitReport(_ req: Request) throws -> Future<View> {
+        return try req.content.decode(ReportRequest.self).flatMap(to: View.self, { reportRequest in
+            return try RecaptchaManager.verify(with: req, recaptchaResponse: reportRequest.recaptchaResponse).flatMap { result in
+                let accessoryId: Int = try req.parameters.next()
+                return Accessory.query(on: req).filter(\.id == accessoryId).first().flatMap { accessory in
+                    // Recaptcha failed, simply redirect to the report page.
+                    guard result else { return try self.report(req) }
+                    // Create and send email.
+                    let myEmail = EmailAddress(email: "info@homekitty.world", name: reportRequest.name)
+
+                    let body = """
+                    AccessoryId: \(accessoryId)
+                    Accessory: \( accessory?.name ?? "null")
+
+                    
+                    \(reportRequest.message)
+                    """
+
+                    var sendGridEmail = SendGridEmail(from: EmailAddress(email: reportRequest.email, name: reportRequest.name), subject: ContactTopic.issue.subject, content: [["type": "text/plain", "value": body]])
+
+                    sendGridEmail.personalizations = [Personalization(to: [myEmail])]
+
+                    let sendgrid = try req.make(SendGridClient.self)
+
+                    return try sendgrid.send([sendGridEmail], on: req.eventLoop).flatMap(to: View.self, {
+                        let leaf = try req.view()
+                        return leaf.render("reportSuccess")
+                    })
+                }
+            }
+        })
+    }
+
+    // MARK: - Private
+
+    private struct ReportResponse: Codable {
+        let accessory: Accessory.AccessoryResponse
+    }
+
+    private struct ReportRequest: Codable {
+        let name: String
+        let email: String
+        let message: String
+        let recaptchaResponse: String
+
+        enum CodingKeys: String, CodingKey {
+            case name
+            case email
+            case message
+            case recaptchaResponse = "g-recaptcha-response"
         }
     }
 
