@@ -58,10 +58,10 @@
                                 <p>This accessory supports AirPlay 2.</p>
                             </div>
                         }
-                        #if(accessory.region_compatibility) {
+                        #if(regionCompatibility) {
                             <div id="accessory-page-feature">
                                 <img src="/images/world.png">
-                                <p>This accessory is compatible in: #(accessory.region_compatibility).</p>
+                                <p>This accessory is compatible in: #(regionCompatibility).</p>
                             </div>
                         }
                     <div>
