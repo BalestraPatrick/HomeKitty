@@ -93,9 +93,7 @@ final class Accessory: PostgreSQLModel {
     func regionCompatibility(_ req: Request) throws -> Future<String> {
         return try regions.query(on: req).all().flatMap(to: String.self) { regions in
             let promise = req.eventLoop.newPromise(String.self)
-
             promise.succeed(result: regions.map { $0.name }.joined(separator: ", "))
-
             return promise.futureResult
         }
     }
