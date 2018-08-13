@@ -11,12 +11,6 @@
     #embed("navigation")
     <div class="container container-content">
         <div class="row">
-            #if(success) {
-                <div class="centered">
-                    <h1>👍👍👍</h1>
-                    <p class="lead">Thanks for your message. We'll answer as soon as possible.</p>
-                </div>
-            } else {
                 <div class="col-md-6" id="contribute-column">
                 <h1>Contact / Report Issue</h1>
                 <p>The goal of HomeKitty is to be the central place of discovery for all HomeKit accessories. By helping to improve our database, you can make sure many more people can browse accurate and up to date information.</p>
@@ -34,11 +28,11 @@
                         </select>
                     </div>
                     <div id="accessory-issue">
-                        <label>Accessory related to your question</label>
+                        <label>Accessory related to your question:</label>
                         <div class="form-group">
                             <select name="accessory" style="max-width:100%;">
                                 #for(accessory in accessories) {
-                                <option value="#(accessory.name)">#(accessory.name)</option>
+                                    <option value="#(accessory.name)" #if(accessory.id == accessoryToReport.id) { selected }>#(accessory.name)</option>
                                 }
                             </select>
                         </div>
@@ -66,7 +60,6 @@
                     </div>
                 </form>
             </div>
-            }
         </div>
     </div>
     <script type="text/javascript" src="/js/report.js"></script>

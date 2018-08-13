@@ -8,11 +8,14 @@ import HTTP
 import FluentPostgreSQL
 import Leaf
 import Fluent
+import SendGrid
 
 final class AccessoryController {
     
     init(router: Router) {
         router.get("accessories", Int.parameter, use: accessory)
+        router.get("accessories", Int.parameter, "report", use: report)
+        router.post("accessories", Int.parameter, "report", use: submitReport)
         router.get("accessories", use: accessories)
         router.get("accessory", use: oldAccessory)
     }
@@ -62,10 +65,43 @@ final class AccessoryController {
 
     func oldAccessory(_ req: Request) throws -> Future<Response> {
         let paramName: String = try req.query.get(at: "name")
-
         return Accessory.query(on: req).filter(\Accessory.name == paramName).first().map { accessory in
             return req.redirect(to: "accessories/\(accessory?.id ?? -1)")
         }
+    }
+
+    // MARK: - Report
+
+    func report(_ req: Request) throws -> Future<View> {
+        let accessoryId: Int = try req.parameters.next()
+        let accessories = try QueryHelper.accessories(request: req).all()
+        return accessories.flatMap(to: View.self) { accessories in
+            guard let accessory = accessories.filter({ $0.0.id == accessoryId }).first else { throw Abort(.badRequest) }
+            let leaf = try req.view()
+            let responseData = ReportResponse(accessories: accessories.map { $0.0 }, accessoryToReport: Accessory.AccessoryResponse(accessory: accessory.0, manufacturer: accessory.1) )
+            return leaf.render("report", responseData)
+        }
+    }
+
+    func submitReport(_ req: Request) throws -> Future<View> {
+        return try req.content.decode(ReportRequest.self).flatMap(to: View.self, { reportRequest in
+            return try RecaptchaManager.verify(with: req, recaptchaResponse: reportRequest.recaptchaResponse).flatMap { result in
+                let accessoryId: Int = try req.parameters.next()
+                return Accessory.query(on: req).filter(\.id == accessoryId).first().flatMap { accessory in
+                    // Recaptcha failed, simply redirect to the report page.
+                    guard result else { return try self.report(req) }
+                    // Create and send email.
+                    return try EmailManager.sendEmail(with: reportRequest, req: req)
+                }
+            }
+        })
+    }
+
+    // MARK: - Private
+
+    private struct ReportResponse: Codable {
+        let accessories: [Accessory]
+        let accessoryToReport: Accessory.AccessoryResponse
     }
 
     private struct AccessoryResponse: Codable {
