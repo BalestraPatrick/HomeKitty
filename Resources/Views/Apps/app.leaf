@@ -2,10 +2,9 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>HomeKitty - Browse HomeKit Accessories</title>
+    <title>#(app.name) - HomeKitty</title>
     <link rel="stylesheet" href="/css/content.css">
 }
-
 
 #set("body") {
     <div class="container container-content">
@@ -17,30 +16,31 @@
             <!-- Content -->
             <div class="col-md-9">
                 <div class="flex-item" style="margin-top: 10px;">
+                    <img src="#get(pageIcon)" width="50px">
                     <p class="lead">#(pageTitle)</p>
-                    <p><a href="#(manufacturerLink)" target="_blank">#(manufacturerLink)</a></p>
                 </div>
                 <div class="row col-md-12">
                     <div class="col-md-6" id="accessory-page-information-container">
                         <div id="accessory-page-information">
                             <h1 id="accessory-title">#(app.name)</h1><br/>
-                            <h4>By <a href="/#(accessory.manufacturer_link)">#(app.developer)</a></h4>
-                            <h3>#(accessory.price)</h3>
+                            <h4 id="accessory-title">#(app.subtitle)</h4><br/>
+                            <h4>By <a href="#(app.publisher_link)" target="_blank">#get(app.publisher)</a></h4>
+                            #if(app.price) {
+                                <h3>$#(app.price)</h3>
+                            } else {
+                                <h3>Free</h3>
+                            }
                         </div>
                     </div>
                     <div class="col-md-6" id="accessory-page-image-container">
-                        <img src="#(app.artwork)" alt="#(app.name)" class="accessory-image" id="accessory-page-image">
-                    </div>
-                    <div class="row col-md-12" style="white-space: pre-wrap;">
-                        <p>#(app.description)</p>
+                        <img src="#(app.app_store_icon)" alt="#(app.name)" class="accessory-image" id="accessory-page-image">
                     </div>
                     <div id="accessory-page-buttons">
-                        <a href="#(app.appStoreUrl)" target="_blank"><button class="btn btn-primary">View on AppStore</button></a>
+                        <a href="https://itunes.apple.com/us/app/#(app.app_store_link)" target="_blank"><button class="btn btn-primary">View on #(app.manufacturer) AppStore</button></a>
                     </div>
-                </div>
-            </div>
         </div>
     </div>
+    <a href="#(accessory.id)/report" style="float: right; margin-right: 50px;">Report Issue</a>
 }
 
 #embed("base")

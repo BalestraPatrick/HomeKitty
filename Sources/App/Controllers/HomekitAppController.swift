@@ -78,10 +78,8 @@ final class HomekitAppController {
 
     func submit(_ req: Request) throws -> Future<View> {
         return try req.content.decode(ContributionRequest.self).flatMap { contributionRequest in
-            guard contributionRequest.appStoreId.starts(with: "id") else { throw Abort(.badRequest, reason: "App id does not contain 'id'") }
-
             return HomekitApp.query(on: req)
-                .filter(\HomekitApp.appStoreId == contributionRequest.appStoreId).first()
+                .filter(\HomekitApp.appStoreLink == contributionRequest.appStoreLink).first()
                 .flatMap{ app in
                     let leaf = try req.make(TemplateRenderer.self)
 
@@ -96,8 +94,10 @@ final class HomekitAppController {
                     return HomekitApp(name: contributionRequest.name,
                                       subtitle: contributionRequest.subtitle,
                                       price: Double(contributionRequest.price?.replacingOccurrences(of: "$", with: "").replacingOccurrences(of: ",", with: ".") ?? ""),
-                                      appStoreId: contributionRequest.appStoreId,
-                                      appStoreIcon: contributionRequest.appIcon)
+                                      appStoreLink: contributionRequest.appStoreLink,
+                                      appStoreIcon: contributionRequest.appIcon,
+                                      publisher: contributionRequest.publisher,
+                                      publisherLink: contributionRequest.publisherLink)
                         .create(on: req)
                         .flatMap { _ in
                             return leaf.render("contributeSuccess")
@@ -133,15 +133,19 @@ final class HomekitAppController {
         let subtitle: String?
         let price: String?
         let appIcon: String
-        let appStoreId: String
+        let appStoreLink: String
         let recaptchaResponse: String
+        let publisher: String
+        let publisherLink: String
 
         enum CodingKeys: String, CodingKey {
             case name
             case subtitle
             case price
-            case appIcon
-            case appStoreId
+            case appIcon = "app_icon"
+            case appStoreLink = "appStore_link"
+            case publisher
+            case publisherLink = "publisher_link"
             case recaptchaResponse = "g-recaptcha-response"
         }
 
