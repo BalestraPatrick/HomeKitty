@@ -4,7 +4,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" href="/css/content.css">
     <script src="/js/jquery.js"></script>
-    <title>HomeKitty - Browse HomeKit Accessories</title>
+    <script src="https://www.google.com/recaptcha/api.js" async defer></script>
+    <title>HomeKitty - Contribute app</title>
 }
 
 #set("body") {
@@ -47,7 +48,8 @@
                     <hr>
                     <div>
                         <p style="float: left;">Ready to submit? 👍</p>
-                        <button type="submit" class="btn btn-primary" style="float: right;">Submit</button>
+                        <div class="g-recaptcha" data-sitekey="6LebSWQUAAAAAIMMNE4xTkZYP2aX0726QeKugsFv" data-callback="enableSubmit"></div>
+                        <button type="submit" disabled class="btn btn-primary" id="submit-button" style="float: right;">Submit</button>
                     </div>
                 </form>
             </div>
@@ -55,3 +57,4 @@
     </div>
 }
 #embed("base")
+<script type="text/javascript" src="/js/submit-button.js"></script>

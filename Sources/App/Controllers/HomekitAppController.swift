@@ -134,5 +134,16 @@ final class HomekitAppController {
         let price: String?
         let appIcon: String
         let appStoreId: String
+        let recaptchaResponse: String
+
+        enum CodingKeys: String, CodingKey {
+            case name
+            case subtitle
+            case price
+            case appIcon
+            case appStoreId
+            case recaptchaResponse = "g-recaptcha-response"
+        }
+
     }
 }
