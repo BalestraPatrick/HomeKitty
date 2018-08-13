@@ -23,11 +23,12 @@ final class AccessoryController {
         let accessories = try QueryHelper.accessories(request: req).all()
 
         return flatMap(to: View.self, categories, manufacturerCount, accessories) { categories, manufacturersCount, accessories in
-            let data = AccessoriesResponse(accessories: accessories.map { Accessory.AccessoryResponse(accessory: $0.0, manufacturer: $0.1) },
+            let data = AccessoriesResponse(noAccessoriesFound: accessories.isEmpty,
+                accessories: accessories.map { Accessory.AccessoryResponse(accessory: $0.0, manufacturer: $0.1) },
                                            categories: categories,
                                            accessoryCount: accessories.count,
                                            manufacturerCount: manufacturersCount, accessoriesSelected: true)
-            let leaf = try req.make(LeafRenderer.self)
+            let leaf = try req.view()
             return leaf.render("accessories", data)
         }
     }
@@ -44,14 +45,17 @@ final class AccessoryController {
             guard let accessory = accessory else { throw Abort(.notFound) }
             
             return flatMap(to: View.self, categories, manufacturersCount, accessoryCount) { (categories, manufacturersCount, accessoryCount) in
-                let data = AccessoryResponse(pageIcon: categories.first(where: { $0.id == accessory.0.categoryId })?.image ?? "",
-                                             accessory: Accessory.AccessoryResponse(accessory: accessory.0, manufacturer: accessory.1),
-                                             categories: categories,
-                                             accessoryCount: accessoryCount,
-                                             manufacturerCount: manufacturersCount)
+                return try accessory.0.regionCompatibility(req).flatMap { region in
+                    let data = AccessoryResponse(pageIcon: categories.first(where: { $0.id == accessory.0.categoryId })?.image ?? "",
+                                                 accessory: Accessory.AccessoryResponse(accessory: accessory.0, manufacturer: accessory.1),
+                                                 regionCompatibility: region,
+                                                 categories: categories,
+                                                 accessoryCount: accessoryCount,
+                                                 manufacturerCount: manufacturersCount)
 
-                let leaf = try req.make(LeafRenderer.self)
-                return leaf.render("accessory", data)
+                    let leaf = try req.view()
+                    return leaf.render("accessory", data)
+                }
             }
         }
     }
@@ -68,12 +72,14 @@ final class AccessoryController {
         let pageTitle = "Accessory Details"
         let pageIcon: String
         let accessory: Accessory.AccessoryResponse
+        let regionCompatibility: String
         let categories: [Category]
         let accessoryCount: Int
         let manufacturerCount: Int
     }
     
     private struct AccessoriesResponse: Codable {
+        let noAccessoriesFound: Bool
         let accessories: [Accessory.AccessoryResponse]
         let categories: [Category]
         let accessoryCount: Int

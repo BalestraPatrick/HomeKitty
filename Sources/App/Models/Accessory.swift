@@ -25,6 +25,7 @@ final class Accessory: PostgreSQLModel {
     var date: Date
     var requiresHub: Bool
     var featured: Bool
+    var supportsAirplay2: Bool
 
     init(
         name: String,
@@ -36,7 +37,8 @@ final class Accessory: PostgreSQLModel {
         manufacturerId: Int,
         released: Bool,
         requiresHub: Bool,
-        requiredHubId: Int?) {
+        requiredHubId: Int?,
+        supportsAirplay2: Bool) {
         self.name = name
         self.categoryId = categoryId
         self.manufacturerId = manufacturerId
@@ -50,6 +52,7 @@ final class Accessory: PostgreSQLModel {
         self.requiresHub = requiresHub
         self.requiredHubId = requiredHubId
         self.featured = false
+        self.supportsAirplay2 = supportsAirplay2
     }
 
     enum CodingKeys: String, CodingKey {
@@ -68,6 +71,7 @@ final class Accessory: PostgreSQLModel {
         case date
         case requiresHub = "requires_hub"
         case featured
+        case supportsAirplay2 = "supports_airplay_2"
     }
 
     var category: Parent<Accessory, Category> {
@@ -89,42 +93,9 @@ final class Accessory: PostgreSQLModel {
     func regionCompatibility(_ req: Request) throws -> Future<String> {
         return try regions.query(on: req).all().flatMap(to: String.self) { regions in
             let promise = req.eventLoop.newPromise(String.self)
-
             promise.succeed(result: regions.map { $0.name }.joined(separator: ", "))
-
             return promise.futureResult
         }
-    }
-
-    func didCreate(on connection: PostgreSQLConnection) throws -> EventLoopFuture<Accessory> {
-        try updateCounterCache(connection)
-        return Future.map(on: connection, { self })
-    }
-
-    func didUpdate(on connection: PostgreSQLConnection) throws -> EventLoopFuture<Accessory> {
-        try updateCounterCache(connection)
-        return Future.map(on: connection, { self })
-    }
-    func willDelete(on connection: PostgreSQLConnection) throws -> EventLoopFuture<Accessory> {
-        try updateCounterCache(connection, willDelete: true)
-        return Future.map(on: connection, { self })
-    }
-
-    func updateCounterCache(_ connection: PostgreSQLConnection, willDelete: Bool = false) throws {
-        _ = category.get(on: connection).flatMap(to: Category.self, { category in
-            return Category
-                .query(on: connection)
-                .filter(\Category.id == self.categoryId)
-                .count()
-                .flatMap(to: Category.self, { participationCount in
-                    if !willDelete {
-                        category.accessoriesCount = participationCount
-                    } else {
-                        category.accessoriesCount = participationCount - 1
-                    }
-                    return category.save(on: connection)
-                })
-        })
     }
 
     struct FeaturedResponse: Codable {
@@ -150,6 +121,7 @@ final class Accessory: PostgreSQLModel {
         let manufacturerName: String?
         let manufacturerWebsite: String?
         let timeAgo: String?
+        let supportsAirplay2: Bool
 
         init(accessory: Accessory, manufacturer: Manufacturer) {
             id = accessory.id
@@ -168,6 +140,7 @@ final class Accessory: PostgreSQLModel {
             manufacturerName = manufacturer.name
             manufacturerWebsite = manufacturer.websiteLink
             timeAgo = accessory.date.timeAgoString()
+            supportsAirplay2 = accessory.supportsAirplay2
         }
 
         enum CodingKeys: String, CodingKey {
@@ -187,11 +160,12 @@ final class Accessory: PostgreSQLModel {
             case timeAgo = "time_ago"
             case manufacturerWebsite = "manufacturer_website"
             case categoryId = "category_id"
+            case supportsAirplay2 = "supports_airplay_2"
         }
     }
 }
 
-extension Accessory: Migration {
+extension Accessory: PostgreSQLMigration {
     static func prepare(on connection: PostgreSQLConnection) -> Future<Void> {
         return Database.create(self, on: connection, closure: { builder in
             builder.field(for: \Accessory.id, type: .int, .primaryKey())
@@ -208,13 +182,10 @@ extension Accessory: Migration {
             builder.field(for: \Accessory.requiredHubId)
             builder.field(for: \Accessory.featured)
             builder.field(for: \Accessory.manufacturerId)
+            builder.field(for: \Accessory.supportsAirplay2)
             builder.reference(from: \Accessory.requiredHubId, to: \Accessory.id)
             builder.reference(from: \Accessory.categoryId, to: \Category.id)
             builder.reference(from: \Accessory.manufacturerId, to: \Manufacturer.id)
         })
-    }
-
-    static func revert(on connection: PostgreSQLConnection) -> Future<Void> {
-        return Database.delete(self, on: connection)
     }
 }

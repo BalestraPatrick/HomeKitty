@@ -19,7 +19,7 @@ final class ReportController {
         let accessories = Accessory.query(on: req).filter(\Accessory.approved == true).sort(\Accessory.name, .ascending).all()
 
         return accessories.flatMap(to: View.self) { accessories in
-            let leaf = try req.make(LeafRenderer.self)
+            let leaf = try req.view()
             let responseData = ReportResponse(accessories: accessories)
             return leaf.render("report", responseData)
         }
@@ -27,19 +27,23 @@ final class ReportController {
 
     func submit(_ req: Request) throws -> Future<View> {
         return try req.content.decode(ReportRequest.self).flatMap(to: View.self, { reportRequest in
-            // Create and send email.
-            let myEmail = EmailAddress(email: "info@homekitty.world", name: reportRequest.name)
-            let contactMessage = self.contactMessage(for: reportRequest.topic, message: reportRequest.message, accessory: reportRequest.accessory)
-            var sendGridEmail = SendGridEmail(from: EmailAddress(email: reportRequest.email, name: reportRequest.name), subject: contactMessage.topic.subject, content: [["type": "text/plain", "value": contactMessage.body]])
+            return try RecaptchaManager.verify(with: req, recaptchaResponse: reportRequest.recaptchaResponse).flatMap { result in
+                // Recaptcha failed, simply redirect to the report page.
+                guard result else { return try self.report(req) }
+                // Create and send email.
+                let myEmail = EmailAddress(email: "info@homekitty.world", name: reportRequest.name)
+                let contactMessage = self.contactMessage(for: reportRequest.topic, message: reportRequest.message, accessory: reportRequest.accessory)
+                var sendGridEmail = SendGridEmail(from: EmailAddress(email: reportRequest.email, name: reportRequest.name), subject: contactMessage.topic.subject, content: [["type": "text/plain", "value": contactMessage.body]])
 
-            sendGridEmail.personalizations = [Personalization(to: [myEmail])]
+                sendGridEmail.personalizations = [Personalization(to: [myEmail])]
 
-            let sendgrid = try req.make(SendGridClient.self)
+                let sendgrid = try req.make(SendGridClient.self)
 
-            return try sendgrid.send([sendGridEmail], on: req.eventLoop).flatMap(to: View.self, {
-                let leaf = try req.make(LeafRenderer.self)
-                return leaf.render("report", ["success": true])
-            })
+                return try sendgrid.send([sendGridEmail], on: req.eventLoop).flatMap(to: View.self, {
+                    let leaf = try req.view()
+                    return leaf.render("report", ["success": true])
+                })
+            }
         })
     }
     
@@ -62,5 +66,15 @@ final class ReportController {
         let email: String
         let message: String
         let accessory: String
+        let recaptchaResponse: String
+
+        enum CodingKeys: String, CodingKey {
+            case topic
+            case name
+            case email
+            case message
+            case accessory
+            case recaptchaResponse = "g-recaptcha-response"
+        }
     }
 }

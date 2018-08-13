@@ -12,6 +12,7 @@ final class Region: PostgreSQLModel {
         case "EU": emoji = "🇪🇺"
         case "AU": emoji = "🇦🇺"
         case "CN": emoji = "🇨🇳"
+        case "CH": emoji = "🇨🇭"
         default: emoji = ""
         }
         return [shortName, emoji].joined(separator: " ")
@@ -34,14 +35,4 @@ final class Region: PostgreSQLModel {
 }
 
 // MARK: - Database Migration
-extension Region: Migration {
-    static func revert(on connection: PostgreSQLConnection) -> Future<Void> {
-        return Database.delete(self, on: connection)
-    }
-}
-
-//extension Region {
-//    var accessories: Siblings<Region, Accessory, Pivot<Region, Accessory>> {
-//        return siblings()
-//    }
-//}
+extension Region: PostgreSQLMigration { }
