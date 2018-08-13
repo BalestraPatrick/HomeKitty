@@ -12,6 +12,7 @@ final class Region: PostgreSQLModel {
         case "EU": emoji = "🇪🇺"
         case "AU": emoji = "🇦🇺"
         case "CN": emoji = "🇨🇳"
+        case "CH": emoji = "🇨🇭"
         default: emoji = ""
         }
         return [shortName, emoji].joined(separator: " ")
