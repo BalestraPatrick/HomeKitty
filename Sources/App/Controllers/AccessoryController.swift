@@ -51,7 +51,7 @@ final class AccessoryController {
                 return try accessory.0.regionCompatibility(req).flatMap { region in
                     let data = AccessoryResponse(pageIcon: categories.first(where: { $0.id == accessory.0.categoryId })?.image ?? "",
                                                  accessory: Accessory.AccessoryResponse(accessory: accessory.0, manufacturer: accessory.1),
-                                                 regionCompatibility: region,
+                                                 regionCompatibility: region.isEmpty ? nil : region,
                                                  categories: categories,
                                                  accessoryCount: accessoryCount,
                                                  manufacturerCount: manufacturersCount)
@@ -108,7 +108,7 @@ final class AccessoryController {
         let pageTitle = "Accessory Details"
         let pageIcon: String
         let accessory: Accessory.AccessoryResponse
-        let regionCompatibility: String
+        let regionCompatibility: String?
         let categories: [Category]
         let accessoryCount: Int
         let manufacturerCount: Int
