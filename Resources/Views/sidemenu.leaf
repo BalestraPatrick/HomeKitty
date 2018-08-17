@@ -27,7 +27,7 @@
         <ul class="dropdown-menu btn-block">
             #for(category in categories) {
                 <li>
-                    <a href="/categories/#(category.id)" class="dropdown-item btn-block #if(category.selected) { selected }">
+                    <a href="/categories/#(category.id)" class="dropdown-item btn-block #if(selectedCategory == category.id) { selected }">
                         <img src="#(category.image)" width="30px"> #(category.name)
                         <span class="badge badge-important pull-right">#(category.accessories_count)</span>
                     </a>
@@ -38,7 +38,7 @@
     </div>
     <div class="list-group hidden-sm hidden-xs">
         #for(category in categories) {
-            <a href="/categories/#(category.id)" class="list-group-item #if(category.selected) { selected }">
+            <a href="/categories/#(category.id)" class="list-group-item #if(selectedCategory == category.id) { selected }">
                 <img src="#(category.image)" width="30px"> #(category.name)
                 <span class="badge">#(category.accessories_count)</span>
             </a>

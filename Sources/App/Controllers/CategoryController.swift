@@ -27,7 +27,7 @@ final class CategoryController {
             let accessories = try QueryHelper.accessories(request: req, categoryId: category.id).all()
             return flatMap(to: View.self, manufacturersCount, accessories, accessoriesCount, { (manufacturersCount, accessories, accessoriesCount) in
                 let leaf = try req.view()
-                let selectedCategoryIndex = categories.index { $0.id == category.id } ?? -1
+                let selectedCategoryIndex = param
                 let responseData = CategoryResponse(noAccessoryFound: accessories.isEmpty,
                                                     selectedCategory: selectedCategoryIndex,
                                                     category: category,
