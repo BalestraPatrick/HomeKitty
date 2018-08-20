@@ -33,7 +33,10 @@
                         }
                     </div>
                 }
-                <a href="apps/contribute" style="float: right; margin-right: 50px;">Contribute</a>
+                #if(noApps) {} else {
+                    <a href="apps/contribute" style="float: right; margin-right: 50px;">Contribute</a>
+                    <a href="/report" style="float: right; margin-right: 50px;">Report issue</a>
+                }
             </div>
         </div>
     </div>
