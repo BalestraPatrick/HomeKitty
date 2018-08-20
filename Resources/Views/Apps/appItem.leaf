@@ -5,7 +5,7 @@
         </a>
         <a href="/apps/#(app.id)"></a>
             <div class="caption">
-                <div><h4><a href="/apps/#(app.id)">#(app.name)</a></h4></div>
+                <div><h4><a href="/apps/#(app.id)">#(app.name) - #if(app.price) { $#(app.price) } else { Free }</a></h4></div>
                 <div style="display: flex; justify-content: center; align-items: center;">
             </div>
         </div>

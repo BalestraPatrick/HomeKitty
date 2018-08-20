@@ -94,6 +94,11 @@ final class QueryHelper {
             .sort(\HomeKitApp.name)
             .all()
     }
+    static func appCount(request req: Request) throws -> Future<Int> {
+        return HomeKitApp.query(on: req)
+            .filter(\HomeKitApp.approved == true)
+            .count()
+    }
 
     static func app(request req: Request, id: Int) throws -> Future<HomeKitApp?> {
         return HomeKitApp.query(on: req)

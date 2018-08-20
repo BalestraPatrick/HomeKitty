@@ -13,6 +13,9 @@
     <br>
     <p class="lead">Categories</p>
     <div class="list-group">
+        <a href="/apps" class="list-group-item #if(appsSelected) { selected }">All Apps
+            <span class="badge">#(appCount)</span>
+        </a>
         <a href="/accessories" class="list-group-item #if(accessoriesSelected) { selected }">All Accessories
             <span class="badge">#(accessoryCount)</span>
         </a>

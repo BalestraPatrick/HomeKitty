@@ -26,12 +26,14 @@ final class HomeKitAppController {
         let manufacturerCount = try QueryHelper.manufacturerCount(request: req)
         let apps = try QueryHelper.apps(request: req)
         let accessoryCount = try QueryHelper.accessoriesCount(request: req)
+        let appCount = try QueryHelper.appCount(request: req)
         
-        return flatMap(to: View.self, categories, manufacturerCount, apps, accessoryCount) { categories, manufacturersCount, apps, accessoryCount in
+        return flatMap(to: View.self, categories, manufacturerCount, apps, accessoryCount, appCount) { categories, manufacturersCount, apps, accessoryCount, appCount in
             let data = AppsResponse(apps: apps,
                                     categories: categories,
                                     accessoryCount: accessoryCount,
-                                    manufacturerCount: manufacturersCount)
+                                    manufacturerCount: manufacturersCount,
+                                    appCount: appCount)
             let leaf = try req.view()
             return leaf.render("Apps/apps", data)
         }
@@ -44,15 +46,17 @@ final class HomeKitAppController {
         let manufacturerCount = try QueryHelper.manufacturerCount(request: req)
         let app = try QueryHelper.app(request: req, id: paramId)
         let accessoryCount = try QueryHelper.accessoriesCount(request: req)
+        let appCount = try QueryHelper.appCount(request: req)
 
         return app.flatMap{ app in
             guard let app = app else { throw Abort(.badRequest) }
 
-            return flatMap(to: View.self, categories, manufacturerCount, accessoryCount) { categories, manufacturersCount, accessoryCount in
+            return flatMap(to: View.self, categories, manufacturerCount, accessoryCount, appCount) { categories, manufacturersCount, accessoryCount, appCount in
                 let data = AppResponse(app: app,
                                        categories: categories,
                                        accessoryCount: accessoryCount,
-                                       manufacturerCount: manufacturersCount)
+                                       manufacturerCount: manufacturersCount,
+                                       appCount: appCount)
                 let leaf = try req.view()
                 return leaf.render("Apps/app", data)
             }
@@ -118,6 +122,7 @@ final class HomeKitAppController {
         let categories: [Category]
         let accessoryCount: Int
         let manufacturerCount: Int
+        let appCount: Int
     }
 
     private struct AppResponse: Codable {
@@ -126,6 +131,7 @@ final class HomeKitAppController {
         let categories: [Category]
         let accessoryCount: Int
         let manufacturerCount: Int
+        let appCount: Int
     }
 
     private struct ContributionRequest: Content {
