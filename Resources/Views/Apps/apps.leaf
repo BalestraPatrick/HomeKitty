@@ -17,7 +17,6 @@
 
             <!-- Content -->
             <div class="col-md-9">
-                <a href="apps/contribute" style="float: right; margin-right: 50px;">Contribute</a>
                 <div class="flex-item" style="margin-top: 10px;">
                     <p class="lead">Latest Apps</p>
                 </div>
@@ -34,6 +33,7 @@
                         }
                     </div>
                 }
+                <a href="apps/contribute" style="float: right; margin-right: 50px;">Contribute</a>
             </div>
         </div>
     </div>
