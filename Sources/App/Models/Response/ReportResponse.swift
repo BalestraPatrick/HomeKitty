@@ -9,7 +9,7 @@ import Foundation
 
 public struct ReportResponse: Codable {
     let accessories: [Accessory]
-    let apps: [HomekitApp]
+    let apps: [HomeKitApp]
     let accessoryToReport: Accessory.AccessoryResponse?
-    let appToReport: HomekitApp?
+    let appToReport: HomeKitApp?
 }

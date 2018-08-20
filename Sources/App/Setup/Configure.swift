@@ -70,7 +70,7 @@ public func configure(_ config: inout Config, env: inout Environment, services: 
     migrations.add(model: Manufacturer.self, database: .psql)
     migrations.add(model: Accessory.self, database: .psql)
     migrations.add(model: Region.self, database: .psql)
-    migrations.add(model: HomekitApp.self, database: .psql)
+    migrations.add(model: HomeKitApp.self, database: .psql)
     migrations.add(model: AccessoryRegionPivot.self, database: .psql)
 
     services.register(migrations)

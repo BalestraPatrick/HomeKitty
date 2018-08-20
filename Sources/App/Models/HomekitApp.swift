@@ -1,5 +1,5 @@
 //
-//  HomekitApp.swift
+//  HomeKitApp.swift
 //  App
 //
 //  Created by Kim de Vos on 28/07/2018.
@@ -9,8 +9,8 @@ import Foundation
 import FluentPostgreSQL
 import Vapor
 
-struct HomekitApp: PostgreSQLModel {
-    static var entity = "homekit_apps"
+struct HomeKitApp: PostgreSQLModel {
+    static var entity = "apps"
 
     var id: Int?
     let name: String
@@ -58,4 +58,4 @@ struct HomekitApp: PostgreSQLModel {
     }
 }
 
-extension HomekitApp: PostgreSQLMigration { }
+extension HomeKitApp: PostgreSQLMigration { }

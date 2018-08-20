@@ -87,19 +87,19 @@ final class QueryHelper {
         return Region.query(on: req).sort(\Region.fullName, .ascending).filter(\Region.id == id).first()
     }
 
-    // MARK: - Homekit apps
-    static func apps(request req: Request) throws -> Future<[HomekitApp]> {
-        return HomekitApp.query(on: req)
-            .filter(\HomekitApp.approved == true)
-            .sort(\HomekitApp.name)
+    // MARK: - HomeKit apps
+    static func apps(request req: Request) throws -> Future<[HomeKitApp]> {
+        return HomeKitApp.query(on: req)
+            .filter(\HomeKitApp.approved == true)
+            .sort(\HomeKitApp.name)
             .all()
     }
 
-    static func app(request req: Request, id: Int) throws -> Future<HomekitApp?> {
-        return HomekitApp.query(on: req)
-            .filter(\HomekitApp.id == id)
-            .filter(\HomekitApp.approved == true)
-            .sort(\HomekitApp.name)
+    static func app(request req: Request, id: Int) throws -> Future<HomeKitApp?> {
+        return HomeKitApp.query(on: req)
+            .filter(\HomeKitApp.id == id)
+            .filter(\HomeKitApp.approved == true)
+            .sort(\HomeKitApp.name)
             .first()
     }
 }

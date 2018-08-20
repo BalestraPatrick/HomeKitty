@@ -16,5 +16,5 @@ public func routes(_ router: Router) throws {
     _ = CategoryController(router: router)
     _ = HomeController(router: router)
     _ = ContributeController(router: router)
-    _ = HomekitAppController(router: router)
+    _ = HomeKitAppController(router: router)
 }

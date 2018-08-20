@@ -1,5 +1,5 @@
 //
-//  HomekitAppController.swift
+//  HomeKitAppController.swift
 //  App
 //
 //  Created by Kim de Vos on 29/07/2018.
@@ -12,7 +12,7 @@ import FluentPostgreSQL
 import Leaf
 import Fluent
 
-final class HomekitAppController {
+final class HomeKitAppController {
 
     init(router: Router) {
         router.get("apps", use: apps)
@@ -78,8 +78,8 @@ final class HomekitAppController {
 
     func submit(_ req: Request) throws -> Future<View> {
         return try req.content.decode(ContributionRequest.self).flatMap { contributionRequest in
-            return HomekitApp.query(on: req)
-                .filter(\HomekitApp.appStoreLink == contributionRequest.appStoreLink).first()
+            return HomeKitApp.query(on: req)
+                .filter(\HomeKitApp.appStoreLink == contributionRequest.appStoreLink).first()
                 .flatMap{ app in
                     let leaf = try req.make(TemplateRenderer.self)
 
@@ -91,7 +91,7 @@ final class HomekitAppController {
                         throw Abort(.badRequest, reason: "This app alrealy excist")
                     }
 
-                    return HomekitApp(name: contributionRequest.name,
+                    return HomeKitApp(name: contributionRequest.name,
                                       subtitle: contributionRequest.subtitle,
                                       price: Double(contributionRequest.price?.replacingOccurrences(of: "$", with: "").replacingOccurrences(of: ",", with: ".") ?? ""),
                                       appStoreLink: contributionRequest.appStoreLink,
@@ -114,7 +114,7 @@ final class HomekitAppController {
     }
 
     private struct AppsResponse: Codable {
-        let apps: [HomekitApp]
+        let apps: [HomeKitApp]
         let categories: [Category]
         let accessoryCount: Int
         let manufacturerCount: Int
@@ -122,7 +122,7 @@ final class HomekitAppController {
 
     private struct AppResponse: Codable {
         let pageTitle = "App Details"
-        let app: HomekitApp
+        let app: HomeKitApp
         let categories: [Category]
         let accessoryCount: Int
         let manufacturerCount: Int
