@@ -5,173 +5,30 @@
     <link rel="stylesheet" href="/css/content.css">
     <script src="/js/jquery.js"></script>
     <script src="https://www.google.com/recaptcha/api.js" async defer></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.12.4/js/bootstrap-select.min.js"></script>
-    <title>HomeKitty - Browse HomeKit Accessories</title>
+    <title>HomeKitty - Contribute app</title>
 }
 
 #set("body") {
     <div class="container container-content">
         <div class="row">
-                <div class="col-md-6" id="contribute-column">
-                <h1>Submit an accessory</h1>
-                <p>The goal of HomeKitty is to be the central place of discovery for all HomeKit accessories. By contributing to our database, you can help many more people discover new, incredible possibilities. Do you want to report an issue with an existing accessory? Report it <a href="/report">here</a>.</p>
-                <p>Simply fill out the following form with the required details, and we will add it to the website as soon as we have double-checked all the information. 🎉</p>
-                <hr>
-                <p>Are you an accessory manufacturer and you would like to feature your newest accessory in the homepage to maximize visibility? <a href="mailto:info@homekitty.world?subject=HomeKitty Sponsorship Information">Contact us</a>.</p>
-                <hr>
-                <form action="/contribute" method="POST">
-                    <!-- Accessory -->
-                    <h4>Accessory</h4>
-                    <div class="form-group">
-                        <label for="name">Name</label>
-                        <p>Please provide the full name (ex: Philips Hue A13).</p>
-                        <input type="text" class="form-control" name="name" placeholder="Name" required maxlength="255">
-                    </div>
-                    <div class="form-group">
-                        <label for="image">Image</label>
-                        <p>Please provide the direct link to a JPG image of the product (with white background if possible, otherwise a PNG is fine).</p>
-                        <input type="text" class="form-control" name="image" placeholder="URL" required maxlength="255">
-                    </div>
-                    <div class="form-group">
-                        <label for="price">Price</label>
-                        <p>Please provide the price in $ (ex: 49.99).</p>
-                        <div class="input-group">
-                            <span class="input-group-addon">$</span>
-                            <input type="text" pattern="([0-9]+\.)?[0-9]+" class="form-control" name="price" id="price-input" placeholder="49.99" required onfocusout="formatPriceInput()">
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <label for="region">Regions</label>
-                        <p>Please provide accessory compatible regions.</p>
-                            <select name="regions[]" class="selectpicker" multiple title="Select a region">
-                                #for(region in regions) {
-                                    <option value="#(region.id)">#(region.full_name)</option>
-                                }
-                            </select>
-                    </div>
-                    <div class="form-group">
-                        <label for="link">Link</label>
-                        <p>Please provide the direct link (to the official manufacturer page).</p>
-                        <input type="text" class="form-control" name="link" placeholder="http://www2.meethue.com/en-us/productdetail/philips-hue-white-extension-bulb-a19" required maxlength="255">
-                    </div>
-                    <div class="form-group">
-                        <label for="link">Availability</label>
-                        <p>If the accessory is coming soon and/or HomeKit compatibility is planned but not released, don't select the checkbox.</p>
-                        <input type="checkbox" name="released" value="true"> Available on the market
-                    </div>
-                    <div class="form-group">
-                        <label for="link">AirPlay 2</label>
-                        <p>If the accessory supports AirPlay 2, select the checkbox.</p>
-                        <input type="checkbox" name="supportsAirplay2" value="true"> Supports AirPlay 2
-                    </div>
-                    <div class="form-group">
-                        <label for="link">Required Bridge</label>
-                        <p>If the accessory requires a proprietary bridge to work with HomeKit, select the checkbox.</p>
-                        <input type="checkbox" name="requiresBridge" onchange="toggleBridgesSelectionAppearance()" value="true"> Requires proprietary bridge
-                    </div>
-                    <div class="form-group">
-                        <select id="required-bridge-selection" name="requiredBridge" style="display: none;">
-                            <option value="" disabled selected>Select a bridge</option>
-                            #for(bridge in bridges) {
-                                <option value="#(bridge.id)">#(bridge.name)</option>
-                            }
-                        </select>
-                    </div>
+            <div class="centered">
+                <div class="flex-item" style="margin-top: 10px;">
+                    <p class="lead">Contribute</p>
+                </div>
+            <div class="col-sm-2 col-lg-2 col-md-2"></div>
 
-                    <!-- Category -->
-                    <h4>Category</h4>
-                    <div class="form-group">
-                        <select name="category">
-                            #for(category in categories) {
-                            <option value="#(category.id)">#(category.name)</option>
-                            }
-                        </select>
-                    </div>
+            <div class="col-sm-4 col-lg-4 col-md-4">
+                <a href="/accessories/contribute">Contribute an acceesory</a>
+            </div>
 
-                    <!-- Manufacturer -->
-                    <h4>Manufacturer</h4>
-                    <div class="form-group">
-                        <select id="manufacturer-selection" name="manufacturerId" required>
-                            <option value="" disabled selected>Select a manufacturer</option>
-                            #for(manufacturer in manufacturers) {
-                                <option value="#(manufacturer.id)">#(manufacturer.name)</option>
-                            }
-                        </select>
-                        <div>
-                            <button type="button" class="btn btn-primary" id="add-new-button" onclick="showHide(); return false;">Add New Manufacturer</button>
-                        </div>
-                        <div id="add-manufacturer-form">
-                            <div class="form-group">
-                                <label for="manufacturerName">Name</label>
-                                <p>Please provide the name (ex: Philips).</p>
-                                <input type="text" class="form-control" id="manufacturer-name-input" name="manufacturerName" placeholder="Philips" maxlength="255">
-                            </div>
-                            <div class="form-group">
-                                <label for="manufacturerWebsite">Website</label>
-                                <p>Please provide the direct link to the website.</p>
-                                <input type="text" class="form-control" id="manufacturer-name-website" name="manufacturerWebsite" placeholder="URL" maxlength="255">
-                            </div>
-                        </div>
-                    </div>
+            <div class="col-sm-4 col-lg-4 col-md-4">
+                <a href="/apps/contribute">Contribute an app</a>
+            </div>
 
-                    <!-- Submit -->
-                    <hr>
-                    <div>
-                        <p style="float: left;">Ready to submit? 👍</p>
-                        <div class="g-recaptcha" data-sitekey="6LebSWQUAAAAAIMMNE4xTkZYP2aX0726QeKugsFv" data-callback="enableSubmit"></div>
-                        <button type="submit" disabled class="btn btn-primary" id="submit-button" style="float: right;">Submit</button>
-                    </div>
-                </form>
+            <div class="col-sm-2 col-lg-2 col-md-2"></div>
+
             </div>
         </div>
     </div>
 }
 #embed("base")
-<script>
-function toggleBridgesSelectionAppearance() {
-    var bridgeOptionsList = document.getElementById('required-bridge-selection');
-    if (bridgeOptionsList.style.display !== 'none') {
-        bridgeOptionsList.style.display = 'none';
-    } else {
-        bridgeOptionsList.style.display = 'block';
-    }
-}
-
-function showHide() {
-    var addNewButton = document.getElementById('add-new-button');
-    var form = document.getElementById('add-manufacturer-form');
-    var optionList = document.getElementById('manufacturer-selection');
-    if (form.style.display !== 'none') {
-        form.style.display = 'none';
-        addNewButton.innerHTML = 'Add New Manufacturer';
-        optionList.required = true;
-        optionList.disabled = false;
-        document.getElementById('manufacturer-name-input').required = false;
-        document.getElementById('manufacturer-name-input').disabled = true;
-        document.getElementById('manufacturer-logo-input').required = false;
-        document.getElementById('manufacturer-logo-input').disabled = true;
-        document.getElementById('manufacturer-website-input').required = false;
-        document.getElementById('manufacturer-website-input').disabled = true;
-    } else {
-        form.style.display = 'block';
-        addNewButton.innerHTML = 'Choose Existing';
-        optionList.required = false;
-        optionList.disabled = true;
-        document.getElementById('manufacturer-name-input').required = true;
-        document.getElementById('manufacturer-name-input').disabled = false;
-        document.getElementById('manufacturer-logo-input').required = true;
-        document.getElementById('manufacturer-logo-input').disabled = false;
-        document.getElementById('manufacturer-website-input').required = true;
-        document.getElementById('manufacturer-website-input').disabled = false;
-    }
-}
-
-function formatPriceInput() {
-    var priceInput = document.getElementById('price-input');
-    if (priceInput) {
-        var formattedPrice = Number(priceInput.value).toFixed(2);
-        priceInput.value = isNaN(formattedPrice) ? "" : formattedPrice;
-    }
-}
-</script>
-<script type="text/javascript" src="/js/submit-button.js"></script>

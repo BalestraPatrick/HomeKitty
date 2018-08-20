@@ -18,6 +18,8 @@ final class AccessoryController {
         router.post("accessories", Int.parameter, "report", use: submitReport)
         router.get("accessories", use: accessories)
         router.get("accessory", use: oldAccessory)
+        router.get("accessories", "contribute", use: contribute)
+        router.post("accessories", "contribute", use: submit)
     }
     
     func accessories(_ req: Request) throws -> Future<View> {
@@ -34,7 +36,7 @@ final class AccessoryController {
                                            appCount: appCount,
                                            manufacturerCount: manufacturersCount, accessoriesSelected: true)
             let leaf = try req.view()
-            return leaf.render("accessories", data)
+            return leaf.render("Accessories/accessories", data)
         }
     }
     
@@ -61,7 +63,7 @@ final class AccessoryController {
                                                  manufacturerCount: manufacturersCount)
 
                     let leaf = try req.view()
-                    return leaf.render("accessory", data)
+                    return leaf.render("Accessories/accessory", data)
                 }
             }
         }
@@ -106,6 +108,96 @@ final class AccessoryController {
         })
     }
 
+    // MARK: - Contribute
+    func contribute(_ req: Request) throws -> Future<View> {
+        let manufacturers = try QueryHelper.manufacturers(request: req)
+        let categories = try QueryHelper.categories(request: req)
+        let bridges = try QueryHelper.bridges(request: req)
+        let regions = try QueryHelper.regions(request: req)
+
+        return flatMap(to: View.self, manufacturers, categories, bridges, regions, { (manufacturers, categories, bridges, regions) in
+            let data = ContributeResponse(categories: categories,
+                                          manufacturers: manufacturers,
+                                          bridges: bridges.map { Accessory.AccessoryResponse(accessory: $0.0, manufacturer: $0.1) },
+                                          regions: regions)
+
+            let leaf = try req.view()
+            return leaf.render("Accessories/contribute", data)
+        })
+    }
+
+    func submit(_ req: Request) throws -> Future<View> {
+        return try req.content.decode(ContributeRequest.self).flatMap(to: View.self, { contributionData in
+            return try RecaptchaManager.verify(with: req, recaptchaResponse: contributionData.recaptchaResponse).flatMap { result in
+                // Recaptcha failed, simply redirect to the contribute page.
+                guard result else { return try self.contribute(req) }
+                // Create new accessory and manufacturer if needed.
+                if let manufacturerId = contributionData.manufacturerId {
+                    return self.newAccessory(req, manufacturerId: manufacturerId, contributeData: contributionData)
+                } else {
+                    return try self.newManufacturer(req, contributeData: contributionData)
+                }
+            }
+        })
+    }
+
+    // MARK: - Helpers
+
+    private func newManufacturer(_ req: Request, contributeData: ContributeRequest) throws -> Future<View> {
+        return try req.content.decode(ContributeManufactorerRequest.self).flatMap(to: View.self) { data in
+            return Manufacturer(name: data.manufacturerName, websiteLink: data.manufacturerWebsite)
+                .create(on: req)
+                .flatMap(to: View.self) { manufacturer throws -> EventLoopFuture<View> in
+                    guard let manufacturerId = manufacturer.id else { throw Abort.init(.internalServerError) }
+                    return self.newAccessory(req, manufacturerId: manufacturerId, contributeData: contributeData)
+            }
+        }
+    }
+
+    private func newAccessory(_ req: Request, manufacturerId: Int, contributeData: ContributeRequest) -> Future<View> {
+        return Accessory(name: contributeData.name,
+                         image: contributeData.image,
+                         price: contributeData.price.normalizedPrice,
+                         productLink: contributeData.link,
+                         amazonLink: nil,
+                         categoryId: contributeData.category,
+                         manufacturerId: manufacturerId,
+                         released: contributeData.released ?? false,
+                         requiresHub: contributeData.requiresBridge ?? false,
+                         requiredHubId: contributeData.requiredBridge,
+                         supportsAirplay2: contributeData.supportsAirplay2 ?? false)
+            .create(on: req)
+            .flatMap(to: View.self) { newAccessory in
+                let leaf = try req.view()
+
+                if let regions = contributeData.regions {
+                    var futures = [Future<AccessoryRegionPivot>]()
+
+                    try regions.forEach { regionId in
+                        let future = try QueryHelper.region(request: req, id: regionId).flatMap(to: AccessoryRegionPivot.self, { region in
+                            guard let region = region,
+                                let accessoryId = newAccessory.id,
+                                let regionId = region.id else { throw Abort(.internalServerError) }
+                            let pivot = AccessoryRegionPivot()
+
+                            pivot.accessoryId = accessoryId
+                            pivot.regionId = regionId
+
+                            return pivot.create(on: req)
+                        })
+
+                        futures.append(future)
+                    }
+
+                    return futures.flatMap(to: View.self, on: req, { _ in
+                        return leaf.render("contributeSuccess")
+                    })
+                } else {
+                    return leaf.render("contributeSuccess")
+                }
+        }
+    }
+
     // MARK: - Private
 
     private struct AccessoryResponse: Codable {
@@ -127,5 +219,47 @@ final class AccessoryController {
         let appCount: Int
         let manufacturerCount: Int
         let accessoriesSelected: Bool
+    }
+
+    private struct ContributeResponse: Content {
+        let categories: [Category]
+        let manufacturers: [Manufacturer]
+        let bridges: [Accessory.AccessoryResponse]
+        let regions: [Region]
+    }
+
+    private struct ContributeManufactorerRequest: Content {
+        let manufacturerName: String
+        let manufacturerWebsite: String
+    }
+
+    private struct ContributeRequest: Content {
+        let manufacturerId: Int?
+        let name: String
+        let image: String
+        let price: String
+        let link: String
+        let category: Int
+        let released: Bool?
+        let requiresBridge: Bool?
+        let requiredBridge: Int?
+        let regions: [Int]?
+        let supportsAirplay2: Bool?
+        let recaptchaResponse: String
+
+        enum CodingKeys: String, CodingKey {
+            case manufacturerId
+            case name
+            case image
+            case price
+            case link
+            case category
+            case released
+            case requiresBridge
+            case requiredBridge
+            case regions
+            case supportsAirplay2
+            case recaptchaResponse = "g-recaptcha-response"
+        }
     }
 }
