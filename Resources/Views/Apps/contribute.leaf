@@ -40,9 +40,19 @@
                         <input type="text" class="form-control" name="price" placeholder="$0.99" maxlength="255">
                     </div>
                     <div class="form-group">
-                        <label for="appStoreId">AppStore id</label>
-                        <p>Please provide the AppStore id (ex: id121212121).</p>
-                        <input type="text" class="form-control" name="appStoreId" placeholder="Appstore id" required maxlength="255">
+                        <label for="appStore_link">AppStore link</label>
+                        <p>Please provide the AppStore link (ex: id121212121).</p>
+                        <input type="text" class="form-control" name="appStore_link" placeholder="Appstore link" required maxlength="255">
+                    </div>
+                    <div class="form-group">
+                        <label for="appStore_link">Publisher</label>
+                        <p>Please provide the publisher name (ex: HomeKitty).</p>
+                        <input type="text" class="form-control" name="publisher" placeholder="HomeKitty" required maxlength="255">
+                    </div>
+                    <div class="form-group">
+                        <label for="appStore_link">Publisher link</label>
+                        <p>Please provide the publisher link (ex: HomeKitty.word).</p>
+                        <input type="text" class="form-control" name="publisher" placeholder="https://www.homekitty.world" required maxlength="255">
                     </div>
                     <!-- Submit -->
                     <hr>
