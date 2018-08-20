@@ -33,7 +33,8 @@ final class HomeKitAppController {
                                     categories: categories,
                                     accessoryCount: accessoryCount,
                                     manufacturerCount: manufacturersCount,
-                                    appCount: appCount)
+                                    appCount: appCount,
+                                    noApps: appCount == 0)
             let leaf = try req.view()
             return leaf.render("Apps/apps", data)
         }
@@ -123,6 +124,7 @@ final class HomeKitAppController {
         let accessoryCount: Int
         let manufacturerCount: Int
         let appCount: Int
+        let noApps: Bool
     }
 
     private struct AppResponse: Codable {
