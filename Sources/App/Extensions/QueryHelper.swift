@@ -15,12 +15,6 @@ final class QueryHelper {
     }
 
     // MARK: - Manufacturers
-    static func manufacturerCount(request req: Request) throws -> Future<Int> {
-        return Manufacturer.query(on: req)
-            .filter(\Manufacturer.approved == true)
-            .count()
-    }
-
     static func manufacturer(request req: Request, id: Int) throws -> Future<Manufacturer?> {
         return Manufacturer.query(on: req)
             .filter(\Manufacturer.approved == true)
@@ -39,12 +33,6 @@ final class QueryHelper {
     static func featuredAccessories(request req: Request) throws -> QueryBuilder<PostgreSQLDatabase, (Accessory, Manufacturer)> {
         return try accessories(request: req)
             .filter(\Accessory.featured == true)
-    }
-
-    static func accessoriesCount(request req: Request) throws -> Future<Int> {
-        return Accessory.query(on: req)
-            .filter(\Accessory.approved == true)
-            .count()
     }
 
     static func accessories(request req: Request, manufacturerId: Int? = nil, categoryId: Int? = nil) throws -> QueryBuilder<PostgreSQLDatabase, (Accessory, Manufacturer)> {
@@ -67,6 +55,25 @@ final class QueryHelper {
         return try accessories(request: req)
             .filter(\Accessory.id == id)
             .first()
+    }
+
+    static func sidemenuCounts(request req: Request) -> Future<SideMenuCounts> {
+        return req.withPooledConnection(to: .psql) { (connection: PostgreSQLDatabase.Connection) in
+            let query = """
+                    SELECT (SELECT COUNT(*) FROM accessories where accessories.approved = true) AS accessoryCount,
+                           (SELECT COUNT(*) FROM manufacturer where manufacturer.approved = true) AS manufacturerCount,
+                           (SELECT COUNT(*) FROM apps where apps.approved = true) AS appCount
+                    FROM now()
+                    """
+
+            return connection.query(.raw(query, binds: [])).map(to: SideMenuCounts.self, { rows in
+                let values = Array(rows.first!.values)
+
+                return SideMenuCounts(accessoryCount: try values[0].decode(Int.self),
+                                      manufacturerCount: try values[1].decode(Int.self),
+                                      appCount: try values[2].decode(Int.self))
+            })
+        }
     }
 
     static func bridges(request req: Request) throws -> Future<[(Accessory, Manufacturer)]> {
@@ -94,11 +101,6 @@ final class QueryHelper {
             .sort(\HomeKitApp.name)
             .all()
     }
-    static func appCount(request req: Request) throws -> Future<Int> {
-        return HomeKitApp.query(on: req)
-            .filter(\HomeKitApp.approved == true)
-            .count()
-    }
 
     static func app(request req: Request, id: Int) throws -> Future<HomeKitApp?> {
         return HomeKitApp.query(on: req)
@@ -106,5 +108,11 @@ final class QueryHelper {
             .filter(\HomeKitApp.approved == true)
             .sort(\HomeKitApp.name)
             .first()
+    }
+
+    struct SideMenuCounts: Encodable {
+        let accessoryCount: Int
+        let manufacturerCount: Int
+        let appCount: Int
     }
 }

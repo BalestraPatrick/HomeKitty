@@ -18,27 +18,23 @@ final class HomeController {
         // Fetch featured accessory
         let featuredAccessories = try QueryHelper.featuredAccessories(request: req).all()
         let categories = try QueryHelper.categories(request: req)
-        let manufacturersCount = try QueryHelper.manufacturerCount(request: req)
-        let appCount = try QueryHelper.appCount(request: req)
-        let accessoryCount = try QueryHelper.accessoriesCount(request: req)
+        let sidemenuCounts = QueryHelper.sidemenuCounts(request: req)
         let visibleAccessoriesLimit = 18
         let accessories = try QueryHelper.accessories(request: req)
             .range(lower: 0, upper: visibleAccessoriesLimit)
             .all()
 
-        return flatMap(to: View.self, featuredAccessories, categories, manufacturersCount, accessoryCount, accessories, { featuredAccessories, categories, manufacturersCount, accessoryCount, accessories in
-            return appCount.flatMap { appCount in
-                let featuredAccessory = featuredAccessories.first.map { Accessory.FeaturedResponse(name: $0.0.name, externalLink: "https://www.xxter.com/pairot/homekitty", bannerImage: "/images/featured.jpg") }
+        return flatMap(to: View.self, featuredAccessories, categories, accessories, sidemenuCounts, { featuredAccessories, categories, accessories, sidemenuCounts in
+            let featuredAccessory = featuredAccessories.first.map { Accessory.FeaturedResponse(name: $0.0.name, externalLink: "https://www.xxter.com/pairot/homekitty", bannerImage: "/images/featured.jpg") }
 
-                let data = HomeResponse(featuredAccessory: featuredAccessory,
-                                        categories: categories,
-                                        accessories: accessories.map { Accessory.AccessoryResponse(accessory: $0.0, manufacturer: $0.1) },
-                                        accessoryCount: accessoryCount,
-                                        appCount: appCount,
-                                        manufacturerCount: manufacturersCount)
-                let leaf = try req.view()
-                return leaf.render("home", data)
-            }
+            let data = HomeResponse(featuredAccessory: featuredAccessory,
+                                    categories: categories,
+                                    accessories: accessories.map { Accessory.AccessoryResponse(accessory: $0.0, manufacturer: $0.1) },
+                                    accessoryCount: sidemenuCounts.accessoryCount,
+                                    appCount: sidemenuCounts.appCount,
+                                    manufacturerCount: sidemenuCounts.manufacturerCount)
+            let leaf = try req.view()
+            return leaf.render("home", data)
         })
     }
 

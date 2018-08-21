@@ -24,17 +24,17 @@ final class AccessoryController {
     
     func accessories(_ req: Request) throws -> Future<View> {
         let categories = try QueryHelper.categories(request: req)
-        let manufacturerCount = try QueryHelper.manufacturerCount(request: req)
-        let appCount = try QueryHelper.appCount(request: req)
+        let sidemenuCounts = QueryHelper.sidemenuCounts(request: req)
         let accessories = try QueryHelper.accessories(request: req).all()
 
-        return flatMap(to: View.self, categories, manufacturerCount, accessories, appCount) { categories, manufacturersCount, accessories, appCount in
+        return flatMap(to: View.self, categories, accessories, sidemenuCounts) { categories, accessories, sidemenuCounts in
             let data = AccessoriesResponse(noAccessoriesFound: accessories.isEmpty,
                 accessories: accessories.map { Accessory.AccessoryResponse(accessory: $0.0, manufacturer: $0.1) },
                                            categories: categories,
-                                           accessoryCount: accessories.count,
-                                           appCount: appCount,
-                                           manufacturerCount: manufacturersCount, accessoriesSelected: true)
+                                           accessoryCount: sidemenuCounts.accessoryCount,
+                                           appCount: sidemenuCounts.appCount,
+                                           manufacturerCount: sidemenuCounts.manufacturerCount,
+                                           accessoriesSelected: true)
             let leaf = try req.view()
             return leaf.render("Accessories/accessories", data)
         }
@@ -45,22 +45,20 @@ final class AccessoryController {
         
         let accessory = try QueryHelper.accessory(request: req, id: paramId)
         let categories = try QueryHelper.categories(request: req)
-        let manufacturersCount = try QueryHelper.manufacturerCount(request: req)
-        let accessoryCount = try QueryHelper.accessoriesCount(request: req)
-        let appCount = try QueryHelper.appCount(request: req)
-        
+        let sidemenuCounts = QueryHelper.sidemenuCounts(request: req)
+
         return accessory.flatMap(to: View.self) { accessory in
             guard let accessory = accessory else { throw Abort(.notFound) }
             
-            return flatMap(to: View.self, categories, manufacturersCount, accessoryCount, appCount) { (categories, manufacturersCount, accessoryCount, appCount) in
+            return flatMap(to: View.self, categories, sidemenuCounts) { (categories, sidemenuCounts) in
                 return try accessory.0.regionCompatibility(req).flatMap { region in
                     let data = AccessoryResponse(pageIcon: categories.first(where: { $0.id == accessory.0.categoryId })?.image ?? "",
                                                  accessory: Accessory.AccessoryResponse(accessory: accessory.0, manufacturer: accessory.1),
                                                  regionCompatibility: region.isEmpty ? nil : region,
                                                  categories: categories,
-                                                 accessoryCount: accessoryCount,
-                                                 appCount: appCount,
-                                                 manufacturerCount: manufacturersCount)
+                                                 accessoryCount: sidemenuCounts.accessoryCount,
+                                                 appCount: sidemenuCounts.appCount,
+                                                 manufacturerCount: sidemenuCounts.manufacturerCount)
 
                     let leaf = try req.view()
                     return leaf.render("Accessories/accessory", data)

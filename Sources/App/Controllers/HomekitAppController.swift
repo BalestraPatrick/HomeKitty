@@ -23,18 +23,16 @@ final class HomeKitAppController {
 
     func apps(_ req: Request) throws -> Future<View> {
         let categories = try QueryHelper.categories(request: req)
-        let manufacturerCount = try QueryHelper.manufacturerCount(request: req)
         let apps = try QueryHelper.apps(request: req)
-        let accessoryCount = try QueryHelper.accessoriesCount(request: req)
-        let appCount = try QueryHelper.appCount(request: req)
+        let sidemenuCounts = QueryHelper.sidemenuCounts(request: req)
         
-        return flatMap(to: View.self, categories, manufacturerCount, apps, accessoryCount, appCount) { categories, manufacturersCount, apps, accessoryCount, appCount in
+        return flatMap(to: View.self, categories, apps, sidemenuCounts) { categories, apps, sidemenuCounts in
             let data = AppsResponse(apps: apps,
                                     categories: categories,
-                                    accessoryCount: accessoryCount,
-                                    manufacturerCount: manufacturersCount,
-                                    appCount: appCount,
-                                    noApps: appCount == 0)
+                                    accessoryCount: sidemenuCounts.accessoryCount,
+                                    manufacturerCount: sidemenuCounts.manufacturerCount,
+                                    appCount: sidemenuCounts.appCount,
+                                    noApps: sidemenuCounts.appCount == 0)
             let leaf = try req.view()
             return leaf.render("Apps/apps", data)
         }
@@ -44,20 +42,18 @@ final class HomeKitAppController {
         let paramId: Int = try req.parameters.next()
 
         let categories = try QueryHelper.categories(request: req)
-        let manufacturerCount = try QueryHelper.manufacturerCount(request: req)
         let app = try QueryHelper.app(request: req, id: paramId)
-        let accessoryCount = try QueryHelper.accessoriesCount(request: req)
-        let appCount = try QueryHelper.appCount(request: req)
+        let sidemenuCounts = QueryHelper.sidemenuCounts(request: req)
 
         return app.flatMap{ app in
             guard let app = app else { throw Abort(.badRequest) }
 
-            return flatMap(to: View.self, categories, manufacturerCount, accessoryCount, appCount) { categories, manufacturersCount, accessoryCount, appCount in
+            return flatMap(to: View.self, categories, sidemenuCounts) { categories, sidemenuCounts in
                 let data = AppResponse(app: app,
                                        categories: categories,
-                                       accessoryCount: accessoryCount,
-                                       manufacturerCount: manufacturersCount,
-                                       appCount: appCount)
+                                       accessoryCount: sidemenuCounts.accessoryCount,
+                                       manufacturerCount: sidemenuCounts.manufacturerCount,
+                                       appCount: sidemenuCounts.appCount)
                 let leaf = try req.view()
                 return leaf.render("Apps/app", data)
             }
