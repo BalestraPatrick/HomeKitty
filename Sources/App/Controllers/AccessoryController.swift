@@ -75,11 +75,10 @@ final class AccessoryController {
     }
 
     // MARK: - Report
-
     func report(_ req: Request) throws -> Future<View> {
         let accessoryId: Int = try req.parameters.next()
         let accessories = try QueryHelper.accessories(request: req).all()
-        let apps = try QueryHelper.apps(request: req)
+        let apps = try QueryHelper.apps(request: req).all()
 
         return flatMap(to: View.self, accessories, apps) { (accessories, apps) in
             guard let accessory = accessories.filter({ $0.0.id == accessoryId }).first else { throw Abort(.badRequest) }
@@ -108,7 +107,6 @@ final class AccessoryController {
     }
 
     // MARK: - Contribute
-    
     func contribute(_ req: Request) throws -> Future<View> {
         let manufacturers = try QueryHelper.manufacturers(request: req)
         let categories = try QueryHelper.categories(request: req)
@@ -142,7 +140,6 @@ final class AccessoryController {
     }
 
     // MARK: - Helpers
-
     private func newManufacturer(_ req: Request, contributeData: ContributeRequest) throws -> Future<View> {
         return try req.content.decode(ContributeManufactorerRequest.self).flatMap(to: View.self) { data in
             return Manufacturer(name: data.manufacturerName, websiteLink: data.manufacturerWebsite)
@@ -199,7 +196,6 @@ final class AccessoryController {
     }
 
     // MARK: - Private
-
     private struct AccessoryResponse: Codable {
         let pageTitle = "Accessory Details"
         let pageIcon: String

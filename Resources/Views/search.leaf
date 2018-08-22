@@ -25,7 +25,16 @@
                         #embed("noAccessoryFound")
                     }
                     #for(accessory in accessories) {
-                        #embed("accessoryItem")
+                        #embed("Accessories/accessoryItem")
+                    }
+                </div>
+                <hr>
+                <div class="row">
+                    #if(noAppsFound) {
+                        #embed("Apps/noAppFound")
+                    }
+                    #for(app in apps) {
+                        #embed("Apps/appitem")
                     }
                 </div>
             </div>

@@ -24,7 +24,7 @@ final class HomeKitAppController {
 
     func apps(_ req: Request) throws -> Future<View> {
         let categories = try QueryHelper.categories(request: req)
-        let apps = try QueryHelper.apps(request: req)
+        let apps = try QueryHelper.apps(request: req).all()
         let sidemenuCounts = QueryHelper.sidemenuCounts(request: req)
         
         return flatMap(to: View.self, categories, apps, sidemenuCounts) { categories, apps, sidemenuCounts in
@@ -65,7 +65,7 @@ final class HomeKitAppController {
     func report(_ req: Request) throws -> Future<View> {
         let appId: Int = try req.parameters.next()
         let accessories = try QueryHelper.accessories(request: req).all()
-        let apps = try QueryHelper.apps(request: req)
+        let apps = try QueryHelper.apps(request: req).all()
 
         return flatMap(to: View.self, accessories, apps) { (accessories, apps) in
             guard let app = apps.filter({ $0.id == appId }).first else { throw Abort(.badRequest) }
@@ -80,7 +80,6 @@ final class HomeKitAppController {
     }
 
     // MARK: - Contribute
-
     func contribute(_ req: Request) throws -> Future<View> {
         let manufacturers = try QueryHelper.manufacturers(request: req)
         let categories = try QueryHelper.categories(request: req)
