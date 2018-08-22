@@ -21,14 +21,14 @@
                     <label>Topic of your question</label>
                     <div class="form-group">
                         <select name="topic" style="max-width:100%;" onchange="topicChanged(this.value);">
-                            <option value="accessory-issue">Accessory / Manufacturer Issue</option>
-                            <option value="app-issue">HomeKit App Issue</option>
+                            <option value="accessory-issue" #if(contactTopic == "accessory-issue") { selected }>Accessory / Manufacturer Issue</option>
+                            <option value="app-issue" #if(contactTopic == "app-issue") { selected }>HomeKit App Issue</option>
                             <option value="feature">Feature Request</option>
                             <option value="partnership">Partnership</option>
                             <option value="other">Other</option>
                         </select>
                     </div>
-                    <div id="accessory-issue">
+                    <div id="accessory-issue" #if(contactTopic == "app-issue") { style="display:none;" }>
                         <label>Accessory related to your question:</label>
                         <div class="form-group">
                             <select name="accessory" style="max-width:100%;">
@@ -38,7 +38,7 @@
                             </select>
                         </div>
                     </div>
-                    <div id="app-issue" style="display:none;">
+                    <div id="app-issue" #if(contactTopic == "accessory-issue") { style="display:none;" } >
                         <label>HomeKit app related to your question:</label>
                         <div class="form-group">
                             <select name="accessory" style="max-width:100%;">

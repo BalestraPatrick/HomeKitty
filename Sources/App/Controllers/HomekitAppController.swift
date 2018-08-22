@@ -17,6 +17,7 @@ final class HomeKitAppController {
     init(router: Router) {
         router.get("apps", use: apps)
         router.get("apps", Int.parameter, use: app)
+        router.get("apps", Int.parameter, "report", use: report)
         router.get("apps","contribute", use: contribute)
         router.post("apps","contribute", use: submit)
     }
@@ -59,6 +60,26 @@ final class HomeKitAppController {
             }
         }
     }
+
+    // MARK: - Report
+    func report(_ req: Request) throws -> Future<View> {
+        let appId: Int = try req.parameters.next()
+        let accessories = try QueryHelper.accessories(request: req).all()
+        let apps = try QueryHelper.apps(request: req)
+
+        return flatMap(to: View.self, accessories, apps) { (accessories, apps) in
+            guard let app = apps.filter({ $0.id == appId }).first else { throw Abort(.badRequest) }
+            let leaf = try req.view()
+            let responseData = ReportResponse(accessories: accessories.map { $0.0 },
+                                              apps: apps,
+                                              accessoryToReport: nil,
+                                              appToReport: app,
+                                              contactTopic: .appIssue)
+            return leaf.render("report", responseData)
+        }
+    }
+
+    // MARK: - Contribute
 
     func contribute(_ req: Request) throws -> Future<View> {
         let manufacturers = try QueryHelper.manufacturers(request: req)

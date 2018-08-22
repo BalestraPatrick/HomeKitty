@@ -12,4 +12,5 @@ public struct ReportResponse: Codable {
     let apps: [HomeKitApp]
     let accessoryToReport: Accessory.AccessoryResponse?
     let appToReport: HomeKitApp?
+    let contactTopic: ContactTopic
 }

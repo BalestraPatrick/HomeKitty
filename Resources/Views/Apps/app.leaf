@@ -40,7 +40,7 @@
                     </div>
         </div>
     </div>
-    <a href="#(accessory.id)/report" style="float: right; margin-right: 50px;">Report Issue</a>
+    <a href="#(app.id)/report" style="float: right; margin-right: 50px;">Report Issue</a>
 }
 
 #embed("base")

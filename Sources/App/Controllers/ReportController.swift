@@ -23,7 +23,8 @@ final class ReportController {
             let responseData = ReportResponse(accessories: accessories.map { $0.0 },
                                               apps: apps,
                                               accessoryToReport: nil,
-                                              appToReport: nil)
+                                              appToReport: nil,
+                                              contactTopic: .accessoryIssue)
             return leaf.render("report", responseData)
         })
     }
