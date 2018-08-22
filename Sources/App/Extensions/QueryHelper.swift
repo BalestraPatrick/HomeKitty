@@ -95,11 +95,10 @@ final class QueryHelper {
     }
 
     // MARK: - HomeKit apps
-    static func apps(request req: Request) throws -> Future<[HomeKitApp]> {
+    static func apps(request req: Request) throws -> QueryBuilder<PostgreSQLDatabase, HomeKitApp> {
         return HomeKitApp.query(on: req)
             .filter(\HomeKitApp.approved == true)
             .sort(\HomeKitApp.name)
-            .all()
     }
 
     static func app(request req: Request, id: Int) throws -> Future<HomeKitApp?> {

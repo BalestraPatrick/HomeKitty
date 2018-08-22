@@ -16,7 +16,7 @@ final class ReportController {
 
     func report(_ req: Request) throws -> Future<View> {
         let accessories = try QueryHelper.accessories(request: req).all()
-        let apps = try QueryHelper.apps(request: req)
+        let apps = try QueryHelper.apps(request: req).all()
 
         return flatMap(to: View.self, accessories, apps, { (accessories, apps) in
             let leaf = try req.view()

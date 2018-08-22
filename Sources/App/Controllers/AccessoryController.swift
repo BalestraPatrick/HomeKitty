@@ -79,7 +79,7 @@ final class AccessoryController {
     func report(_ req: Request) throws -> Future<View> {
         let accessoryId: Int = try req.parameters.next()
         let accessories = try QueryHelper.accessories(request: req).all()
-        let apps = try QueryHelper.apps(request: req)
+        let apps = try QueryHelper.apps(request: req).all()
 
         return flatMap(to: View.self, accessories, apps) { (accessories, apps) in
             guard let accessory = accessories.filter({ $0.0.id == accessoryId }).first else { throw Abort(.badRequest) }
