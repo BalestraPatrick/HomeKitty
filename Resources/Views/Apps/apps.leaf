@@ -27,7 +27,7 @@
                         <h5 class="lead">Why not <a href="/apps/contribute">contribute</a> with one yourself?<h5>
                     </div>
                 } else {
-                    <div class="row">
+                    <div class="row flex-row">
                         #for(app in apps) {
                             #embed("Apps/appItem")
                         }
