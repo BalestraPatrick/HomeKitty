@@ -158,6 +158,7 @@ footer {
     height: 256px;
     display: block; 
     margin: 0 auto;
+    border-radius: 25%;
 }
 
 #accessory-page-buttons {

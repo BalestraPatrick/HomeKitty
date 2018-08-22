@@ -25,7 +25,7 @@
                         #embed("noAccessoryFound")
                     }
                     #for(accessory in accessories) {
-                        #embed("accessoryItem")
+                        #embed("Accessories/accessoryItem")
                     }
                 </div>
             </div>
