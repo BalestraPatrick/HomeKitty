@@ -67,11 +67,9 @@ final class QueryHelper {
                     """
 
             return connection.query(.raw(query, binds: [])).map(to: SideMenuCounts.self, { rows in
-                let values = Array(rows.first!.values)
-
-                return SideMenuCounts(accessoryCount: try values[0].decode(Int.self),
-                                      manufacturerCount: try values[1].decode(Int.self),
-                                      appCount: try values[2].decode(Int.self))
+                return SideMenuCounts(accessoryCount: try rows.first?.firstValue(name: "accessorycount")?.decode(Int.self) ?? -1,
+                                      manufacturerCount: try rows.first?.firstValue(name: "manufacturercount")?.decode(Int.self) ?? -1,
+                                      appCount: try rows.first?.firstValue(name: "appcount")?.decode(Int.self) ?? -1)
             })
         }
     }
