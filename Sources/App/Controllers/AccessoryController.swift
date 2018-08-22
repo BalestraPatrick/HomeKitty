@@ -108,6 +108,7 @@ final class AccessoryController {
     }
 
     // MARK: - Contribute
+    
     func contribute(_ req: Request) throws -> Future<View> {
         let manufacturers = try QueryHelper.manufacturers(request: req)
         let categories = try QueryHelper.categories(request: req)

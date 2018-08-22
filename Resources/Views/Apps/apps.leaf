@@ -18,7 +18,7 @@
             <!-- Content -->
             <div class="col-md-9">
                 <div class="flex-item" style="margin-top: 10px;">
-                    <p class="lead">Latest Apps</p>
+                    <p class="lead">Latest iOS HomeKit Apps</p>
                 </div>
                 #if(noApps) {
                     <div style="text-align:center; padding-top:50px;">
@@ -32,7 +32,7 @@
                             #embed("Apps/appItem")
                         }
                     </div>
-                    <a href="apps/contribute" style="float: right; margin-right: 50px;">Contribute</a>
+                    <a href="/apps/contribute" style="float: right; margin-right: 50px;">Contribute</a>
                     <a href="/report" style="float: right; margin-right: 50px;">Report issue</a>
                 }
             </div>

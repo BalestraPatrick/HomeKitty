@@ -16,7 +16,7 @@ struct HomeKitApp: PostgreSQLModel {
     let name: String
     let subtitle: String?
     let publisher: String
-    let publisherLink: String
+    let websiteLink: String
     let price: Double?
     let appStoreLink: String
     let appStoreIcon: String
@@ -30,11 +30,11 @@ struct HomeKitApp: PostgreSQLModel {
          appStoreLink: String,
          appStoreIcon: String,
          publisher: String,
-         publisherLink: String) {
+         websiteLink: String) {
         self.name = name
         self.subtitle = subtitle
         self.publisher = publisher
-        self.publisherLink = publisherLink
+        self.websiteLink = websiteLink
         self.price = price
         self.appStoreLink = appStoreLink
         self.appStoreIcon = appStoreIcon
@@ -48,7 +48,7 @@ struct HomeKitApp: PostgreSQLModel {
         case name
         case subtitle
         case publisher
-        case publisherLink = "publisher_link"
+        case websiteLink = "website_link"
         case price
         case appStoreLink = "app_store_link"
         case appStoreIcon = "app_store_icon"

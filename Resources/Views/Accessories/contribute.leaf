@@ -19,7 +19,7 @@
                 <hr>
                 <p>Are you an accessory manufacturer and you would like to feature your newest accessory in the homepage to maximize visibility? <a href="mailto:info@homekitty.world?subject=HomeKitty Sponsorship Information">Contact us</a>.</p>
                 <hr>
-                <form action="/contribute" method="POST">
+                <form action="/accessories/contribute" method="POST">
                     <!-- Accessory -->
                     <h4>Accessory</h4>
                     <div class="form-group">

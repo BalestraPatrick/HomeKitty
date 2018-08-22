@@ -17,5 +17,4 @@ final class ContributeController {
         let leaf = try req.view()
         return leaf.render("contribute")
     }
-   
 }

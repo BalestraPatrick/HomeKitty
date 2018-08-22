@@ -18,8 +18,8 @@ final class HomeKitAppController {
         router.get("apps", use: apps)
         router.get("apps", Int.parameter, use: app)
         router.get("apps", Int.parameter, "report", use: report)
-        router.get("apps","contribute", use: contribute)
-        router.post("apps","contribute", use: submit)
+        router.get("apps", "contribute", use: contribute)
+        router.post("apps", "contribute", use: submit)
     }
 
     func apps(_ req: Request) throws -> Future<View> {
@@ -46,7 +46,7 @@ final class HomeKitAppController {
         let app = try QueryHelper.app(request: req, id: paramId)
         let sidemenuCounts = QueryHelper.sidemenuCounts(request: req)
 
-        return app.flatMap{ app in
+        return app.flatMap { app in
             guard let app = app else { throw Abort(.badRequest) }
 
             return flatMap(to: View.self, categories, sidemenuCounts) { categories, sidemenuCounts in
@@ -102,7 +102,7 @@ final class HomeKitAppController {
         return try req.content.decode(ContributionRequest.self).flatMap { contributionRequest in
             return HomeKitApp.query(on: req)
                 .filter(\HomeKitApp.appStoreLink == contributionRequest.appStoreLink).first()
-                .flatMap{ app in
+                .flatMap { app in
                     let leaf = try req.make(TemplateRenderer.self)
 
                     if app?.approved == false {
@@ -110,7 +110,7 @@ final class HomeKitAppController {
                     }
 
                     if app?.id != nil {
-                        throw Abort(.badRequest, reason: "This app alrealy excist")
+                        throw Abort(.badRequest, reason: "This app already exists")
                     }
 
                     return HomeKitApp(name: contributionRequest.name,
@@ -119,7 +119,7 @@ final class HomeKitAppController {
                                       appStoreLink: contributionRequest.appStoreLink,
                                       appStoreIcon: contributionRequest.appIcon,
                                       publisher: contributionRequest.publisher,
-                                      publisherLink: contributionRequest.publisherLink)
+                                      websiteLink: contributionRequest.websiteLink)
                         .create(on: req)
                         .flatMap { _ in
                             return leaf.render("contributeSuccess")
@@ -161,7 +161,7 @@ final class HomeKitAppController {
         let appStoreLink: String
         let recaptchaResponse: String
         let publisher: String
-        let publisherLink: String
+        let websiteLink: String
 
         enum CodingKeys: String, CodingKey {
             case name
@@ -170,7 +170,7 @@ final class HomeKitAppController {
             case appIcon = "app_icon"
             case appStoreLink = "appStore_link"
             case publisher
-            case publisherLink = "publisher_link"
+            case websiteLink = "website_link"
             case recaptchaResponse = "g-recaptcha-response"
         }
 

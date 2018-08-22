@@ -24,7 +24,7 @@
                         <div id="accessory-page-information">
                             <h1 id="accessory-title">#(app.name)</h1><br/>
                             <h4 id="accessory-title">#(app.subtitle)</h4><br/>
-                            <h4>By <a href="#(app.publisher_link)" target="_blank">#get(app.publisher)</a></h4>
+                            <h4>By <a href="#(app.website_link)" target="_blank">#get(app.publisher)</a></h4>
                             #if(app.price) {
                                 <h3>$#(app.price)</h3>
                             } else {
@@ -33,10 +33,11 @@
                         </div>
                     </div>
                     <div class="col-md-6" id="accessory-page-image-container">
-                        <img src="#(app.app_store_icon)" alt="#(app.name)" class="accessory-image" id="accessory-page-image">
+                        <img src="#(app.app_store_icon)" alt="#(app.name)" width="128px" class="accessory-image" id="accessory-page-image">
                     </div>
                     <div id="accessory-page-buttons">
-                        <a href="https://itunes.apple.com/us/app/#(app.app_store_link)" target="_blank"><button class="btn btn-primary">View on #(app.manufacturer) AppStore</button></a>
+                        <a href="#(app.app_store_link)" target="_blank"><button class="btn btn-primary">View on App Store</button></a>
+                        <a href="#(app.website_link)" target="_blank"><button class="btn btn-primary">View on Website</button></a>
                     </div>
         </div>
     </div>
