@@ -5,7 +5,8 @@
 import Foundation
 
 enum ContactTopic: String, Codable {
-    case issue
+    case accessoryIssue = "accessory-issue"
+    case appIssue = "app-issue"
     case feature
     case partnership
     case other
@@ -16,7 +17,8 @@ enum ContactTopic: String, Codable {
 
     var subject: String {
         switch self {
-        case .issue: return "HomeKitty - Accessory Issue"
+        case .accessoryIssue: return "HomeKitty - Accessory Issue"
+        case .appIssue: return "HomeKitty - App Issue"
         case .feature: return "HomeKitty - Feature Request"
         case .partnership: return "HomeKitty - Partnership"
         case .other: return "HomeKitty - Other"
