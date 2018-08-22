@@ -244,6 +244,10 @@ header {
     object-fit: contain;
 }
 
+.app-image {
+    max-width: 256px;
+}
+
 #accessory-information-container {
     position: absolute;
     left: 50%;
@@ -268,4 +272,19 @@ header {
     .dropdown-menu .divider {
         margin: 2px 0px;
     }
+}
+
+.flex-row {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+
+.flex-row > [class*='col-'] {
+    display: flex;
+    flex-direction: column;
+}
+
+.flex-row.row:after, .flex-row.row:before {
+    display: flex;
 }
