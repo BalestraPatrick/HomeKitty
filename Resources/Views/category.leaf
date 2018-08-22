@@ -29,7 +29,7 @@
                 }
                 <div class="row">
                     #loop(accessories, "accessory") {
-                        #embed("accessoryItem")
+                        #embed("Accessories/accessoryItem")
                     }
                 </div>
             </div>

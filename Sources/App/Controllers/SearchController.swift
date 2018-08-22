@@ -34,9 +34,15 @@ final class SearchController {
         }
 
         return flatMap(to: View.self, categories, accessories, sidemenuCounts, { (categories, accessories, sidemenuCounts) in
+            let pageTitle: String
+            if accessories.count == 1 {
+                pageTitle = "\(accessories.count) result for \"\(search)\""
+            } else {
+                pageTitle = "\(accessories.count) results for \"\(search)\""
+            }
             let data = SearchResponse(categories: categories,
                                       accessories: accessories,
-                                      pageTitle: "Results for \"\(search)\"",
+                                      pageTitle: pageTitle,
                 noAccessoriesFound: accessories.isEmpty,
                 accessoryCount: sidemenuCounts.accessoryCount,
                 manufacturerCount: sidemenuCounts.manufacturerCount,

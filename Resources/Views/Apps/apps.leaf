@@ -32,8 +32,9 @@
                             #embed("Apps/appItem")
                         }
                     </div>
-                    <a href="/apps/contribute" style="float: right; margin-right: 50px;">Contribute</a>
-                    <a href="/report" style="float: right; margin-right: 50px;">Report issue</a>
+                    <div style="text-align: right;">
+                        <a href="/apps/contribute">Contribute</a> - <a href="/report" >Report issue</a>
+                    </div>
                 }
             </div>
         </div>
