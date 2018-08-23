@@ -26,7 +26,11 @@
                         <div id="accessory-page-information">
                             <h1 id="accessory-title">#(accessory.name)</h1><br/>
                             <h4>By <a href="/manufacturers/#(accessory.manufacturer_id)">#get(accessory.manufacturer_name)</a></h4>
-                            <h3>#(accessory.price)</h3>
+                            #if(accessory.price) {
+                                <h3 class="accessory-price">$#(accessory.price)</h3>
+                            } else {
+                                <h3 class="accessory-price">N/A</h3>
+                            }
                         </div>
                     </div>
                     <div class="col-md-6" id="accessory-page-image-container">
