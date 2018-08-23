@@ -17,7 +17,7 @@ final class Accessory: PostgreSQLModel {
 
     var name: String
     var image: String
-    var price: String
+    var price: Double?
     var productLink: String
     var amazonLink: String?
     var approved: Bool
@@ -30,7 +30,7 @@ final class Accessory: PostgreSQLModel {
     init(
         name: String,
         image: String,
-        price: String,
+        price: Double?,
         productLink: String,
         amazonLink: String?,
         categoryId: Int,
@@ -108,7 +108,7 @@ final class Accessory: PostgreSQLModel {
         let id: Int?
         let name: String
         let image: String
-        let price: String
+        let price: Double?
         let productLink: String
         let categoryId: Int
         let amazonLink: String?
