@@ -288,3 +288,7 @@ header {
 .flex-row.row:after, .flex-row.row:before {
     display: flex;
 }
+
+#report-links {
+    text-align: right; margin-right: 30px;"
+}

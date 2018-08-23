@@ -28,8 +28,9 @@
                             #embed("Accessories/accessoryItem")
                         }
                     </div>
-                    <a href="/accessories/contribute" style="float: right; margin-right: 50px;">Contribute</a>
-                    <a href="/report" style="float: right; margin-right: 50px;">Report issue</a>
+                    <div class="row" id="report-links">
+                        <a href="/accessories/contribute">Contribute</a> - <a href="/report">Report issue</a>
+                    </div>
                 }
             </div>
         </div>

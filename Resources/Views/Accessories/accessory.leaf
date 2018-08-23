@@ -6,7 +6,6 @@
     <link rel="stylesheet" href="/css/content.css">
 }
 
-
 #set("body") {
     <div class="container container-content">
         <div class="row">
@@ -73,7 +72,9 @@
             </div>
         </div>
     </div>
-    <a href="#(accessory.id)/report" style="float: right; margin-right: 50px;">Report Issue</a>
+    <div class="row" id="report-links">
+        <a href="#(accessory.id)/report">Report Issue</a>
+    </div>
 }
 
 #embed("base")
