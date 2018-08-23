@@ -157,7 +157,7 @@ final class AccessoryController {
     private func newAccessory(_ req: Request, manufacturerId: Int, contributeData: ContributeRequest) -> Future<View> {
         return Accessory(name: contributeData.name,
                          image: contributeData.image,
-                         price: contributeData.price.normalizedPrice,
+                         price: Double(contributeData.price.replacingOccurrences(of: "$", with: "")),
                          productLink: contributeData.link,
                          amazonLink: nil,
                          categoryId: contributeData.category,
