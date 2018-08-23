@@ -108,7 +108,7 @@ final class Accessory: PostgreSQLModel {
         let id: Int?
         let name: String
         let image: String
-        let price: Double?
+        let price: String?
         let productLink: String
         let categoryId: Int
         let amazonLink: String?
@@ -127,7 +127,11 @@ final class Accessory: PostgreSQLModel {
             id = accessory.id
             name = accessory.name
             image = accessory.image
-            price = accessory.price
+            if let accessoryPrice = accessory.price {
+                price = String(format: "%.2f", accessoryPrice)
+            } else {
+                price = nil
+            }
             productLink = accessory.productLink
             categoryId = accessory.categoryId
             amazonLink = accessory.amazonLink
