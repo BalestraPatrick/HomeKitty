@@ -14,23 +14,12 @@ body {
 	position: relative;
 }
 
-.nav, .navbar-nav, .navbar-brand {
-    margin-top: 10px;
+.navbar {
+    background-color: #222;
 }
 
 .navbar-brand {
     color: white;
-}
-
-.navbar .navbar-header .navbar-toggle-wrapper {
-		position: relative;
-    line-height: 70px;
-    text-align: right;
-}
-
-.navbar .navbar-header .navbar-toggle-wrapper .navbar-toggle {
-		float: none !important;
-		margin: 0 15px 0 0 !important;
 }
 
 .header-brand {

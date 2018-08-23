@@ -9,7 +9,6 @@
 
 
 #set("body") {
-    #embed("navigation")
     <div class="container container-content">
         <div class="row">
             
