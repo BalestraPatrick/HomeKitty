@@ -6,7 +6,6 @@
     <link rel="stylesheet" href="/css/content.css">
 }
 
-
 #set("body") {
     <div class="container container-content">
         <div class="row">
@@ -26,7 +25,11 @@
                         <div id="accessory-page-information">
                             <h1 id="accessory-title">#(accessory.name)</h1><br/>
                             <h4>By <a href="/manufacturers/#(accessory.manufacturer_id)">#get(accessory.manufacturer_name)</a></h4>
-                            <h3>#(accessory.price)</h3>
+                            #if(accessory.price) {
+                                <h3 class="accessory-price">$#(accessory.price)</h3>
+                            } else {
+                                <h3 class="accessory-price">N/A</h3>
+                            }
                         </div>
                     </div>
                     <div class="col-md-6" id="accessory-page-image-container">
@@ -69,7 +72,9 @@
             </div>
         </div>
     </div>
-    <a href="#(accessory.id)/report" style="float: right; margin-right: 50px;">Report Issue</a>
+    <div class="row" id="report-links">
+        <a href="#(accessory.id)/report">Report Issue</a>
+    </div>
 }
 
 #embed("base")

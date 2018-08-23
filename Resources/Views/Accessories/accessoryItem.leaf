@@ -8,7 +8,11 @@
         </a>
         <div class="accessory-information-container">
             <div>
-                <h4 class="accessory-price">#(accessory.price)</h4>
+                #if(accessory.price) {
+                    <h4 class="accessory-price">$#(accessory.price)</h4>
+                } else {
+                    <h4 class="accessory-price">N/A</h4>
+                }
                 <div class="accessory-information">
                     <div class="accessory-manufacturer-container">
                         <p class="accessory-manufacturer">By
