@@ -34,10 +34,10 @@
                     </div>
                     <div class="form-group">
                         <label for="price">Price</label>
-                        <p>Please provide the price in $ (ex: 49.99).</p>
+                        <p>Please provide the price in $ (ex: 49.99). If no price is available yet, leave empty.</p>
                         <div class="input-group">
                             <span class="input-group-addon">$</span>
-                            <input type="text" pattern="([0-9]+\.)?[0-9]+" class="form-control" name="price" id="price-input" placeholder="49.99" required onfocusout="formatPriceInput()">
+                            <input type="text" pattern="([0-9]+\.)?[0-9]+" class="form-control" name="price" id="price-input" placeholder="49.99" onfocusout="formatPriceInput()">
                         </div>
                     </div>
                     <div class="form-group">
@@ -168,7 +168,7 @@ function showHide() {
 
 function formatPriceInput() {
     var priceInput = document.getElementById('price-input');
-    if (priceInput) {
+    if (priceInput && priceInput.value != "") {
         var formattedPrice = Number(priceInput.value).toFixed(2);
         priceInput.value = isNaN(formattedPrice) ? "" : formattedPrice;
     }
