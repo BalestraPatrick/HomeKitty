@@ -39,9 +39,12 @@
                         <a href="#(app.app_store_link)" target="_blank"><button class="btn btn-primary">View on App Store</button></a>
                         <a href="#(app.website_link)" target="_blank"><button class="btn btn-primary">View on Website</button></a>
                     </div>
+                </div>
+            <div class="row" id="report-links">
+                <a href="#(app.id)/report">Report Issue</a>
+            </div>
         </div>
     </div>
-    <a href="#(app.id)/report" style="float: right; margin-right: 50px;">Report Issue</a>
 }
 
 #embed("base")
