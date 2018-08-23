@@ -13,20 +13,18 @@
         <div class="row">
             <div class="centered">
                 <div class="flex-item" style="margin-top: 10px;">
-                    <p class="lead">Contribute</p>
+                    <p class="lead">How would you like to contribute? 🎉</p>
                 </div>
             <div class="col-sm-2 col-lg-2 col-md-2"></div>
 
             <div class="col-sm-4 col-lg-4 col-md-4">
-                <a href="/accessories/contribute">Contribute an acceesory</a>
+                <img src="/icons/lights.svg" width="50px"><br>
+                <a href="/accessories/contribute">Contribute an Acceesory</a>
             </div>
 
             <div class="col-sm-4 col-lg-4 col-md-4">
-                <a href="/apps/contribute">Contribute an app</a>
-            </div>
-
-            <div class="col-sm-2 col-lg-2 col-md-2"></div>
-
+                <img src="/icons/app-store.svg" width="50px"><br>
+                <a href="/apps/contribute">Contribute an iOS HomeKit App</a>
             </div>
         </div>
     </div>

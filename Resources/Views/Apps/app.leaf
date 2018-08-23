@@ -16,7 +16,7 @@
             <!-- Content -->
             <div class="col-md-9">
                 <div class="flex-item" style="margin-top: 10px;">
-                    <img src="#get(pageIcon)" width="50px">
+                    <img src="/icons/app-store.svg" width="50px">
                     <p class="lead">#(pageTitle)</p>
                 </div>
                 <div class="row col-md-12">
