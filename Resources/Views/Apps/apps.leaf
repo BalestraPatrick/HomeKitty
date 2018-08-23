@@ -18,7 +18,8 @@
             <!-- Content -->
             <div class="col-md-9">
                 <div class="flex-item" style="margin-top: 10px;">
-                    <p class="lead">Latest iOS HomeKit Apps</p>
+                    <img src="/icons/app-store.svg" width="50px">
+                    <p class="lead">iOS HomeKit Apps</p>
                 </div>
                 #if(noApps) {
                     <div style="text-align:center; padding-top:50px;">
