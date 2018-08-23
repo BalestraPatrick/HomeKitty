@@ -1,0 +1,16 @@
+<div class="col-sm-4 col-lg-4 col-md-4">
+    <div class="thumbnail" style="height: auto;">
+        <a href="/apps/#(app.id)">
+        <img src="#(app.app_store_icon)" alt="#(app.name)" style="border-radius: 30%; padding: 25px;" class="app-image">
+        </a>
+        <a href="/apps/#(app.id)"></a>
+            <div class="caption">
+                <div>
+                    <a href="/apps/#(app.id)"><h4>#(app.name)</h4></a>
+                    #if(app.price) { <h4 class="accessory-price">$#(app.price)</h4> } else { <h4 class="accessory-price">Free</h4> }
+                </div>
+                <div style="display: flex; justify-content: center; align-items: center;">
+            </div>
+        </div>
+    </div>
+</div>

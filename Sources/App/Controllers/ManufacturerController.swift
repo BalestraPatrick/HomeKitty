@@ -20,18 +20,19 @@ final class ManufacturerController {
         
         let manufacturer = try QueryHelper.manufacturer(request: req, id: param)
         let categories = try QueryHelper.categories(request: req)
-        let manufacturersCount = try QueryHelper.manufacturerCount(request: req)
         let accessories = try QueryHelper.accessories(request: req, manufacturerId: param).all()
-        
+        let sidemenuCounts = QueryHelper.sidemenuCounts(request: req)
+
         return manufacturer.flatMap(to: View.self) { manufacturer in
             guard let manufacturer = manufacturer else { throw Abort(.notFound) }
             
-            return flatMap(to: View.self, categories, manufacturersCount, accessories, { (categories, manufacturersCount, accessories) in
+            return flatMap(to: View.self, categories, accessories, sidemenuCounts, { (categories, accessories, sidemenuCounts) in
                 let leaf = try req.view()
                 let responseData = ManufacturerResponse(manufacturer: manufacturer,
                                                         pageIcon: "",
-                                                        accessoryCount: accessories.count,
-                                                        manufacturerCount: manufacturersCount,
+                                                        accessoryCount: sidemenuCounts.accessoryCount,
+                                                        manufacturerCount: sidemenuCounts.manufacturerCount,
+                                                        appCount: sidemenuCounts.appCount,
                                                         categories: categories,
                                                         accessories: accessories.map { Accessory.AccessoryResponse(accessory: $0.0, manufacturer: $0.1) })
                 
@@ -43,14 +44,15 @@ final class ManufacturerController {
     func manufacturers(_ req: Request) throws -> Future<View> {
         let manufacturers = try QueryHelper.manufacturers(request: req)
         let categories = try QueryHelper.categories(request: req)
-        let accessoryCount = try QueryHelper.accessoriesCount(request: req)
-        
-        return flatMap(to: View.self, manufacturers, categories, accessoryCount, { (manufacturers, categories, accessoryCount) in
+        let sidemenuCounts = QueryHelper.sidemenuCounts(request: req)
+
+        return flatMap(to: View.self, manufacturers, categories, sidemenuCounts, { (manufacturers, categories, sidemenuCounts) in
             let leaf = try req.view()
             let responseData = ManufacturersResponse(pageTitle: "All Manufacturers",
                                                      pageIcon: "",
-                                                     accessoryCount: accessoryCount,
-                                                     manufacturerCount: manufacturers.count,
+                                                     accessoryCount: sidemenuCounts.accessoryCount,
+                                                     manufacturerCount: sidemenuCounts.manufacturerCount,
+                                                     appCount: sidemenuCounts.appCount,
                                                      categories: categories,
                                                      manufacturers: manufacturers,
                                                      manufacturersSelected: true)
@@ -71,6 +73,7 @@ final class ManufacturerController {
         let pageIcon: String
         let accessoryCount: Int
         let manufacturerCount: Int
+        let appCount: Int
         let categories: [Category]
         let manufacturers: [Manufacturer]
         let manufacturersSelected: Bool
@@ -81,6 +84,7 @@ final class ManufacturerController {
         let pageIcon: String
         let accessoryCount: Int
         let manufacturerCount: Int
+        let appCount: Int
         let categories: [Category]
         let accessories: [Accessory.AccessoryResponse]
     }

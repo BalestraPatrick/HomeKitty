@@ -154,12 +154,11 @@ footer {
 }
 
 #accessory-page-image {
-    min-width: 250px;
-    max-width: 250px;
-    max-width: 350px; 
-    max-height: 350px; 
+    width: 256px;
+    height: 256px;
     display: block; 
     margin: 0 auto;
+    border-radius: 25%;
 }
 
 #accessory-page-buttons {

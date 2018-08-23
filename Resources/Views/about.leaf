@@ -26,7 +26,7 @@
             <p>Interested in discussing HomeKit? Join the <a href="https://homekitty-slack.herokuapp.com" target="_blank">Slack group</a>.
             <hr>
             <h2>🏋🏻 How can I contribute?</h2>
-            <p>Did you find a cool new accessory that has been released officially? Submit it in the <a href="/contribute">Contribute</a> page and it will be reviewed and added as soon as possible to the public database of accessories.</p>
+            <p>Did you find a cool new accessory that has been released officially? Submit it in the <a href="/accessories/contribute">Contribute</a> page and it will be reviewed and added as soon as possible to the public database of accessories.</p>
             <hr>
             <h2>🤓 Team</h2>
             <p>My name is <a href="https://patrickbalestra.com" target="_blank">Patrick Balestra</a>, a 🇨🇭 software engineer currently living in Stockholm, Sweden. I created HomeKitty in my free time during the last few months.</p>

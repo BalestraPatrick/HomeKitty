@@ -27,7 +27,8 @@ final class EmailManager {
     static private func createContactMessage(for topic: ContactTopic, message: String, accessory: String? = nil) -> ContactMessage {
         let body: String
         switch topic {
-        case .issue: body = "Accessory: \(String(describing: accessory ?? ""))\n\n\(message)"
+        case .accessoryIssue: body = "Accessory: \(String(describing: accessory ?? ""))\n\n\(message)"
+        case .appIssue: body = "App: \(String(describing: accessory ?? ""))\n\n\(message)"
         case .feature, .partnership, .other: body = message
         }
         return ContactMessage(topic: topic, body: body)

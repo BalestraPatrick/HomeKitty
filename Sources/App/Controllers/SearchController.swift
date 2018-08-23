@@ -22,8 +22,7 @@ final class SearchController {
     func search(_ req: Request) throws -> Future<View> {
         guard let search: String = try req.query.get(at: "term") else { throw Abort(.badRequest) }
         let categories = try QueryHelper.categories(request: req)
-        let manufacturerCount = try QueryHelper.manufacturerCount(request: req)
-        let accessoryCount = try QueryHelper.accessoriesCount(request: req)
+        let sidemenuCounts = QueryHelper.sidemenuCounts(request: req)
 
         let accessories = try QueryHelper.accessories(request: req)
             .group(PostgreSQLBinaryOperator.or, closure: { builder in
@@ -34,13 +33,20 @@ final class SearchController {
             return accessories.map { Accessory.AccessoryResponse(accessory: $0.0, manufacturer: $0.1) }
         }
 
-        return flatMap(to: View.self, manufacturerCount, accessoryCount, categories, accessories, { (manufacturerCount, accessoryCount, categories, accessories) in
+        return flatMap(to: View.self, categories, accessories, sidemenuCounts, { (categories, accessories, sidemenuCounts) in
+            let pageTitle: String
+            if accessories.count == 1 {
+                pageTitle = "\(accessories.count) result for \"\(search)\""
+            } else {
+                pageTitle = "\(accessories.count) results for \"\(search)\""
+            }
             let data = SearchResponse(categories: categories,
                                       accessories: accessories,
-                                      pageTitle: "Results for \"\(search)\"",
+                                      pageTitle: pageTitle,
                 noAccessoriesFound: accessories.isEmpty,
-                accessoryCount: accessoryCount,
-                manufacturerCount: manufacturerCount)
+                accessoryCount: sidemenuCounts.accessoryCount,
+                manufacturerCount: sidemenuCounts.manufacturerCount,
+                appCount: sidemenuCounts.appCount)
 
             let leaf = try req.view()
             return leaf.render("search", data)
@@ -54,5 +60,6 @@ final class SearchController {
         let noAccessoriesFound: Bool
         let accessoryCount: Int
         let manufacturerCount: Int
+        let appCount: Int
     }
 }

@@ -4,34 +4,38 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" href="/css/content.css">
     <link href="//cdn-images.mailchimp.com/embedcode/classic-10_7.css" rel="stylesheet" type="text/css">
-    <title>HomeKitty - Browse HomeKit Accessories</title>
+    <title>HomeKitty - HomeKit Apps</title>
 }
+
 
 #set("body") {
     <div class="container container-content">
         <div class="row">
-
+            
             <!-- Side Menu -->
             #embed("sidemenu")
 
             <!-- Content -->
             <div class="col-md-9">
                 <div class="flex-item" style="margin-top: 10px;">
-                    <img src="#get(pageIcon)" width="50px">
-                    <p class="lead">#(pageTitle)</p>
+                    <p class="lead">Latest iOS HomeKit Apps</p>
                 </div>
-                #if(noAccessories) {
+                #if(noApps) {
                     <div style="text-align:center; padding-top:50px;">
                         <h1>🔍</h1>
-                        <h4 class="lead">No accessory found here.</h4>
-                        <h5 class="lead">Why not <a href="/accessories/contribute">contribute</a> with one yourself?<h5>
+                        <h4 class="lead">No app found here.</h4>
+                        <h5 class="lead">Why not <a href="/apps/contribute">contribute</a> with one yourself?<h5>
+                    </div>
+                } else {
+                    <div class="row flex-row">
+                        #for(app in apps) {
+                            #embed("Apps/appItem")
+                        }
+                    </div>
+                    <div style="text-align: right;">
+                        <a href="/apps/contribute">Contribute</a> - <a href="/report" >Report issue</a>
                     </div>
                 }
-                <div class="row">
-                    #loop(accessories, "accessory") {
-                        #embed("Accessories/accessoryItem")
-                    }
-                </div>
             </div>
         </div>
     </div>

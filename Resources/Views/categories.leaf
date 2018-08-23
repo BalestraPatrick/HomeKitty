@@ -17,11 +17,18 @@
                 <img src="#get(pageIcon)" width="50px">
                 <p class="lead">#(category.name)</p>
             </div>
-            #if(noAccessoryFound) { #embed("noAccessoryFound") } else {
+            #if(noAccessoryFound) {
+                #embed("noAccessoryFound")
+            } else {
             <div class="row">
-                #for(accessory in accessories) { #embed("accessoryItem") } }
+                #for(accessory in accessories) { #embed("Accessories/accessoryItem") }
+                <a href="/accessories/contribute" style="float: right; margin-right: 50px;">Contribute</a>
+                <a href="/report" style="float: right; margin-right: 50px;">Report issue</a>
             </div>
+            }
+
         </div>
     </div>
+</div>
 } 
 #embed("base")

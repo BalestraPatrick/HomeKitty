@@ -1,0 +1,83 @@
+#set("head") {
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="/css/content.css">
+    <script src="/js/jquery.js"></script>
+    <script src="https://www.google.com/recaptcha/api.js" async defer></script>
+    <title>HomeKitty - Contribute app</title>
+}
+
+#set("body") {
+    <div class="container container-content">
+        <div class="row">
+                <div class="col-md-6" id="contribute-column">
+                <h1>Submit an iOS HomeKit App</h1>
+                <p>The goal of HomeKitty is to be the central place of discovery for all HomeKit accessories and applications. By contributing to our database, you can help many more people discover new, incredible possibilities. Do you want to report an issue? Report it <a href="/report">here</a>.</p>
+                <p>Simply fill out the following form with the required details, and we will add it to the website as soon as we have double-checked all the information. 🎉</p>
+                <hr>
+                <form action="/apps/contribute" method="POST">
+                    <!-- App -->
+                    <h4>iOS HomeKit App</h4>
+                    <div class="form-group">
+                        <label for="name">App Name</label>
+                        <p>Please provide the full app name (ex: HomeKitty).</p>
+                        <input type="text" class="form-control" name="name" placeholder="App Name" required maxlength="255">
+                    </div>
+                    <div class="form-group">
+                        <label for="name">Subtitle</label>
+                        <p>Please provide the subtitle (ex: The Best HomeKit app ever).</p>
+                        <input type="text" class="form-control" name="subtitle" placeholder="Subtitle (optional)" maxlength="255">
+                    </div>
+                    <div class="form-group">
+                        <label for="name">App Icon</label>
+                        <p>Please provide the direct link to the app icon.</p>
+                        <input type="text" class="form-control" name="app_icon" placeholder="URL" required maxlength="255">
+                    </div>
+                    <div class="form-group">
+                        <label for="name">Price</label>
+                        <p>Please provide the price (ex: $0.99) or if the app is free, simple write "0.00".</p>
+                        <div class="input-group">
+                            <span class="input-group-addon">$</span>
+                            <input type="text" pattern="(([0-9]+\.)?[0-9]+)" class="form-control" name="price" id="price-input" placeholder="0.99" required onfocusout="formatPriceInput()">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="appStore_link">App Store Link</label>
+                        <p>Please provide the App Store Link (ex: https://itunes.apple.com/us/...).</p>
+                        <input type="text" class="form-control" name="appStore_link" placeholder="App Store Link" required maxlength="255">
+                    </div>
+                    <div class="form-group">
+                        <label for="appStore_link">Developer</label>
+                        <p>Please provide the developer name (ex: HomeKitty).</p>
+                        <input type="text" class="form-control" name="publisher" placeholder="HomeKitty" required maxlength="255">
+                    </div>
+                    <div class="form-group">
+                        <label for="appStore_link">Website Link</label>
+                        <p>Please provide the app's website link (ex: homekitty.word).</p>
+                        <input type="text" class="form-control" name="website_link" placeholder="https://www.homekitty.world" required maxlength="255">
+                    </div>
+                    <!-- Submit -->
+                    <hr>
+                    <div>
+                        <p style="float: left;">Ready to submit? 👍</p>
+                        <div class="g-recaptcha" data-sitekey="6LebSWQUAAAAAIMMNE4xTkZYP2aX0726QeKugsFv" data-callback="enableSubmit"></div>
+                        <button type="submit" disabled class="btn btn-primary" id="submit-button" style="float: right;">Submit</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+}
+#embed("base")
+<script>
+function formatPriceInput() {
+var priceInput = document.getElementById('price-input');
+if (priceInput && priceInput.value != "") {
+var formattedPrice = Number(priceInput.value).toFixed(2);
+priceInput.value = isNaN(formattedPrice) ? "" : formattedPrice;
+}
+}
+</script>
+
+<script type="text/javascript" src="/js/submit-button.js"></script>

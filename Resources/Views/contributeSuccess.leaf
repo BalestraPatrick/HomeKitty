@@ -1,0 +1,21 @@
+#set("head") {
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="/css/content.css">
+    <script src="/js/jquery.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.12.4/js/bootstrap-select.min.js"></script>
+    <title>HomeKitty - Browse HomeKit Accessories</title>
+}
+
+#set("body") {
+    <div class="container container-content">
+        <div class="row">
+            <div class="centered">
+                <h1>👏👏👏</h1>
+                <p class="lead">Thanks for you contribution. We'll review it as soon as possible and publicly make it available.</p>
+            </div>
+        </div>
+    </div>
+}
+#embed("base")
