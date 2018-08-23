@@ -13,7 +13,8 @@
     <br>
     <p class="lead">Categories</p>
     <div class="list-group">
-        <a href="/apps" class="list-group-item #if(appsSelected) { selected }">iOS HomeKit Apps
+        <a href="/apps" class="list-group-item #if(appsSelected) { selected }">
+            <img src="/icons/app-store.svg" width="30px"> iOS HomeKit Apps
             <span class="badge">#(appCount)</span>
         </a>
     </div>
