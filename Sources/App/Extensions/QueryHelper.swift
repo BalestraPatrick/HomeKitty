@@ -96,7 +96,7 @@ final class QueryHelper {
     static func apps(request req: Request) throws -> Future<[HomeKitApp]> {
         return HomeKitApp.query(on: req)
             .filter(\HomeKitApp.approved == true)
-            .sort(\HomeKitApp.name)
+            .sort(\HomeKitApp.createdAt, .descending)
             .all()
     }
 
