@@ -47,6 +47,10 @@ footer {
     margin: 0px 0;
 }
 
+.list-group {
+    margin-bottom: 20px !important;
+}
+
 .list-group .selected {
     background-color: #f5f5f5;
 }
