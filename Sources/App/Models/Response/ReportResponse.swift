@@ -1,8 +1,5 @@
 //
-//  ReportResponse.swift
-//  App
-//
-//  Created by Kim de Vos on 13/08/2018.
+//  Copyright © 2017 HomeKitty. All rights reserved.
 //
 
 import Foundation

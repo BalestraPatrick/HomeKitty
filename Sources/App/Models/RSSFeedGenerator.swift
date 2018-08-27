@@ -1,8 +1,5 @@
 //
-//  RSSFeed.swift
-//  App
-//
-//  Created by Moritz Sternemann on 25.10.17.
+//  Copyright © 2018 HomeKitty. All rights reserved.
 //
 
 import Vapor
@@ -10,8 +7,14 @@ import Foundation
 
 struct RSSFeedGenerator {
 
-    let xmlStart = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<rss xmlns:dc=\"https://purl.org/dc/elements/1.1/\" xmlns:itunes=\"https://www.itunes.com/dtds/podcast-1.0.dtd\" version=\"2.0\">\n<channel>\n"
-    let xmlEnd = "</channel>\n</rss>"
+    let xmlStart = """
+<?xml version=\"1.0\" encoding=\"UTF-8\"?>
+<rss xmlns:dc=\"https://purl.org/dc/elements/1.1/\" xmlns:itunes=\"https://www.itunes.com/dtds/podcast-1.0.dtd\" version=\"2.0\">
+<channel>
+"""
+    let xmlEnd = """
+</channel>\n</rss>
+"""
     let dateFormatter: DateFormatter
     let baseLink: String
 
@@ -36,7 +39,7 @@ struct RSSFeedGenerator {
         }
 
         for accessory in accessories {
-            xmlFeed += rssString(for: accessory, manufacturer: manufacturers.first(where: { $0.id == accessory.id }))
+            xmlFeed += rssString(for: accessory, manufacturer: manufacturers.first(where: { $0.id == accessory.manufacturerId }))
         }
 
         xmlFeed += xmlEnd
@@ -44,9 +47,11 @@ struct RSSFeedGenerator {
     }
 
     private func rssString(for accessory: Accessory, manufacturer: Manufacturer?) -> String {
-        var entry = "<item>\n"
-        entry += "<title>\(accessory.name)</title>\n"
-        entry += "<description>\n<![CDATA[\n"
+        var entry = """
+<item>
+<title>\(accessory.name)</title>
+<description>\n<![CDATA[
+"""
         if let imageURL = URL(string: accessory.image, relativeTo: URL(string: baseLink)) {
             entry += "<img src=\"\(imageURL.absoluteString)\" />\n"
         }
@@ -61,26 +66,25 @@ struct RSSFeedGenerator {
         if !accessory.released {
             entry += "<i>Accessory or HomeKit support will be released soon.</i>\n"
         }
-        entry += "]]></description>\n"
-        entry += "<link>\(accessory.productLink)</link>\n"
-//        if let category = try category.get() {
-//            entry += "<category>\(category.name)</category>\n"
-//        }
-        entry += "<pubDate>\(dateFormatter.string(from: accessory.date))</pubDate>\n"
-        entry += "</item>\n"
-
+        entry += """
+]]></description>
+<link>\(accessory.productLink)</link>
+<pubDate>\(dateFormatter.string(from: accessory.date))</pubDate>
+</item>
+"""
         return entry
     }
 
     private func getXMLMeta() -> String {
-        return
-            "<title>HomeKitty</title>" +
-            "<icon>https://homekitty.world/mstile-150x150.png</icon>" +
-            "<logo>https://homekitty.world/mstile-150x150.png</logo>" +
-            "<link>https://homekitty.world/</link>" +
-            "<description>All HomeKit accessories in a single place.</description>" +
-            "<generator>HomeKitty</generator>" +
-            "<ttl>60</ttl>" +
-            "<copyright>https://homekitty.world/about</copyright>"
+        return """
+<title>HomeKitty</title>
+<icon>https://homekitty.world/mstile-150x150.png</icon>
+<logo>https://homekitty.world/mstile-150x150.png</logo>
+<link>https://homekitty.world/</link>
+<description>All HomeKit accessories in a single place.</description>
+<generator>HomeKitty</generator>
+<ttl>60</ttl>
+<copyright>https://homekitty.world/about</copyright>
+"""
     }
 }
