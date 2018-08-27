@@ -1,8 +1,5 @@
 //
-//  HomeKitApp.swift
-//  App
-//
-//  Created by Kim de Vos on 28/07/2018.
+//  Copyright © 2018 HomeKitty. All rights reserved.
 //
 
 import Foundation

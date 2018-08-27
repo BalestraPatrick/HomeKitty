@@ -1,6 +1,7 @@
 //
 //  Copyright © 2018 HomeKitty. All rights reserved.
 //
+
 import Routing
 import Vapor
 
@@ -17,4 +18,5 @@ public func routes(_ router: Router) throws {
     _ = HomeController(router: router)
     _ = ContributeController(router: router)
     _ = HomeKitAppController(router: router)
+    _ = RSSController(router: router)
 }
