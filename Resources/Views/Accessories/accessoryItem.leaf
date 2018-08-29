@@ -1,21 +1,21 @@
 <div class="col-sm-4 col-lg-4 col-md-4">
-    <div class="thumbnail latest-list" style="display: flex;justify-content: space-between; flex-grow: 1; flex-direction: column;">
+    <div class="card" style="display: flex; justify-content: space-between; flex-grow: 1; flex-direction: column;">
         <a href="/accessories/#(accessory.id)">
-            <img src="#(accessory.image)" alt="#(accessory.name)" style="height:200px" class="accessory-image">
+            <img src="#(accessory.image)" alt="#(accessory.name)" style="height:200px; width:200px; object-fit:contain;" class="mx-auto d-block">
         </a>
-        <a href="/accessories/#(accessory.id)" class="accessory-name">
-            <h4>#(accessory.name)</h4>
-        </a>
-        <div class="accessory-information-container">
+        <div class="card-body ">
+            <a href="/accessories/#(accessory.id)" class="accessory-name">
+                <h5 class="card-title text-center">#(accessory.name)</h5>
+            </a>
             <div>
                 #if(accessory.price) {
-                    <h4 class="accessory-price">$#(accessory.price)</h4>
+                    <h5 class="accessory-price text-center">$#(accessory.price)</h5>
                 } else {
-                    <h4 class="accessory-price">N/A</h4>
+                    <h5 class="accessory-price text-center">N/A</h5>
                 }
                 <div class="accessory-information">
                     <div class="accessory-manufacturer-container">
-                        <p class="accessory-manufacturer">By
+                        <p class="accessory-manufacturer card-text">By
                             <a href="/manufacturers/#(accessory.manufacturer_id)">#get(accessory.manufacturer_name)</a>
                         </p>
                     </div>
@@ -31,7 +31,7 @@
                         <img src="/images/airplay.png" class="bridge-icon" style="height: 25px; width: 25px;" data-toggle="popover" data-content="This accessory supports AirPlay 2." data-placement="top" data-trigger="hover">
                     }
                 </div>
-                <p>#(accessory.time_ago)</p>
+                <p class="text-center">#(accessory.time_ago)</p>
             </div>
         </div>
     </div>

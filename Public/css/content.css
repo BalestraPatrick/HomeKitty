@@ -6,6 +6,10 @@
     width: 100%;
 }
 
+.card {
+    margin-bottom: 30px;
+}
+
 .carousel-holder {
     margin-bottom: 30px;
 }
