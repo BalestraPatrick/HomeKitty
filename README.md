@@ -41,6 +41,7 @@ HomeKitty has a very simple architecture. The `Sources` folder contains two fold
 - App: contains all the controllers (route handlers), models and helper methods.
 
 There are some basic tests in the Tests folder.
+HomeKitty uses [Sourcery][10] to automatically generate `LinuxMain.swift` which lists all test cases. If you add or remove a test case run `sourcery` from the command line to update `LinuxMain.swift`.
 
 ## Contributing
 We would love to have you onboard and help us shape the future of HomeKitty. We have a ton of new features and bug fixes ready for you in the [issues][4].
@@ -79,3 +80,4 @@ Please don't re-publish the project as it is under your name. Feel free to use i
 [7]:	mailto:me@patrickbalestra.com
 [8]:	http://twitter.com/BalestraPatrick
 [9]:	LICENSE.md
+[10]: https://github.com/krzysztofzablocki/Sourcery
