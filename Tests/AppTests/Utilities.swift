@@ -4,6 +4,7 @@
 import XCTest
 import FluentPostgreSQL
 
+//sourcery: disableTests
 class TestCase: XCTestCase {
 
     lazy var app: Application = {
