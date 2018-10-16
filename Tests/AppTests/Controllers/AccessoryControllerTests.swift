@@ -7,13 +7,7 @@ import XCTest
 @testable import App
 
 class AccessoryControllerTests: TestCase {
-    
-    static var allTests : [(String, (AccessoryControllerTests) -> () throws -> Void)] {
-        return [
-            ("testAccessories", testAccessories),
-        ]
-    }
-    
+
     func testAccessories() throws {
         let responder = try app.make(Responder.self)
         let wrappedRequest = Request(http: HTTPRequest(url: URL(string: "/accessories")!), using: app)
@@ -21,4 +15,5 @@ class AccessoryControllerTests: TestCase {
 
         XCTAssert(response.http.status == .ok)
     }
+    
 }
