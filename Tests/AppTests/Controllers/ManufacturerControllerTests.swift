@@ -8,12 +8,6 @@ import XCTest
 
 class ManufacturerControllerTests: TestCase {
 
-    static var allTests : [(String, (ManufacturerControllerTests) -> () throws -> Void)] {
-        return [
-            ("testManufacturers", testManufacturers),
-        ]
-    }
-
     func testManufacturers() throws {
         let responder = try app.make(Responder.self)
         let wrappedRequest = Request(http: HTTPRequest(url: URL(string: "/manufacturers")!), using: app)
@@ -21,4 +15,5 @@ class ManufacturerControllerTests: TestCase {
 
         XCTAssert(response.http.status == .ok)
     }
+    
 }

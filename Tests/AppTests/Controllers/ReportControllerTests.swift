@@ -7,12 +7,6 @@ import XCTest
 @testable import App
 
 class ReportControllerTests: TestCase {
-    
-    static var allTests : [(String, (ReportControllerTests) -> () throws -> Void)] {
-        return [
-            ("testReport", testReport),
-        ]
-    }
 
     func testReport() throws {
         let responder = try app.make(Responder.self)
@@ -21,4 +15,5 @@ class ReportControllerTests: TestCase {
 
         XCTAssert(response.http.status == .ok)
     }
+    
 }

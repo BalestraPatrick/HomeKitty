@@ -10,17 +10,11 @@ import XCTest
 @testable import App
 
 class FeedControllerTests: TestCase {
-    
-    static var allTests : [(String, (FeedControllerTests) -> () throws -> Void)] {
-        return [
-            ("testRSS", testRSS),
-        ]
-    }
 
     func testRSS() throws {
 //        try drop
 //            .testResponse(to: .get, at: "/rss.xml")
 //            .assertStatus(is: .ok)
     }
+    
 }
-
