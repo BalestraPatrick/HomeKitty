@@ -1,0 +1,7 @@
+sources:
+  - Tests/
+templates:
+  - Templates/LinuxMain.stencil
+args:
+  testimports: '@testable import AppTests'
+output: Sources/
