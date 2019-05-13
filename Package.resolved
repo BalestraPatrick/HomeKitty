@@ -77,9 +77,9 @@
         "package": "LeafErrorMiddleware",
         "repositoryURL": "https://github.com/brokenhandsio/leaf-error-middleware.git",
         "state": {
-          "branch": "vapor3",
-          "revision": "450a6bf7cc5c8ed1b2b9b62c0ef14af0fc6ab29d",
-          "version": null
+          "branch": null,
+          "revision": "4bf27bd125dbb6dd5ad2c75482d30bcb77d914c3",
+          "version": "1.1.0"
         }
       },
       {
