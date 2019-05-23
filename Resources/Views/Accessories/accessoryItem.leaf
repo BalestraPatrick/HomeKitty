@@ -3,7 +3,7 @@
         <a href="/accessories/#(accessory.id)">
             <img src="#(accessory.image)" alt="#(accessory.name)" style="height:200px; width:200px; object-fit:contain;" class="mx-auto d-block">
         </a>
-        <div class="card-body ">
+        <div class="card-body">
             <a href="/accessories/#(accessory.id)" class="accessory-name">
                 <h5 class="card-title text-center">#(accessory.name)</h5>
             </a>
