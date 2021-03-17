@@ -53,7 +53,7 @@ public func configure(_ config: inout Config, env: inout Environment, services: 
 
     // Configure a PostgreSQL database
     var databases = DatabasesConfig()
-    let dbConfig = PostgreSQLDatabaseConfig(hostname: dbHostname, port: dbPort, username: dbUsername, database: db, password: dbPassword)
+    let dbConfig = PostgreSQLDatabaseConfig(hostname: dbHostname, port: dbPort, username: dbUsername, database: db, password: dbPassword, transport: .unverifiedTLS)
     databases.add(database: PostgreSQLDatabase(config: dbConfig), as: .psql)
     databases.enableLogging(on: .psql)
     services.register(databases)

@@ -1,4 +1,4 @@
-// swift-tools-version:4.1
+// swift-tools-version:4.2
 
 import PackageDescription
 
@@ -15,7 +15,7 @@ let package = Package(
         .package(url: "https://github.com/vapor/fluent-postgresql.git", from: "1.0.0"),
         .package(url: "https://github.com/vapor/leaf.git", from: "3.0.0-rc"),
         .package(url: "https://github.com/vapor-community/stripe-provider.git", from: "2.0.9"),
-        .package(url: "https://github.com/brokenhandsio/leaf-error-middleware.git", .branch("vapor3")),
+        .package(url: "https://github.com/brokenhandsio/leaf-error-middleware.git", from: "1.3.0"),
         .package(url: "https://github.com/vapor-community/sendgrid-provider.git", from: "3.0.4"),
         .package(url: "https://github.com/vapor/database-kit.git", from: "1.3.0"),
     ],
