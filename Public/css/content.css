@@ -1,9 +1,13 @@
 .container-content {
-    padding-top: 70px;
+    padding-top: 80px;
 }
 
 .slide-image {
     width: 100%;
+}
+
+.card {
+    margin-bottom: 30px;
 }
 
 .carousel-holder {
@@ -45,6 +49,10 @@
 
 footer {
     margin: 0px 0;
+}
+
+.list-group {
+    margin-bottom: 20px !important;
 }
 
 .list-group .selected {

@@ -3,9 +3,9 @@
     <head>
         #get(head)
         <link async defer href="https://fonts.googleapis.com/css?family=Quicksand:400,700,300" rel="stylesheet">
-        <link rel="stylesheet" href="/css/bootstrap.min.css">
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+        <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.2.0/css/all.css" integrity="sha384-hWVjflwFxL6sNzntih27bfxkr27PmbbK/iSvJ+a4+0owXq79v+lsFkW54bOGbiDQ" crossorigin="anonymous">
         <link rel="stylesheet" href="/css/main.css">
-        <link rel="stylesheet" href="/css/bootstrap-select.css">
         <link rel="apple-touch-icon-precomposed" sizes="57x57" href="https://homekitty.world/apple-touch-icon-57x57.png" />
         <link rel="apple-touch-icon-precomposed" sizes="114x114" href="https://homekitty.world/apple-touch-icon-114x114.png" />
         <link rel="apple-touch-icon-precomposed" sizes="72x72" href="https://homekitty.world/apple-touch-icon-72x72.png" />

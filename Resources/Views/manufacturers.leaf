@@ -23,8 +23,8 @@
                 </div>
                 <div class="row">
                         #for(manufacturer in manufacturers) {
-                        <div class="col-sm-4 col-lg-4 col-md-4">
-                            <div class="thumbnail" style="height: auto;">
+                        <div class="col-sm-4 col-lg-4 col-md-4" >
+                            <div class="thumbnail card" style="height: auto;">
                                 <a href="/manufacturers/#(manufacturer.id)"></a>
                                 <div class="caption">
                                     <div><h4><a href="/manufacturers/#(manufacturer.id)">#(manufacturer.name)</a></h4></div>
